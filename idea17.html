@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agential Sidekick: An Interactive Blueprint</title>
+    <style>
+        :root {
+            --primary-start: #667eea;
+            --primary-end: #764ba2;
+            --text-light: #ffffff;
+            --text-dark: #333;
+            --text-muted: #555;
+            --bg-light: #ffffff;
+            --bg-accent: #f3f4f6;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-accent);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
+            color: var(--text-light);
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: float 30s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-40px) rotate(360deg); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            padding: 1rem 2rem;
+            border: 2px solid var(--text-light);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-button:hover {
+            background: var(--text-light);
+            color: var(--primary-start);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            background: var(--bg-light);
+            margin: 2rem 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+
+        .section-header {
+            background: linear-gradient(45deg, #f8fafc, #eef2f7);
+            color: var(--text-dark);
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .section-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-start);
+        }
+
+        .toggle-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+            color: var(--primary-start);
+            font-weight: bold;
+        }
+
+        .section-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease, padding 0.5s ease;
+        }
+
+        .section-content.active {
+            padding: 2rem;
+            max-height: 5000px; /* Increased for longer content sections */
+        }
+
+        .section-content p, .section-content li {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .section-content ul {
+            margin: 1rem 0 1rem 2rem;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #a8e6cf 0%, #dcedc1 100%);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #2b614d;
+        }
+
+        .interactive-demo {
+            background: var(--bg-accent);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .demo-button {
+            background: linear-gradient(45deg, var(--primary-start), #8a63bf);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #74b9ff, var(--primary-start));
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .reference-list {
+            list-style: none;
+            padding: 0;
+        }
+        .reference-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .reference-list li::before {
+            content: '🔗';
+            position: absolute;
+            left: 0;
+            top: 5px;
+        }
+         .reference-list a {
+            color: var(--primary-start);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+        .reference-list a:hover {
+            color: var(--primary-end);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+        }
+
+        /* --- Gemini API Feature Styles --- */
+        .loader { width: 24px; height: 24px; border: 4px solid #ddd; border-left-color: var(--primary-start); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .ai-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .ai-modal-overlay.visible { opacity: 1; pointer-events: auto; }
+        .ai-modal-content { background: white; padding: 2rem; border-radius: 15px; max-width: 600px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.2); transform: scale(0.95); transition: transform 0.3s ease; }
+        .ai-modal-overlay.visible .ai-modal-content { transform: scale(1); }
+        .ai-modal-content h3 { color: var(--primary-start); margin-bottom: 1rem; font-size: 1.5rem; }
+        .ai-modal-content p { color: var(--text-muted); line-height: 1.6; }
+        .ai-modal-content .loader { margin: 2rem auto; }
+        .ai-modal-close-btn { background: #eee; color: var(--text-muted); border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; margin-top: 1.5rem; float: right; transition: background 0.2s ease; }
+        .ai-modal-close-btn:hover { background: #ddd; }
+
+        .ai-chat-button { position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-start), var(--primary-end)); color: white; border-radius: 50%; border: none; font-size: 2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 1001; transition: all 0.3s ease; }
+        .ai-chat-button:hover { transform: scale(1.1); }
+        .ai-chat-widget { position: fixed; bottom: 6rem; right: 2rem; width: 350px; max-width: 90vw; background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: flex; flex-direction: column; overflow: hidden; z-index: 1000; opacity: 0; transform: translateY(20px); pointer-events: none; transition: all 0.3s ease; }
+        .ai-chat-widget.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .ai-chat-header { background: linear-gradient(135deg, var(--primary-start), var(--primary-end)); color: white; padding: 1rem; text-align: center; }
+        .ai-chat-body { flex-grow: 1; padding: 1rem; overflow-y: auto; height: 300px; display: flex; flex-direction: column; gap: 0.5rem; }
+        .ai-chat-body .message { padding: 0.5rem 1rem; line-height: 1.5; max-width: 90%; border-radius: 15px; }
+        .ai-chat-body .user-message { background: #e0e7ff; color: #3730a3; border-radius: 15px 15px 0 15px; align-self: flex-end; }
+        .ai-chat-body .ai-message { background: var(--bg-accent); color: var(--text-dark); border-radius: 15px 15px 15px 0; align-self: flex-start; }
+        .ai-chat-footer { border-top: 1px solid var(--border-color); padding: 0.5rem; display: flex; gap: 0.5rem; }
+        #chatInput { flex-grow: 1; border: 1px solid #ddd; padding: 0.5rem 1rem; border-radius: 20px; font-size: 1rem; }
+        #chatSendBtn { background: var(--primary-start); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 1.2rem; transition: background 0.2s ease; }
+        #chatSendBtn:hover { background: var(--primary-end); }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <section class="hero">
+        <div class="container">
+            <h1>The Agential Sidekick</h1>
+            <p>An interactive blueprint for a next-generation enterprise AI assistant, designed for deep personalization, security, and cognitive augmentation.</p>
+            <a href="#architecture" class="cta-button" onclick="scrollToSection('architecture')">Explore the Blueprint</a>
+        </div>
+    </section>
+
+    <div class="container">
+        <section class="section" id="architecture">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>🏛️ Foundational Architecture</h2>
+                <span class="toggle-icon">+</span>
+            </div>
+            <div class="section-content">
+                <p>The Agential Sidekick is built on a robust, three-tiered architecture designed for modularity, security, and scalability within a corporate environment. This separation of concerns allows each component to be developed and managed independently.</p>
+                <ul>
+                    <li><strong>Core LLM Engine:</strong> Serves as the primary reasoning and language generation brain. It must be hosted securely (on-premise, private cloud, or via a compliant enterprise service) to prevent data leakage and "Shadow AI."</li>
+                    <li><strong>Sidekick Hub:</strong> The central orchestration layer. It manages the user interface, state, personalization, and secure communication between all components. The Hub is a critical security chokepoint, requiring robust protection for user tokens and data flows.</li>
+                    <li><strong>Integrated Applications:</strong> Enterprise systems like Microsoft Outlook and Teams act as the data sources and action platforms. The Sidekick interacts with these via secure APIs, primarily the Microsoft Graph API, using delegated permissions to ensure it only accesses what the user is authorized to.</li>
+                </ul>
+                <p>This architecture is enveloped by a <span class="highlight">Governance & Security Layer</span>, which includes the enterprise's existing Identity and Access Management (IAM), Data Loss Prevention (DLP), and compliance frameworks.</p>
+            </div>
+        </section>
+
+        <section class="section" id="personas">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>🎭 Personas & Interaction</h2>
+                <span class="toggle-icon">+</span>
+            </div>
+            <div class="section-content">
+                <p>A core innovation of the Sidekick is its ability to adopt different personas, fundamentally changing the <span class="highlight">cognitive process</span> it applies to a problem. This moves beyond simple tone changes to offer a suite of specialized cognitive tools, managed through meticulously crafted meta-prompts (system prompts).</p>
+                 <div class="interactive-demo">
+                    <h3>Explore Persona Modes</h3>
+                    <p>Click to see an example of how each persona would approach a task.</p>
+                    <button class="demo-button" onclick="showPersona('academic')">Dr. Evelyn Reed (The Professional Academic)</button>
+                    <button class="demo-button" onclick="showPersona('creative')">Spark (The Creative Muse)</button>
+                    <button class="demo-button" onclick="showPersona('skeptic')">Criterion (The Skeptical Reviewer)</button>
+                    <div id="personaDemo" style="margin-top: 2rem; padding: 1.5rem; background: white; border-radius: 10px; display: none; text-align: left;">
+                        <div id="demoContent"></div>
+                    </div>
+                </div>
+                <p>This multi-persona system transforms the assistant into a metacognitive augmentation platform. A user can intentionally switch from an analytical mode to a divergent, brainstorming mode, or deploy a skeptical reviewer to challenge their own confirmation bias, actively diversifying their own thinking process.</p>
+            </div>
+        </section>
+        
+        <section class="section" id="integration">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>🔄 Enterprise Workflows & Integration</h2>
+                <span class="toggle-icon">+</span>
+            </div>
+            <div class="section-content">
+                <p>The true power of the Sidekick is unlocked through deep, proactive integration with enterprise workflows, primarily via the <span class="highlight">Microsoft Graph API</span>. The goal is to evolve from a reactive tool to a proactive partner.</p>
+                <h4>Outlook Integration Examples:</h4>
+                <ul>
+                    <li><strong>Semantic Email Summarization:</strong> Efficiently summarizes entire email threads by filtering via `conversationId` for performance.</li>
+                    <li><strong>Persona-Based Drafting:</strong> Creates safe drafts in the user's "Drafts" folder for review, rather than sending emails directly.</li>
+                    <li><strong>Automated Meeting Preparation:</strong> Proactively gathers context before meetings by retrieving attendee lists and recent documents they've worked on, providing the user with a "just-in-time" briefing.</li>
+                </ul>
+                <h4>Teams Integration Examples:</h4>
+                <ul>
+                    <li><strong>Relevance-Based Summarization:</strong> Uses delta queries to efficiently summarize what's new in active channels without repeatedly fetching the entire history.</li>
+                    <li><strong>Action Item Tracking:</strong> After analyzing a meeting transcript, it can automatically create tasks in Microsoft To Do or Planner and initiate follow-up chats with assignees, bridging the gap between discussion and execution.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section" id="onboarding">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>🧠 Symbiotic Onboarding & Personalization</h2>
+                <span class="toggle-icon">+</span>
+            </div>
+            <div class="section-content">
+                <p>The blueprint's most innovative proposal is <span class="highlight">Symbiotic Onboarding</span>. This process creates a deep, personalized "Attentional Map" by analyzing the unconscious variations in a user's vocal prosody (emphasis, pacing, tone) as they read a document aloud.</p>
+                <p>This is scientifically grounded: prosody is a primary channel for conveying intent and importance. By capturing these vocal cues and using a technique called <span class="highlight">Forced Alignment</span> to map them to specific words in the text, the system can infer the user's cognitive priorities.</p>
+                <h4>The result is "Attentional RAG":</h4>
+                 <ul>
+                    <li>A sophisticated Retrieval-Augmented Generation (RAG) system where retrieved information is re-ranked not just by semantic relevance, but by the user's personal "Attentional Score."</li>
+                    <li>This ensures the most subjectively important information is placed in the most salient part of the LLM's context window, mitigating the "lost in the middle" problem and leading to hyper-personalized outputs.</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section class="section" id="references">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>📚 References & Further Reading</h2>
+                <span class="toggle-icon">+</span>
+            </div>
+            <div class="section-content">
+                <p>The concepts in this blueprint are grounded in extensive research and existing technologies. Explore some of the key sources below.</p>
+                <ul class="reference-list">
+                    <li><a href="https://learn.microsoft.com/en-us/graph/overview" target="_blank" rel="noopener noreferrer">Microsoft Graph Overview</a></li>
+                    <li><a href="https://www.youtube.com/watch?v=_8e_Jqj7qrU" target="_blank" rel="noopener noreferrer">Persona Vectors: Controlling LLM Traits</a></li>
+                    <li><a href="https://www.pnas.org/doi/10.1073/pnas.2500510122" target="_blank" rel="noopener noreferrer">Disentanglement of prosodic meaning (PNAS)</a></li>
+                    <li><a href="https://www.speechandtech.eu/tech-tools/forced-alignment" target="_blank" rel="noopener noreferrer">Forced Alignment - Speech & Technology</a></li>
+                    <li><a href="https://aws.amazon.com/blogs/machine-learning/streamline-rag-applications-with-intelligent-metadata-filtering-using-amazon-bedrock/" target="_blank" rel="noopener noreferrer">Streamline RAG with Intelligent Metadata Filtering</a></li>
+                    <li><a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/seizing-the-agentic-ai-advantage" target="_blank" rel="noopener noreferrer">Seizing the agentic AI advantage (McKinsey)</a></li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Gemini API Features: Modal and Chatbot -->
+    <div class="ai-modal-overlay" id="aiModal">
+        <div class="ai-modal-content">
+            <h3 id="aiModalTitle"></h3>
+            <div id="aiModalBody"></div>
+            <button class="ai-modal-close-btn" onclick="closeAiModal()">Close</button>
+        </div>
+    </div>
+
+    <button class="ai-chat-button" id="chatToggleBtn">💬</button>
+    <div class="ai-chat-widget" id="chatWidget">
+        <div class="ai-chat-header">
+            <h3>AI Research Assistant</h3>
+        </div>
+        <div class="ai-chat-body" id="chatBody">
+             <div class="message ai-message">Hi! How can I help you explore the Agential Sidekick blueprint?</div>
+        </div>
+        <div class="ai-chat-footer">
+            <input type="text" id="chatInput" placeholder="Ask a question..." autocomplete="off">
+            <button id="chatSendBtn">➤</button>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = ""; // As per instructions, leave empty.
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+        let pageContext = ''; // Populated on load
+
+        /**
+         * Reusable function to call the Gemini API with exponential backoff.
+         */
+        async function callGemini(prompt, systemInstruction, retries = 3, delay = 1000) {
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemInstruction }] },
+                // Safety settings to reduce refusals for this type of content
+                safetySettings: [
+                    { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+                    { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+                    { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+                    { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
+                ],
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    return candidate.content.parts[0].text;
+                }
+                 // Handle cases where the response is blocked due to safety
+                if (candidate && candidate.finishReason === 'SAFETY') {
+                    return "I am unable to provide a response to that query based on the safety guidelines.";
+                }
+                throw new Error("Invalid response structure from Gemini API.");
+            } catch (error) {
+                console.error(`Error calling Gemini API: ${error.message}`);
+                if (retries > 0) {
+                    await new Promise(res => setTimeout(res, delay));
+                    return callGemini(prompt, systemInstruction, retries - 1, delay * 2);
+                }
+                return "Sorry, I encountered an error connecting to the AI model. Please try again later.";
+            }
+        }
+
+        // --- Modal Controls ---
+        const aiModal = document.getElementById('aiModal');
+        const aiModalTitle = document.getElementById('aiModalTitle');
+        const aiModalBody = document.getElementById('aiModalBody');
+        function openAiModal(title) {
+            aiModalTitle.textContent = title;
+            aiModalBody.innerHTML = '<div class="loader"></div>';
+            aiModal.classList.add('visible');
+        }
+        function closeAiModal() {
+            aiModal.classList.remove('visible');
+        }
+
+        // --- Gemini Feature: AI-Generated Persona Examples ---
+        async function showPersona(type) {
+            const demo = document.getElementById('personaDemo');
+            const content = document.getElementById('demoContent');
+            demo.style.display = 'block';
+            content.innerHTML = '<div class="loader" style="margin: 1rem auto;"></div>';
+
+            const personas = {
+                academic: { title: 'Dr. Evelyn Reed (The Academic)', description: 'Provides structured, rigorous, and data-driven analysis. Cites sources and prioritizes logical coherence.' },
+                creative: { title: 'Spark (The Creative Muse)', description: 'Engages in divergent thinking, brainstorms novel ideas, and explores unconventional connections.' },
+                skeptic: { title: 'Criterion (The Skeptical Reviewer)', description: 'Stress-tests plans, identifies potential risks and flaws, and counteracts confirmation bias.' }
+            };
+            const persona = personas[type];
+
+            const systemPrompt = "You are an expert in AI personas. Given a persona and a common business task, provide a brief, vivid example of how that persona would respond. Start with a bolded title for the persona's response. The task is: 'Review the attached project proposal for the Alpha Initiative.'";
+            const prompt = `Persona: ${persona.title}\nDescription: ${persona.description}`;
+
+            const response = await callGemini(prompt, systemPrompt);
+            content.innerHTML = `
+                <h4 style="color: var(--primary-start); margin-bottom: 1rem;">${persona.title}</h4>
+                <p style="margin-bottom: 1.5rem; color: #333;">${persona.description}</p>
+                <div style="background: var(--bg-accent); padding: 1.5rem; border-left: 4px solid var(--primary-start); border-radius: 0 8px 8px 0;">
+                    <p>${response.replace(/\n/g, '<br>')}</p>
+                </div>
+            `;
+        }
+
+        // --- Gemini Feature: AI Research Assistant Chatbot ---
+        const chatToggleBtn = document.getElementById('chatToggleBtn');
+        const chatWidget = document.getElementById('chatWidget');
+        const chatBody = document.getElementById('chatBody');
+        const chatInput = document.getElementById('chatInput');
+        const chatSendBtn = document.getElementById('chatSendBtn');
+
+        chatToggleBtn.addEventListener('click', () => {
+            chatWidget.classList.toggle('visible');
+             if(chatWidget.classList.contains('visible')) {
+                chatInput.focus();
+            }
+        });
+
+        async function handleChat() {
+            const userInput = chatInput.value.trim();
+            if (!userInput) return;
+
+            appendMessage(userInput, 'user-message');
+            chatInput.value = '';
+            
+            const loaderId = `loader-${Date.now()}`;
+            appendMessage('<div class="loader"></div>', 'ai-message', loaderId);
+
+            const systemPrompt = "You are an expert AI assistant for the 'Agential Sidekick Blueprint'. Your goal is to answer questions clearly and concisely based ONLY on the provided context document. Be helpful and friendly. If the answer isn't in the context, politely state that the information is not available in the blueprint document and you cannot answer.";
+            const prompt = `CONTEXT DOCUMENT:\n---\n${pageContext}\n---\n\nQUESTION: ${userInput}`;
+            
+            const response = await callGemini(prompt, systemPrompt);
+            
+            const loaderElement = document.getElementById(loaderId);
+            if(loaderElement) {
+                loaderElement.innerHTML = response.replace(/\n/g, '<br>');
+            }
+        }
+        
+        function appendMessage(content, type, id = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            if (id) messageDiv.id = id;
+            messageDiv.innerHTML = content;
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        chatSendBtn.addEventListener('click', handleChat);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleChat(); });
+        
+        // --- Page Initialization & Utils ---
+        function extractPageContext() {
+            // Extract text content from the main sections for the chatbot's context
+            let context = "";
+            document.querySelectorAll('.hero, .section').forEach(element => {
+                context += element.innerText + "\n\n";
+            });
+            // Basic cleanup
+            pageContext = context.replace(/\s+/g, ' ').trim();
+        }
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById('progressBar').style.width = ((winScroll / height) * 100) + '%';
+        });
+
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.toggle-icon');
+            const isActive = content.classList.contains('active');
+            
+            // Optional: close all others when one is opened
+            // document.querySelectorAll('.section-content.active').forEach(el => el.classList.remove('active'));
+            // document.querySelectorAll('.toggle-icon').forEach(i => { i.textContent = '+'; });
+            
+            if (!isActive) {
+                content.classList.add('active');
+                icon.textContent = '−';
+            } else {
+                content.classList.remove('active');
+                icon.textContent = '+';
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if(element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+                const header = element.querySelector('.section-header');
+                const content = element.querySelector('.section-content');
+                if(header && content && !content.classList.contains('active')) {
+                    toggleSection(header);
+                }
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Open the first section by default
+            const firstHeader = document.querySelector('.section-header');
+            if(firstHeader) {
+                toggleSection(firstHeader);
+            }
+            extractPageContext();
+
+            // Fade-in animation for sections on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
+

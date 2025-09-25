@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Hardware at Work | Project Völuspá</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles to enhance the Norse/Pagan theme */
+        body {
+            background-color: #1a202c; /* Deep slate gray */
+            color: #E2E8F0; /* Light slate gray text */
+            font-family: 'Inter', sans-serif;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%232d3748' fill-opacity='0.1'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0h1v5h4v1H6v4H5V6H0V5h5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .font-runic {
+            font-family: 'Cinzel', serif;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 8px rgba(199, 213, 229, 0.5), 0 0 10px rgba(163, 179, 195, 0.3);
+        }
+
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #4A5568, transparent);
+            margin: 4rem auto;
+            width: 80%;
+        }
+        
+        .card {
+            background-color: rgba(45, 55, 72, 0.5); /* Semi-transparent slate */
+            border: 1px solid #4A5568; /* Slate border */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .card:hover {
+            border-color: #A0AEC0; /* Lighter slate on hover */
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(145deg, #5a67d8, #4c51bf);
+            border: 1px solid #7f9cf5;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 15px rgba(90, 103, 216, 0.4);
+        }
+
+        .yggdrasil-core-svg {
+            transition: transform 0.5s ease-in-out;
+            filter: drop-shadow(0 0 15px rgba(127, 156, 245, 0.4));
+        }
+
+        .yggdrasil-core-svg:hover {
+            transform: rotate(15deg) scale(1.05);
+        }
+
+        .tech-icon {
+            transition: all 0.3s ease;
+        }
+        .tech-icon:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(127, 156, 245, 0.6));
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="p-4 md:p-6 text-center">
+        <h2 class="text-xl md:text-2xl font-runic text-gray-400">Skill Hardware at Work</h2>
+        <h1 class="text-4xl md:text-5xl font-bold font-runic text-white text-glow tracking-wider">Cybernetic Apparel Division</h1>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 md:py-16">
+
+        <!-- 1. Hero Section -->
+        <section id="hero" class="text-center mb-24">
+            <h1 class="text-5xl md:text-7xl font-bold font-runic text-glow uppercase tracking-widest">Project Völuspá</h1>
+            <p class="mt-4 md:mt-6 max-w-4xl mx-auto text-lg md:text-xl text-gray-300">
+                A technical prophecy: engineering the unified hardware platform, hybrid power systems, and multi-tiered forging strategy for the Fated Threads product ecosystem.
+            </p>
+            <div class="mt-12 flex justify-center items-center">
+                <!-- SVG of the Yggdrasil Core -->
+                <svg class="yggdrasil-core-svg w-64 h-64 md:w-80 md:h-80" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="coreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#7f9cf5;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#4c51bf;stop-opacity:1" />
+                        </linearGradient>
+                        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur stdDeviation="5" result="coloredBlur"></feGaussianBlur>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"></feMergeNode>
+                                <feMergeNode in="SourceGraphic"></feMergeNode>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <g transform="translate(100,100)">
+                        <!-- Outer Rings -->
+                        <circle cx="0" cy="0" r="90" fill="none" stroke="#4A5568" stroke-width="2" />
+                        <circle cx="0" cy="0" r="80" fill="none" stroke="#4A5568" stroke-width="1" stroke-dasharray="5,5"/>
+
+                        <!-- Central Core -->
+                        <circle cx="0" cy="0" r="40" fill="url(#coreGradient)" filter="url(#glow)" />
+                        <text x="0" y="5" font-family="Cinzel" font-size="14" fill="white" text-anchor="middle" font-weight="bold">YGGDRASIL CORE</text>
+
+                        <!-- Data Streams to Products -->
+                        <!-- Ring -->
+                        <path d="M 0,-40 Q 0,-60 -50,-70" fill="none" stroke="#7f9cf5" stroke-width="1.5" stroke-dasharray="3,3" />
+                        <circle cx="-60" cy="-75" r="10" fill="#2D3748" stroke="#7f9cf5" class="tech-icon"/>
+                        <path d="M-63,-72 a3,3 0 1,1 6,0 a4,4 0 1,1 -6,0" fill="white"/>
+
+                        <!-- Spectacles -->
+                        <path d="M 40,0 Q 60,0 70,50" fill="none" stroke="#7f9cf5" stroke-width="1.5" stroke-dasharray="3,3" />
+                        <circle cx="75" cy="60" r="10" fill="#2D3748" stroke="#7f9cf5" class="tech-icon"/>
+                        <rect x="70" y="57" width="10" height="3" fill="white" rx="1"/>
+                        <rect x="70" y="62" width="10" height="3" fill="white" rx="1"/>
+
+                        <!-- Drone -->
+                        <path d="M -40,0 Q -60,0 -70,-50" fill="none" stroke="#7f9cf5" stroke-width="1.5" stroke-dasharray="3,3" />
+                        <circle cx="-75" cy="-60" r="10" fill="#2D3748" stroke="#7f9cf5" class="tech-icon"/>
+                        <path d="M-75 -65 l5 10 h-10 Z" fill="white"/>
+                    </g>
+                </svg>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- 2. The Vision -->
+        <section id="vision" class="max-w-4xl mx-auto text-center mb-24">
+            <h2 class="text-4xl font-bold font-runic text-glow">The Vision — Technology as Modern Seidr</h2>
+            <p class="mt-6 text-lg text-gray-300">
+                We introduce the Fated Threads: a clan of 11 devices where technology is woven so seamlessly into the fabric of life it feels like magic. The engineering challenge is immense: to create a family of artifacts where interaction is intuitive, latency is non-existent, and the underlying platform is an invisible, interconnected force. This is the foundation upon which our technical solutions are built.
+            </p>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- 3. The Yggdrasil Core -->
+        <section id="core" class="mb-24">
+            <h2 class="text-4xl font-bold font-runic text-glow text-center">The Yggdrasil Core — A Unified Platform</h2>
+            <p class="mt-4 text-lg text-gray-300 text-center max-w-4xl mx-auto">
+                The foundation of the ecosystem is the "Yggdrasil Core," a standardized architecture binding all devices. This unified approach is the key to scalability, interoperability, and manufacturing efficiency.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8 mt-12">
+                <!-- 3.1 System Architecture -->
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold font-runic text-indigo-300">The Core's Weave: System Architecture</h3>
+                    <p class="mt-4 text-gray-300">We employ a custom System-in-Package (SiP) for core wearables like the <strong>Seidr Ring</strong> and <strong>Skuld's Mark</strong>, achieving extreme functional density in a ~23 mm² footprint. For larger devices like the <strong>Valkyrie Scout</strong> drone, a conventional rigid-flex PCB maintains firmware portability across the entire product line.</p>
+                    <ul class="mt-4 space-y-2 list-disc list-inside text-gray-400">
+                        <li><strong>Primary SoC:</strong> Nordic nRF54L Series</li>
+                        <li><strong>UWB Transceiver:</strong> For spatial awareness</li>
+                        <li><strong>PMIC:</strong> Intelligent Power Management IC</li>
+                        <li><strong>eSE:</strong> Embedded Secure Element for warding data</li>
+                    </ul>
+                </div>
+
+                <!-- 3.2 Wireless Strategy -->
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold font-runic text-indigo-300">Whispers on the Wind: Hybrid Wireless</h3>
+                    <p class="mt-4 text-gray-300">Our tri-protocol strategy ensures flawless communication:</p>
+                    <ul class="mt-4 space-y-2">
+                        <li><strong><span class="font-semibold text-white">BLE Mesh:</span></strong> The ambient, always-on fabric for device discovery and quiet commands.</li>
+                        <li><strong><span class="font-semibold text-white">NFC:</span></strong> For intuitive, secure, point-to-point binding rituals like payments and pairing.</li>
+                        <li><strong><span class="font-semibold text-white">UWB:</span></strong> The key to "spell-casting." Centimeter-level, low-latency (<5ms) spatial data for gesture recognition and secure access.</li>
+                    </ul>
+                </div>
+
+                <!-- 3.3 Power Strategy -->
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold font-runic text-indigo-300">The Unbroken Circle: Perpetual Power</h3>
+                    <p class="mt-4 text-gray-300">A multi-faceted energy harvesting system creates near-perpetual operation. An intelligent PMIC (Nordic nPM1300) blends power from multiple inconsistent sources.</p>
+                    <ul class="mt-4 space-y-2 list-disc list-inside text-gray-400">
+                        <li><strong>Thermoelectric Generators (TEGs):</strong> Converts body heat into power on devices like <strong>Freya's Torc</strong>.</li>
+                        <li><strong>Kinetic Energy Harvesters (KEH):</strong> Converts motion into electricity, ideal for the <strong>Draupnir Band</strong>.</li>
+                        <li><strong>Ambient RF Harvesting:</strong> A constant micro-watt trickle charge, offsetting battery self-discharge.</li>
+                    </ul>
+                </div>
+
+                <!-- 3.4 Security Framework -->
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold font-runic text-indigo-300">Wards & Wisdom: Embedded Intelligence</h3>
+                    <p class="mt-4 text-gray-300">A privacy-first architecture is paramount.</p>
+                    <ul class="mt-4 space-y-2">
+                        <li><strong><span class="font-semibold text-white">On-Device AI:</span></strong> TensorFlow Lite for Microcontrollers runs gesture models directly on the SoC for instantaneous response.</li>
+                        <li><strong><span class="font-semibold text-white">Federated Learning:</span></strong> Personalization occurs on-device; only anonymized model updates are sent to the cloud, protecting raw user data.</li>
+                        <li><strong><span class="font-semibold text-white">Transaction-Grade Security:</span></strong> A hardware-based embedded Secure Element (eSE) creates a tamper-proof vault for tokens and credentials.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- 4. Prototyping Roadmap -->
+        <section id="roadmap" class="mb-24">
+            <h2 class="text-4xl font-bold font-runic text-glow text-center">The Path of Creation: A Phased Forging</h2>
+            <p class="mt-4 text-lg text-gray-300 text-center max-w-4xl mx-auto">
+                Our development is a three-tiered saga, de-risking the project by conquering foundational challenges first.
+            </p>
+            <div class="mt-12 space-y-8">
+                <!-- Tier 1 -->
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold font-runic text-indigo-300">Tier 1 — The Bindings of Midgard (Seidr Ring, Skuld's Mark)</h3>
+                    <p class="mt-2 text-gray-400 font-semibold">Challenge: Extreme miniaturization and biocompatibility.</p>
+                    <p class="mt-4 text-gray-300">Solution: Multi-layer rigid-flex PCBs with rolled-annealed copper for the ring. For the temporary tattoo, conductive graphene inks are printed on a biocompatible substrate, creating an epidermal electronic system.</p>
+                </div>
+                <!-- Tier 2 -->
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold font-runic text-indigo-300">Tier 2 — Eyes of Asgard (Odin's Sight, Valkyrie Scout)</h3>
+                    <p class="mt-2 text-gray-400 font-semibold">Challenge: Advanced optics and low-observability robotics.</p>
+                    <p class="mt-4 text-gray-300">Solution: For the spectacles, we start with current-gen waveguide displays while pursuing R&D in next-gen micro-LED retinal projection. For the drone, ultra-quiet propulsion systems (<35 dBA) and active camouflage using e-ink panels are engineered for stealth.</p>
+                </div>
+                <!-- Tier 3 -->
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold font-runic text-indigo-300">Tier 3 — Connecting the Realms (The Nine Realms Network)</h3>
+                    <p class="mt-2 text-gray-400 font-semibold">Challenge: Scalable, ultra-low-latency cloud infrastructure.</p>
+                    <p class="mt-4 text-gray-300">Solution: WebRTC (Web Real-Time Communication) to achieve sub-500ms glass-to-glass latency for telepresence. A globally distributed client-server-client architecture ensures reliability and a seamless connection across worlds.</p>
+                </div>
+            </div>
+        </section>
+        
+        <div class="section-divider"></div>
+
+        <!-- 5. Path to Production -->
+        <section id="production" class="mb-24">
+            <h2 class="text-4xl font-bold font-runic text-glow text-center">From the Forge to the World</h2>
+            <p class="mt-4 text-lg text-gray-300 text-center max-w-4xl mx-auto">
+                A brief on the critical steps to bring our creations to the market, demonstrating a holistic understanding of the product lifecycle.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8 mt-12">
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold font-runic text-indigo-300">Manufacturing & Supply Chain</h3>
+                    <p class="mt-4 text-gray-300">We will partner with a Tier 1 Electronics Manufacturing Service (EMS) provider like Jabil, citing their expertise in high-volume consumer electronics, miniaturization, and a robust global supply chain.</p>
+                </div>
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold font-runic text-indigo-300">The Regulatory Maze</h3>
+                    <p class="mt-4 text-gray-300">We face a multi-agency compliance challenge:</p>
+                    <ul class="mt-4 space-y-2 list-disc list-inside text-gray-400">
+                        <li><strong>FCC:</strong> Part 15 certification for all devices as intentional radiators.</li>
+                        <li><strong>FDA:</strong> A critical distinction between claims for "general wellness" versus regulated "medical devices."</li>
+                        <li><strong>FAA:</strong> Adherence to UAS regulations for the Valkyrie Scout drone.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- 6. Call to Action -->
+        <section id="cta" class="text-center">
+            <h2 class="text-4xl font-bold font-runic text-glow">Join the Skalds of Silicon</h2>
+            <p class="mt-6 max-w-2xl mx-auto text-lg text-gray-300">
+                Project Völuspá represents the frontier of wearable technology. We are actively seeking talented hardware and firmware engineers, strategic manufacturing partners, and visionary investors to help us turn this technical plan into a market reality.
+            </p>
+            <div class="mt-8">
+                <a href="mailto:contact@skillhardwareatwork.dev" class="inline-block px-8 py-4 text-lg font-semibold text-white rounded-lg btn-primary font-runic tracking-wider">
+                    Connect with the Völuspá Team
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center p-6 mt-16 border-t border-gray-700">
+        <p class="text-gray-500">&copy; 2025 Skill Hardware at Work. All rights reserved. Engineering the future, inspired by the past.</p>
+    </footer>
+
+</body>
+</html>
+
