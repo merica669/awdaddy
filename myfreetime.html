@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyFreetime.ai - Your AI Guide to Leisure</title>
+    <meta name="description" content="Discover and plan your perfect free time activities. Generate free, personalized prompts or upgrade to Pro for a guided AI chat experience with our planner.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0d9488; /* Teal */
+            --primary-dark: #0f766e;
+            --secondary: #f97316; /* Orange */
+            --background: #f0fdfa; /* Light Teal */
+            --surface: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --border: #ccfbf1;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+        }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-gradient { background: var(--gradient); }
+        .step.active { display: block; }
+        .step { display: none; }
+        .response-text p { margin-bottom: 1rem; }
+        .response-text ul { list-style-type: disc; list-style-position: inside; margin-left: 1rem; margin-bottom: 1rem; }
+        .response-text li { margin-bottom: 0.5rem; }
+        .loader-dots div { animation: bounce 1.4s infinite ease-in-out both; }
+        .loader-dots .dot1 { animation-delay: -0.32s; }
+        .loader-dots .dot2 { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+        .nav-link.active {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .prompt-cue-card {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.6;
+        }
+        .interest-checkbox:checked + label {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body class="bg-teal-50 text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-lg border-b border-teal-100 fixed top-0 left-0 right-0 z-40">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+            <a href="#" onclick="showPage('home')" class="text-2xl font-extrabold gradient-text flex items-center gap-2">
+                <span class="text-3xl">🎉</span> MyFreetime.ai
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" id="nav-home" class="nav-link text-slate-600 hover:text-teal-600 transition-colors" onclick="showPage('home')">Home</a>
+                <a href="#" id="nav-planner" class="nav-link text-slate-600 hover:text-teal-600 transition-colors" onclick="showPage('planner')">AI Planner</a>
+                <a href="#" id="nav-hub" class="nav-link text-slate-600 hover:text-teal-600 transition-colors" onclick="showPage('hub')">Inspiration Hub</a>
+                <a href="#" id="nav-connect" class="nav-link text-slate-600 hover:text-teal-600 transition-colors" onclick="showPage('connect')">Connect</a>
+            </div>
+            <button class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-5 rounded-full shadow-md transition-transform transform hover:scale-105" onclick="showOnboarding()">
+                My Profile
+            </button>
+        </nav>
+    </header>
+
+    <main class="pt-20">
+
+        <!-- Home Page -->
+        <div id="homePage" class="page-content">
+            <section class="hero-gradient text-white">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+                    <h1 class="text-4xl md:text-6xl font-extrabold mb-4">Reclaim Your Free Time</h1>
+                    <p class="text-lg md:text-xl text-teal-100 mb-8 max-w-3xl mx-auto">Stop endless scrolling for ideas. Get personalized plans for your weekends, vacations, and nights out, perfectly tailored to your mood, budget, and company.</p>
+                    <button onclick="showPage('planner')" class="bg-white text-teal-600 font-bold py-3 px-8 rounded-full shadow-xl transition-transform transform hover:scale-105">Plan My Freetime</button>
+                </div>
+            </section>
+
+             <section class="py-20 bg-teal-50">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                         <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">How It Works</h2>
+                         <p class="text-lg text-slate-600 mt-4 max-w-2xl mx-auto">Three simple steps to your perfect day off.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center"><div class="text-4xl mb-4">1️⃣</div><h3 class="text-xl font-bold mb-2">Build Your Profile</h3><p class="text-slate-600">Tell us your interests, budget, and who you hang out with. The more we know, the better the suggestions.</p></div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center"><div class="text-4xl mb-4">2️⃣</div><h3 class="text-xl font-bold mb-2">Generate a Prompt</h3><p class="text-slate-600">Enter a simple request like "weekend trip" or "date night," and we'll create a detailed, personalized AI prompt for you.</p></div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center"><div class="text-4xl mb-4">3️⃣</div><h3 class="text-xl font-bold mb-2">Plan & Enjoy</h3><p class="text-slate-600">Copy your prompt to any AI, or upgrade to Pro to chat with our AI Planner and get instant, detailed itineraries.</p></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- AI Planner Page (Free & Pro) -->
+        <div id="plannerPage" class="page-content">
+             <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="max-w-4xl mx-auto">
+                    
+                    <!-- Free Version UI -->
+                    <div id="freeVersionUI">
+                        <div class="text-center pt-12 pb-8">
+                            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">AI Freetime Prompt Generator</h1>
+                            <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">What are you in the mood for? Enter a keyword to generate a personalized planning prompt based on your profile.</p>
+                            <div class="max-w-xl mx-auto">
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input type="text" id="searchInputFree" class="w-full px-4 py-3 rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-teal-500 outline-none transition" placeholder="e.g., 'weekend getaway', 'family day out'">
+                                    <button onclick="handleFreeSearch()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-full shadow-md flex-shrink-0">Generate Prompt</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="promptGeneratedState" class="hidden bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-teal-100 my-8">
+                            <div class="mb-6 p-4 bg-gradient-to-r from-teal-50 to-orange-50 rounded-lg border-l-4 border-teal-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+                               <div>
+                                   <h3 class="font-bold text-teal-800">Upgrade to MyFreetime.ai Pro</h3>
+                                   <p class="text-sm text-teal-700">Get instant itineraries, personalized chat, and audio summaries from our AI Planner.</p>
+                               </div>
+                               <button onclick="switchToPro()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-full shadow-md flex-shrink-0">Unlock Pro</button>
+                            </div>
+                            <h2 class="text-2xl font-bold text-slate-900 mb-2">Your Personalized Prompt is Ready</h2>
+                            <p class="text-slate-600 mb-4">Copy the text below and paste it into your favorite AI chat tool to get amazing activity plans.</p>
+                            <div class="prompt-cue-card bg-teal-50 p-4 rounded-lg border-2 border-teal-100 text-slate-700" id="promptCueCard"></div>
+                            <div class="mt-6 flex flex-col sm:flex-row justify-end gap-3">
+                                <button onclick="resetFreeState()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-full transition">Create Another</button>
+                                <button onclick="copyPrompt()" class="bg-secondary text-white font-bold py-2 px-6 rounded-full shadow-md flex items-center gap-2">Copy to Clipboard</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pro Version UI -->
+                    <div id="proVersionUI" class="hidden">
+                        <div id="welcomeState" class="text-center py-12">
+                            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">Welcome to <span class="gradient-text">MyFreetime.ai Pro</span></h1>
+                            <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">Your AI Planner is ready. What kind of adventure should we plan today?</p>
+                             <div class="max-w-xl mx-auto">
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input type="text" id="searchInputPro" class="w-full px-4 py-3 rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-teal-500 outline-none transition" placeholder="e.g., 'Girls night out', 'Vacation in Colorado'">
+                                    <button onclick="handleProSearch()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-full shadow-md">Get Curated Prompt</button>
+                                </div>
+                            </div>
+                        </div>
+                         <div id="loadingState" class="hidden text-center py-20">
+                             <div class="flex justify-center items-center space-x-2">
+                                <div class="loader-dots"><div class="dot1 w-4 h-4 bg-teal-500 rounded-full"></div><div class="dot2 w-4 h-4 bg-teal-500 rounded-full"></div><div class="dot3 w-4 h-4 bg-teal-500 rounded-full"></div></div>
+                                <p class="text-lg text-slate-600" id="loadingMessage">Planning...</p>
+                            </div>
+                        </div>
+                        <div id="curatedPromptState" class="hidden bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-teal-100 my-8">
+                            <h2 class="text-2xl font-bold text-slate-900 mb-2">Your Curated Prompt</h2>
+                            <p class="text-slate-600 mb-4">We've created this starting point based on your profile. Edit it for a more specific plan.</p>
+                            <textarea id="curatedPromptTextarea" class="w-full h-48 p-4 rounded-lg border-2 border-teal-200 bg-teal-50 focus:ring-2 focus:ring-teal-500 outline-none transition"></textarea>
+                            <div class="mt-4 flex flex-col sm:flex-row justify-end gap-3">
+                                <button onclick="resetProState()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-full transition">Start Over</button>
+                                <button onclick="getAdvice()" class="bg-secondary text-white font-bold py-2 px-6 rounded-full shadow-md">Ask AI Planner</button>
+                            </div>
+                        </div>
+                        <div id="chatHistory" class="space-y-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inspiration Hub Page -->
+        <div id="hubPage" class="page-content">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center mb-12"><h1 class="text-4xl md:text-5xl font-extrabold text-slate-900">Inspiration Hub</h1><p class="text-lg text-slate-600 mt-4 max-w-2xl mx-auto">Curated ideas and stories to spark your next adventure.</p></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blogPosts"></div>
+            </div>
+        </div>
+
+        <!-- Connect Page -->
+        <div id="connectPage" class="page-content">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                 <div class="text-center mb-12"><h1 class="text-4xl md:text-5xl font-extrabold text-slate-900">Connect & Share</h1><p class="text-lg text-slate-600 mt-4 max-w-2xl mx-auto">Share your favorite spots, ask for recommendations, and connect with fellow adventurers.</p></div>
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-white p-8 rounded-lg shadow-md mb-8">
+                        <h3 class="text-2xl font-bold mb-4">Share an Idea</h3>
+                         <div class="space-y-4">
+                            <input type="text" id="topicTitle" placeholder="Idea title (e.g., 'Hidden gem brewery in Peoria')" class="w-full p-2 border border-slate-300 rounded-md">
+                            <textarea id="topicContent" rows="4" placeholder="Share your experience or ask a question..." class="w-full p-2 border border-slate-300 rounded-md"></textarea>
+                            <button onclick="postTopic()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-full">Post Idea</button>
+                        </div>
+                    </div>
+                    <div id="messageBoard" class="space-y-6"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Onboarding Modal -->
+     <div id="onboardingModal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto transform scale-95 transition-all duration-300">
+             <div class="p-6 sm:p-8 relative">
+                <button onclick="closeOnboarding()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-3xl">&times;</button>
+                <div class="text-center mb-6"><h2 class="text-2xl font-bold text-slate-900">Welcome to MyFreetime.ai!</h2><p class="text-slate-600">Let's find your perfect freetime activity in 3 steps.</p></div>
+                <div class="h-2 w-full bg-teal-100 rounded-full mb-6"><div id="progressFill" class="h-2 bg-teal-600 rounded-full transition-all duration-300" style="width: 33.3%;"></div></div>
+                <div id="onboardingSteps">
+                    <div id="step1" class="step active">
+                        <h3 class="text-xl font-semibold text-center mb-4">Your Freetime Style</h3>
+                        <div class="space-y-4">
+                            <select id="availability" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option value="">I'm usually free...</option><option value="Weeknights">Weeknights</option><option value="Weekends">Weekends</option><option value="Long Vacations">Long Vacations</option></select>
+                            <select id="company" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option value="">I spend my time...</option><option value="Solo">Solo</option><option value="With my Partner">With my Partner</option><option value="With Family/Kids">With Family/Kids</option><option value="With Friends">With Friends</option></select>
+                            <input type="text" id="location" placeholder="Your City, State (e.g., Peoria, IL)" class="w-full p-2 border border-slate-300 rounded-md">
+                        </div>
+                    </div>
+                    <div id="step2" class="step">
+                        <h3 class="text-xl font-semibold text-center mb-4">Your Vibe</h3>
+                        <div class="space-y-4">
+                           <select id="energy" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option value="">My energy level is...</option><option value="Relaxing & Low-key">Relaxing & Low-key</option><option value="Moderate & Engaging">Moderate & Engaging</option><option value="High-energy & Adventurous">High-energy & Adventurous</option></select>
+                           <select id="budget" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option value="">My budget is...</option><option value="Free">Free</option><option value="$">Cheap ($)</option><option value="$$">Moderate ($$)</option><option value="$$$">Willing to Splurge ($$$)</option></select>
+                        </div>
+                    </div>
+                    <div id="step3" class="step">
+                        <h3 class="text-xl font-semibold text-center mb-4">Your Interests</h3>
+                        <p class="text-center text-slate-500 mb-4">Choose as many as you like.</p>
+                        <div id="interests-checkboxes" class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 bg-slate-50 rounded-b-2xl flex justify-between items-center">
+                <div class="text-sm font-medium text-slate-500">Step <span id="currentStep">1</span> of 3</div>
+                <div><button id="prevBtn" onclick="previousStep()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-full transition mr-2 hidden">Back</button><button id="nextBtn" onclick="nextStep()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-full transition">Next</button></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white py-2 px-5 rounded-lg shadow-xl translate-x-[calc(100%+2rem)] transition-transform duration-300"><p id="toastMessage"></p></div>
+
+    <script>
+        // --- GLOBAL STATE ---
+        let userProfile = {}; let chatHistory = []; let currentOnboardingStep = 1; let isPro = false;
+        
+        // --- SAMPLE DATA ---
+        const sampleBlogPosts = [{image:'🏕️',tag:'Travel',date:'Sep 22, 2025',title:'Top 5 Weekend Getaways from Peoria',excerpt:'Discover hidden gems and relaxing escapes just a short drive away.'},{image:'🍲',tag:'Food & Drink',date:'Sep 20, 2025',title:'A Foodie\'s Guide to Date Night',excerpt:'Spice up your next date night with these unique and delicious local spots.'},{image:'🎸',tag:'Events',date:'Sep 18, 2025',title:'Making the Most of Local Festivals',excerpt:'Your guide to navigating local music, art, and food festivals like a pro.'}];
+        const sampleThreads = [{title:'Best hiking trails within an hour of Peoria?',author:'TrailSeeker',content:"Looking for some new trails to explore this weekend. Anything with a good view?",replies:18,time:'4 hours ago'},{title:'Any good spots for live jazz music?',author:'JazzFan88',content:"New to the area and looking for a place with a cool vibe and good music.",replies:12,time:'1 day ago'}];
+        const interests = ['Outdoors','Food & Drink','Live Events','Sports','Arts & Culture','Nightlife','Gaming','DIY & Crafts','Wellness'];
+
+        // --- PAGE & TIER MANAGEMENT ---
+        function showPage(page) {
+            document.querySelectorAll('.page-content').forEach(p=>p.classList.remove('active'));
+            document.getElementById(`${page}Page`).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
+            const navId = page === 'planner' ? 'nav-planner' : page === 'hub' ? 'nav-hub' : page === 'connect' ? 'nav-connect' : 'nav-home';
+            document.getElementById(navId).classList.add('active');
+            window.scrollTo(0, 0);
+            if(page === 'planner') renderAdvisorPage();
+        }
+        function switchToPro() {
+            isPro = true; localStorage.setItem('myfreetimePro', 'true'); renderAdvisorPage(); showToast("Pro Version Activated!");
+        }
+        function renderAdvisorPage() {
+            if (isPro) {
+                document.getElementById('freeVersionUI').style.display = 'none';
+                document.getElementById('proVersionUI').style.display = 'block';
+                resetProState();
+            } else {
+                document.getElementById('freeVersionUI').style.display = 'block';
+                document.getElementById('proVersionUI').style.display = 'none';
+                resetFreeState();
+            }
+        }
+
+        // --- ONBOARDING LOGIC ---
+        function showOnboarding(){document.getElementById('onboardingModal').classList.remove('opacity-0','pointer-events-none');document.querySelector('#onboardingModal > div').classList.remove('scale-95')}
+        function closeOnboarding(){document.getElementById('onboardingModal').classList.add('opacity-0','pointer-events-none');document.querySelector('#onboardingModal > div').classList.add('scale-95')}
+        function nextStep(){if(currentOnboardingStep<3){currentOnboardingStep++;document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById(`step${currentOnboardingStep}`).classList.add('active');updateOnboardingUI()}else{saveProfile();closeOnboarding();showToast("Profile saved! Let the planning begin.")}}
+        function previousStep(){if(currentOnboardingStep>1){currentOnboardingStep--;document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById(`step${currentOnboardingStep}`).classList.add('active');updateOnboardingUI()}}
+        function updateOnboardingUI(){document.getElementById('currentStep').innerText=currentOnboardingStep;document.getElementById('progressFill').style.width=`${currentOnboardingStep/3*100}%`;document.getElementById('prevBtn').classList.toggle('hidden',currentOnboardingStep===1);document.getElementById('nextBtn').innerText=currentOnboardingStep===3?'Finish':'Next'}
+        function saveProfile(){
+            const selectedInterests = [];
+            document.querySelectorAll('#interests-checkboxes input:checked').forEach(cb => selectedInterests.push(cb.value));
+            userProfile={availability:document.getElementById('availability').value,company:document.getElementById('company').value,location:document.getElementById('location').value,energy:document.getElementById('energy').value,budget:document.getElementById('budget').value,interests:selectedInterests};
+            localStorage.setItem('myfreetimeProfile',JSON.stringify(userProfile));
+        }
+        function loadProfile(){
+            const savedProfile = localStorage.getItem('myfreetimeProfile');
+            if(savedProfile){
+                userProfile=JSON.parse(savedProfile);
+                Object.keys(userProfile).forEach(key => {
+                    if (key === 'interests') {
+                        userProfile.interests.forEach(interest => {
+                            const checkbox = document.querySelector(`#interests-checkboxes input[value="${interest}"]`);
+                            if (checkbox) checkbox.checked = true;
+                        });
+                    } else {
+                        const el = document.getElementById(key);
+                        if(el) el.value = userProfile[key];
+                    }
+                });
+            } else {
+                setTimeout(showOnboarding, 1500);
+            }
+        }
+        function populateInterests(){
+            const container = document.getElementById('interests-checkboxes');
+            container.innerHTML = interests.map(i => `<div class="flex items-center"><input type="checkbox" id="interest-${i.replace(/\s/g, '')}" value="${i}" class="hidden interest-checkbox"><label for="interest-${i.replace(/\s/g, '')}" class="w-full text-center p-2 border-2 border-teal-200 rounded-full cursor-pointer transition-colors">${i}</label></div>`).join('');
+        }
+        
+        // --- UI & CONTENT RENDERING ---
+        function showToast(e){const t=document.getElementById('toast');t.innerText=e;t.classList.remove('translate-x-[calc(100%+2rem)]');setTimeout(()=>{t.classList.add('translate-x-[calc(100%+2rem)]')},3e3)}
+        function loadBlogPosts() {
+            const container = document.getElementById('blogPosts');
+            container.innerHTML = sampleBlogPosts.map(post => `<div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform transform hover:-translate-y-1"><div class="h-40 hero-gradient flex items-center justify-center text-5xl">${post.image}</div><div class="p-6"><div class="text-sm text-teal-600 font-semibold">${post.tag} &bull; ${post.date}</div><h3 class="text-xl font-bold mt-2 mb-2">${post.title}</h3><p class="text-slate-600">${post.excerpt}</p></div></div>`).join('');
+        }
+        function loadMessageBoard() {
+            const board = document.getElementById('messageBoard');
+            board.innerHTML = sampleThreads.map(t => `<div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg">${t.title}</h4><p class="text-sm text-slate-500 mb-2">by ${t.author} • ${t.time} • ${t.replies} replies</p><p class="text-slate-600">${t.content}</p></div>`).join('');
+        }
+        function postTopic() {
+            const title = document.getElementById('topicTitle').value;
+            const content = document.getElementById('topicContent').value;
+            if (!title || !content) return showToast('Please fill all fields');
+            sampleThreads.unshift({ title, author: 'You', content, replies: 0, time: 'Just now' });
+            loadMessageBoard();
+            document.getElementById('topicTitle').value = ''; document.getElementById('topicContent').value = '';
+            showToast('Idea posted successfully!');
+        }
+        
+        // --- FREE VERSION LOGIC ---
+        function setFreeState(state) { document.getElementById('promptGeneratedState').style.display = state === 'generated' ? 'block' : 'none'; }
+        function resetFreeState() { setFreeState('initial'); document.getElementById('searchInputFree').value = ''; }
+        function handleFreeSearch() {
+            const keyword = document.getElementById('searchInputFree').value;
+            if (!keyword) return showToast("Please enter an activity or occasion.");
+            if (Object.keys(userProfile).length < 5) { showOnboarding(); return showToast("Please complete your profile for the best ideas!"); }
+            const prompt = `I'm looking for ideas for "${keyword}". Please generate a detailed plan or a few creative options tailored to my preferences.\n\nHere is my profile for context:\n- Location: ${userProfile.location || 'Not specified'}\n- Availability: I'm usually free on ${userProfile.availability || 'weekends'}.\n- Company: I'll be ${userProfile.company || 'solo'}.\n- Vibe/Energy: I'm looking for something ${userProfile.energy || 'moderate'}.\n- Budget: My budget is ${userProfile.budget || 'moderate ($$)'}.\n- My Interests: ${userProfile.interests?.join(', ') || 'General activities'}.\n\nPlease provide specific suggestions, including potential venues, timing, and why these ideas fit my profile.`;
+            document.getElementById('promptCueCard').textContent = prompt;
+            setFreeState('generated');
+        }
+        function copyPrompt() {
+            const promptText = document.getElementById('promptCueCard').textContent;
+            navigator.clipboard.writeText(promptText).then(() => showToast('Prompt copied to clipboard!'));
+        }
+
+        // --- PRO VERSION (GEMINI API) LOGIC ---
+        function setProState(e,t=""){['welcomeState','loadingState','curatedPromptState'].forEach(e=>{document.getElementById(e).style.display='none'});document.getElementById('chatHistory').style.display='none';switch(e){case'loading':document.getElementById('loadingState').style.display='block';document.getElementById('loadingMessage').innerText=t;break;case'prompt':case'chat':document.getElementById('curatedPromptState').style.display='block';document.getElementById('chatHistory').style.display='block';break;default:document.getElementById('welcomeState').style.display='block'}}
+        function resetProState(){chatHistory=[];renderChatHistory();setProState('welcome')}
+        async function callGeminiAPI(e,t,n=3,o=1e3){const i="AIzaSyDkBHWGERIoYNeK00O_n15Uj76KEzNvpAE";const l=`https://generativelanguage.googleapis.com/v1beta/models/${e}:generateContent?key=${i}`;try{const e=await fetch(l,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(t)});if(!e.ok){if(e.status===429&&n>0){await new Promise(e=>setTimeout(e,o));return callGeminiAPI(e,t,n-1,o*2)}throw new Error(`API Error: ${e.statusText}`)}return await e.json()}catch(e){console.error("API Call failed:",e);showToast("An API error occurred.");setProState('welcome');return null}}
+        async function handleProSearch() {
+            const keyword = document.getElementById('searchInputPro').value;
+            if (!keyword) return showToast("Please enter an activity or occasion.");
+            setProState('loading', 'Crafting a personalized prompt...');
+            const systemInstruction = `You are a prompt engineering expert for leisure and activity planning. Based on the user's profile and a keyword, create a detailed, strategic prompt for an AI activity planner. Include placeholders for customization.`;
+            const userQuery = `User Profile: ${JSON.stringify(userProfile)}\nRequest: "${keyword}"\n\nGenerate the prompt.`;
+            const payload = { systemInstruction: { parts: [{ text: systemInstruction }] }, contents: [{ parts: [{ text: userQuery }] }] };
+            const result = await callGeminiAPI('gemini-2.5-flash-preview-05-20', payload);
+            if (result?.candidates?.[0]?.content?.parts?.[0]?.text) {
+                document.getElementById('curatedPromptTextarea').value = result.candidates[0].content.parts[0].text;
+                setProState('prompt');
+            } else { showToast("Could not create a prompt."); setProState('welcome'); }
+        }
+        async function getAdvice() {
+            const userPrompt = document.getElementById('curatedPromptTextarea').value;
+            chatHistory.push({ role: 'user', parts: [{ text: userPrompt }] });
+            renderChatHistory();
+            setProState('loading', 'AI Planner is brainstorming...');
+            const systemInstruction = "You are MyFreetime.ai, an expert AI activity planner and local guide. Your tone is enthusiastic, creative, and helpful. You must provide specific, actionable, and exciting ideas tailored to the user's profile. For local suggestions, use your knowledge of Peoria, Illinois, but also be ready to plan for other locations. Format your response with clear headings, bullet points, and maybe even a sample itinerary.";
+            const payload = { systemInstruction: { parts: [{ text: systemInstruction }] }, contents: chatHistory };
+            const result = await callGeminiAPI('gemini-2.5-flash-preview-05-20', payload);
+            if (result?.candidates?.[0]?.content?.parts?.[0]?.text) {
+                const modelResponse = result.candidates[0].content.parts[0].text;
+                chatHistory.push({ role: 'model', parts: [{ text: modelResponse }] });
+                renderChatHistory();
+                setProState('chat');
+            } else { showToast("Sorry, I'm drawing a blank!"); chatHistory.pop(); renderChatHistory(); setProState('prompt'); }
+        }
+        function renderChatHistory() {
+            const container = document.getElementById('chatHistory');
+            container.innerHTML = chatHistory.map((turn, index) => {
+                const isUser = turn.role === 'user';
+                const avatar = isUser ? `<div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center font-bold text-white">You</div>` : `<div class="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-2xl">🎉</div>`;
+                const contentBg = isUser ? 'bg-orange-100' : 'bg-white';
+                const content = turn.parts[0].text.replace(/\n/g, '<br>');
+                const audioBtn = !isUser ? `<div class="mt-3"><button id="audioBtn_${index}" onclick="playAudio(this, ${index})" class="text-sm font-semibold text-teal-600 hover:text-teal-800 flex items-center gap-1">▶ Listen to Ideas</button></div>` : '';
+                return `<div class="flex items-start gap-4 ${isUser ? 'justify-end' : ''}">${!isUser ? avatar : ''}<div class="${contentBg} p-4 rounded-xl max-w-xl shadow-md border border-slate-100"><div class="response-text">${content}</div>${audioBtn}</div>${isUser ? avatar : ''}</div>`;
+            }).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+        function base64ToArrayBuffer(b){const c=window.atob(b),d=c.length,e=new Uint8Array(d);for(let a=0;a<d;a++)e[a]=c.charCodeAt(a);return e.buffer}function pcmToWav(e,f){const g=new ArrayBuffer(44),a=new DataView(g);function h(a,b,c){for(let d=0;d<c.length;d++)a.setUint8(b+d,c.charCodeAt(d))}return h(a,0,"RIFF"),a.setUint32(4,36+2*e.length,!0),h(a,8,"WAVE"),h(a,12,"fmt "),a.setUint32(16,16,!0),a.setUint16(20,1,!0),a.setUint16(22,1,!0),a.setUint32(24,f,!0),a.setUint32(28,2*f,!0),a.setUint16(32,2,!0),a.setUint16(34,16,!0),h(a,36,"data"),a.setUint32(40,2*e.length,!0),b=new Int16Array(44+2*e.length),b.set(new Int16Array(g),0),b.set(e,22),new Blob([b],{type:"audio/wav"})}
+        async function playAudio(button, index) {
+            button.innerHTML = '...'; button.disabled = true;
+            const textToPlay = chatHistory[index].parts[0].text;
+            const payload = {contents: [{ parts: [{ text: `Say in an upbeat, friendly, and excited voice: ${textToPlay}` }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } } } }, model: "gemini-2.5-flash-preview-tts"};
+            const result = await callGeminiAPI('gemini-2.5-flash-preview-tts', payload);
+            if (result?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data) {
+                const data = result.candidates[0].content.parts[0].inlineData, sampleRate = parseInt(data.mimeType.match(/rate=(\d+)/)[1], 10);
+                const pcm16 = new Int16Array(base64ToArrayBuffer(data.data)), wavBlob = pcmToWav(pcm16, sampleRate);
+                const audio = new Audio(URL.createObjectURL(wavBlob));
+                audio.play(); button.innerHTML = '❚❚ Playing...'; audio.onended = () => { button.innerHTML = '▶ Listen to Ideas'; };
+            } else { showToast("Could not generate audio."); button.innerHTML = '▶ Listen to Ideas'; }
+            button.disabled = false;
+        }
+        
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            isPro = localStorage.getItem('myfreetimePro') === 'true';
+            const navMap = { home: 'nav-home', planner: 'nav-planner', hub: 'nav-hub', connect: 'nav-connect' };
+            showPage('home');
+            populateInterests();
+            loadProfile(); loadBlogPosts(); loadMessageBoard();
+        });
+    </script>
+</body>
+</html>
+

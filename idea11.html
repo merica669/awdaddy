@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Temporal Resistance Theory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            padding: 0 1.5rem;
+        }
+        .accordion-content.open {
+            padding: 1.5rem 1.5rem;
+        }
+        .info-popup {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+        .info-popup-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 2.5rem;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .info-term {
+            cursor: pointer;
+            color: #2563eb;
+            font-weight: 500;
+            border-bottom: 2px dotted #93c5fd;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .info-term:hover {
+            color: #1d4ed8;
+            border-bottom-color: #3b82f6;
+        }
+        .quiz-option {
+            transition: all 0.2s ease-in-out;
+        }
+        .quiz-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .correct {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+        }
+        .incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Temporal Resistance Theory</h1>
+            <p class="text-lg text-gray-600">An Interactive Journey into the Nature of Time</p>
+        </header>
+
+        <!-- Core Analogy -->
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8 border border-gray-200">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">The Core Analogy: Time as Electricity</h2>
+            <p class="mb-6 text-gray-600">This theory proposes a radical new way to think about time. Instead of just a parameter that ticks forward, imagine it as a fundamental field, much like an electrical circuit. Click each component to learn more:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+                <div class="info-term p-4 bg-blue-50 rounded-lg border border-blue-200" data-title="Temporal Field ⚡️" data-info="Imagine a universal 'pressure' that drives everything forward. This is the temporal field, analogous to the voltage in a circuit that makes electricity flow. It's the fundamental 'push' of time.">
+                    Temporal Field
+                </div>
+                <div class="info-term p-4 bg-green-50 rounded-lg border border-green-200" data-title="Matter's Resistance 🧱" data-info="Just as a resistor slows down electrical current, matter and energy 'resist' the flow of time. Denser objects or more complex systems create more resistance, causing time to 'flow' differently through them.">
+                    Temporal Resistance
+                </div>
+                <div class="info-term p-4 bg-yellow-50 rounded-lg border border-yellow-200" data-title="Acceleration as Current 🏃‍♂️" data-info="Acceleration—any change in motion—is seen as the 'current' in this temporal circuit. It's the actual movement or flow through the temporal field, driven by the field's 'pressure' and limited by matter's 'resistance'.">
+                    Temporal Current
+                </div>
+                <div class="info-term p-4 bg-purple-50 rounded-lg border border-purple-200" data-title="Consciousness & Complexity 🧠" data-info="Complex systems, like the human brain, create highly intricate resistance patterns. The theory suggests consciousness might be an emergent property of these complex temporal resistance networks.">
+                    Complexity
+                </div>
+            </div>
+        </div>
+
+        <!-- Accordion Sections -->
+        <div id="accordion-container" class="space-y-4">
+            
+            <!-- Mathematical Foundations -->
+            <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+                <button class="accordion-toggle w-full p-6 text-left flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800">📐 Mathematical Foundations</h3>
+                    <span class="transform transition-transform duration-300 text-2xl text-blue-500">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="mb-4">The theory doesn't start from scratch. It cleverly adapts powerful mathematical tools from established physics. Here’s how:</p>
+                    <ul class="list-disc pl-5 space-y-3 text-gray-700">
+                        <li><strong>General Relativity's Toolkit:</strong> It reinterprets Einstein's field equations. The math describing how matter curves spacetime (<span class="info-term" data-title="Stress-Energy Tensor" data-info="In General Relativity, this tensor describes the density and flow of energy and momentum in spacetime. Temporal Resistance Theory proposes reinterpreting it as a 'temporal resistance tensor' that describes how matter resists the flow of time.">Gμν = 8πG/c⁴ Tμν</span>) is repurposed to show how matter creates "temporal resistance."</li>
+                        <li><strong>Electromagnetism's Blueprint:</strong> The structure of <span class="info-term" data-title="Maxwell's Equations" data-info="A set of fundamental equations that describe how electric and magnetic fields are generated by charges, currents, and changes of the fields. They provide a perfect template for describing how a potential 'temporal field' might behave.">Maxwell's equations</span>, which govern electricity and magnetism, provides a perfect template for a new set of equations describing the temporal field.</li>
+                        <li><strong>Quantum Field Theory's Insight:</strong> It leans on ideas like the <span class="info-term" data-title="Page-Wootters Formalism" data-info="A theoretical concept, with some experimental backing, that suggests time is not fundamental. Instead, it emerges from the quantum entanglement between different parts of the universe. This supports the idea of time as an emergent field property.">Page-Wootters formalism</span>, which suggests time isn't fundamental but an emergent property of quantum mechanics. This supports the idea of time being a field rather than just a clock.</li>
+                    </ul>
+                    <div class="mt-6">
+                        <button class="gemini-simplify-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            ✨ Simplify with AI
+                        </button>
+                        <div class="gemini-response-container mt-4 p-4 bg-gray-100 rounded-lg border border-gray-200" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Experimental Validation -->
+            <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+                <button class="accordion-toggle w-full p-6 text-left flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800">🔬 Experimental Validation</h3>
+                    <span class="transform transition-transform duration-300 text-2xl text-blue-500">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="mb-4">This isn't just speculation. The theory proposes real, testable experiments using today's technology:</p>
+                    <ul class="list-disc pl-5 space-y-3 text-gray-700">
+                        <li><strong>Temporal Resistance Mapping:</strong> Place networks of ultra-precise <span class="info-term" data-title="Atomic Clocks" data-info="These are the most accurate timekeeping devices in existence. Recent experiments at JILA (a joint institute of NIST and the University of Colorado Boulder) have used them to measure gravitational time dilation over a distance of just one millimeter, showing their incredible precision.">atomic clocks</span> around dense materials. If the theory is right, we should see tiny, predictable deviations in the flow of time that aren't explained by general relativity alone.</li>
+                        <li><strong>Detecting Temporal Current:</strong> Use quantum sensors to check if accelerating an object creates a subtle "temporal current" or disturbance in the time field, perpendicular to its motion.</li>
+                        <li><strong>Consciousness & Time:</strong> Map the brain's complex electrical patterns. The theory predicts a direct correlation between the temporal complexity of these neural signals and our conscious experience, suggesting consciousness is tied to how the brain "resists" time.</li>
+                    </ul>
+                     <div class="mt-6">
+                        <button class="gemini-simplify-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            ✨ Simplify with AI
+                        </button>
+                        <div class="gemini-response-container mt-4 p-4 bg-gray-100 rounded-lg border border-gray-200" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Philosophical Implications -->
+            <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+                <button class="accordion-toggle w-full p-6 text-left flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800">🤔 Philosophical Implications</h3>
+                    <span class="transform transition-transform duration-300 text-2xl text-blue-500">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="mb-4">If true, this theory could solve some of the deepest puzzles in science and philosophy:</p>
+                    <ul class="list-disc pl-5 space-y-3 text-gray-700">
+                        <li><strong>The Hard Problem of Time:</strong> It resolves the conflict between quantum mechanics (which sees time as universal) and relativity (which sees time as relative). Both views can coexist if time is a dynamic field that behaves differently at different scales.</li>
+                        <li><strong>The Arrow of Time:</strong> Why does time only move forward? The theory suggests that the complex "resistance" patterns in the universe naturally create an asymmetry, giving time its direction without needing to be an external rule.</li>
+                        <li><strong>The Nature of Consciousness:</strong> It offers a physical basis for consciousness. Instead of consciousness mysteriously arising from matter, both could be two sides of the same coin—expressions of the temporal field's intricate structure.</li>
+                    </ul>
+                     <div class="mt-6">
+                        <button class="gemini-simplify-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            ✨ Simplify with AI
+                        </button>
+                        <div class="gemini-response-container mt-4 p-4 bg-gray-100 rounded-lg border border-gray-200" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Historical Precedents -->
+            <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+                <button class="accordion-toggle w-full p-6 text-left flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800">📜 Historical Precedents & Pitfalls</h3>
+                    <span class="transform transition-transform duration-300 text-2xl text-blue-500">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="mb-4">History shows that building theories on analogies can be powerful, but also perilous. This theory learns from both successes and failures:</p>
+                    <ul class="list-disc pl-5 space-y-3 text-gray-700">
+                        <li><strong>Success Story (Maxwell's Equations):</strong> James Clerk Maxwell's theory of electromagnetism began with mechanical analogies of rotating vortices and fluid flow. He used these ideas to build a rigorous mathematical framework that became foundational to physics. This is the path TRT aims to follow.</li>
+                        <li><strong>Cautionary Tale (Luminiferous Ether):</strong> The theory of a <span class="info-term" data-title="Luminiferous Ether" data-info="A hypothetical substance once believed to fill all of space, acting as the medium through which light waves traveled. It was eventually disproven by experiments (like the Michelson-Morley experiment) that showed light's speed was constant regardless of the observer's motion, a key insight for Einstein's theory of relativity.">luminiferous ether</span> failed because it made predictions that couldn't be tested and contradicted experimental results. To avoid this, TRT must produce unique, verifiable predictions and align with all existing experimental data.</li>
+                    </ul>
+                    <div class="mt-6">
+                        <button class="gemini-simplify-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                           ✨ Simplify with AI
+                        </button>
+                        <div class="gemini-response-container mt-4 p-4 bg-gray-100 rounded-lg border border-gray-200" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Gemini Ask the Expert Section -->
+        <div class="bg-white p-6 rounded-xl shadow-md mt-8 border border-gray-200">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">❓ Ask the Expert</h2>
+            <p class="mb-4 text-gray-600">Have a question about Temporal Resistance Theory? Ask our AI expert, trained on the concepts in this guide. Your question will be answered based on the information presented on this page.</p>
+            <div id="ask-expert-container">
+                <textarea id="user-question-input" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" rows="3" placeholder="e.g., How does this theory relate to black holes?"></textarea>
+                <button id="ask-expert-btn" class="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition-colors w-full md:w-auto">
+                    Ask a Question
+                </button>
+                <div id="expert-response-container" class="mt-4 p-4 bg-gray-100 rounded-lg border border-gray-200" style="display: none;"></div>
+                <p class="text-xs text-gray-500 mt-4 text-center">AI-generated content may be inaccurate. Please verify important information.</p>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="bg-white p-6 rounded-xl shadow-md mt-8 border border-gray-200">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Test Your Understanding</h2>
+            <div id="quiz-container" class="space-y-6">
+                <!-- Question 1 -->
+                <div>
+                    <p class="font-semibold mb-3">1. In the core analogy of Temporal Resistance Theory, what does matter do?</p>
+                    <div class="space-y-2" data-question="1">
+                        <button class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-lg bg-gray-100" data-answer="a">A) Speeds up the flow of time</button>
+                        <button class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-lg bg-gray-100" data-answer="b">B) Resists the flow of time</button>
+                        <button class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-lg bg-gray-100" data-answer="c">C) Creates the temporal field</button>
+                    </div>
+                    <p id="feedback-1" class="mt-2 text-sm font-medium hidden"></p>
+                </div>
+                <!-- Question 2 -->
+                <div>
+                    <p class="font-semibold mb-3">2. Which existing technology is key to experimentally testing the theory?</p>
+                    <div class="space-y-2" data-question="2">
+                        <button class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-lg bg-gray-100" data-answer="a">A) Telescopes</button>
+                        <button class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-lg bg-gray-100" data-answer="b">B) Particle Accelerators</button>
+                        <button class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-lg bg-gray-100" data-answer="c">C) Atomic Clocks</button>
+                    </div>
+                    <p id="feedback-2" class="mt-2 text-sm font-medium hidden"></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Info Popup Modal -->
+    <div id="info-popup" class="info-popup">
+        <div class="info-popup-content">
+            <h2 id="popup-title" class="text-2xl font-bold mb-4"></h2>
+            <p id="popup-info" class="text-gray-700"></p>
+            <button id="close-popup" class="mt-6 bg-blue-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors">Close</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // ... existing accordion, popup, and quiz functionality ...
+
+            const API_KEY = ""; // Use an empty string as per instructions
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+            
+            /**
+             * A reusable function to call the Gemini API with exponential backoff.
+             * @param {string} prompt - The prompt to send to the model.
+             * @param {string} systemInstruction - The system instruction for the model.
+             * @returns {Promise<string>} The generated text from the model.
+             */
+            async function callGemini(prompt, systemInstruction, retries = 3, delay = 1000) {
+                const payload = {
+                    contents: [{ parts: [{ text: prompt }] }],
+                    systemInstruction: {
+                        parts: [{ text: systemInstruction }]
+                    }
+                };
+
+                try {
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    const candidate = result.candidates?.[0];
+                    if (candidate && candidate.content?.parts?.[0]?.text) {
+                        return candidate.content.parts[0].text;
+                    } else {
+                        throw new Error("Invalid response structure from Gemini API.");
+                    }
+                } catch (error) {
+                    console.error(`Error calling Gemini API: ${error.message}`);
+                    if (retries > 0) {
+                        console.log(`Retrying in ${delay / 1000}s... (${retries} retries left)`);
+                        await new Promise(res => setTimeout(res, delay));
+                        return callGemini(prompt, systemInstruction, retries - 1, delay * 2);
+                    } else {
+                        return "Sorry, I couldn't get a response from the AI. Please try again later.";
+                    }
+                }
+            }
+
+
+            // --- Gemini Simplify Feature ---
+            const simplifyButtons = document.querySelectorAll('.gemini-simplify-btn');
+            simplifyButtons.forEach(button => {
+                button.addEventListener('click', async () => {
+                    const section = button.closest('.accordion-content');
+                    if (!section) return;
+
+                    let textToSimplify = '';
+                    section.querySelectorAll('p, li').forEach(el => {
+                        textToSimplify += el.textContent + ' ';
+                    });
+
+                    const responseContainer = button.nextElementSibling;
+                    responseContainer.style.display = 'block';
+                    responseContainer.innerHTML = '<div class="loader"></div>';
+                    button.disabled = true;
+
+                    const systemPrompt = "You are a friendly science teacher. Explain the following complex physics concept in a very simple and concise way, using an analogy if possible. Keep it under 60 words.";
+                    const responseText = await callGemini(textToSimplify, systemPrompt);
+                    
+                    responseContainer.innerHTML = responseText.replace(/\n/g, '<br>'); // Basic markdown to html
+                    button.disabled = false;
+                });
+            });
+
+            // --- Gemini Ask the Expert Feature ---
+            const askExpertBtn = document.getElementById('ask-expert-btn');
+            const userQuestionInput = document.getElementById('user-question-input');
+            const expertResponseContainer = document.getElementById('expert-response-container');
+
+            askExpertBtn.addEventListener('click', async () => {
+                const userQuestion = userQuestionInput.value.trim();
+                if (!userQuestion) {
+                    expertResponseContainer.style.display = 'block';
+                    expertResponseContainer.textContent = 'Please enter a question.';
+                    return;
+                }
+
+                expertResponseContainer.style.display = 'block';
+                expertResponseContainer.innerHTML = '<div class="loader"></div>';
+                askExpertBtn.disabled = true;
+                userQuestionInput.disabled = true;
+
+                // Build context from the document
+                let theoryContext = "Core Analogy: Time is like electricity. The Temporal Field is the voltage (push), matter provides Temporal Resistance, and acceleration is the Temporal Current.\n\n";
+                document.querySelectorAll('.accordion-content').forEach(content => {
+                    const title = content.previousElementSibling.querySelector('h3').textContent;
+                    theoryContext += `Section on ${title}:\n`;
+                    content.querySelectorAll('p, li').forEach(el => {
+                         theoryContext += el.textContent + '\n';
+                    });
+                     theoryContext += '\n';
+                });
+
+                const systemPrompt = "You are a helpful AI assistant and an expert on the hypothetical 'Temporal Resistance Theory'. Answer the user's question based ONLY on the provided context about the theory. If the context doesn't contain the answer, state that it's an interesting question that the theory doesn't currently address. Be concise and clear.";
+                const fullPrompt = `CONTEXT:\n---\n${theoryContext}\n---\n\nUSER QUESTION: ${userQuestion}`;
+
+                const responseText = await callGemini(fullPrompt, systemPrompt);
+                expertResponseContainer.innerHTML = responseText.replace(/\n/g, '<br>');
+                
+                askExpertBtn.disabled = false;
+                userQuestionInput.disabled = false;
+            });
+            // Accordion functionality
+            const accordionToggles = document.querySelectorAll('.accordion-toggle');
+            accordionToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const content = toggle.nextElementSibling;
+                    const icon = toggle.querySelector('span');
+
+                    // Close other open accordions
+                    accordionToggles.forEach(otherToggle => {
+                        if (otherToggle !== toggle) {
+                            otherToggle.nextElementSibling.classList.remove('open');
+                            otherToggle.nextElementSibling.style.maxHeight = null;
+                            otherToggle.querySelector('span').classList.remove('rotate-45');
+                            otherToggle.querySelector('span').textContent = '+';
+                        }
+                    });
+                    
+                    // Open or close the clicked accordion
+                    if (content.classList.contains('open')) {
+                        content.classList.remove('open');
+                        content.style.maxHeight = null;
+                        icon.classList.remove('rotate-45');
+                        icon.textContent = '+';
+                    } else {
+                        content.classList.add('open');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.classList.add('rotate-45');
+                        icon.textContent = '+';
+                    }
+                });
+            });
+
+            // Info Popup functionality
+            const infoTerms = document.querySelectorAll('.info-term');
+            const popup = document.getElementById('info-popup');
+            const popupTitle = document.getElementById('popup-title');
+            const popupInfo = document.getElementById('popup-info');
+            const closePopup = document.getElementById('close-popup');
+
+            infoTerms.forEach(term => {
+                term.addEventListener('click', () => {
+                    popupTitle.textContent = term.dataset.title;
+                    popupInfo.textContent = term.dataset.info;
+                    popup.style.display = 'flex';
+                });
+            });
+
+            const hidePopup = () => {
+                popup.style.display = 'none';
+            };
+
+            closePopup.addEventListener('click', hidePopup);
+            popup.addEventListener('click', (event) => {
+                if (event.target === popup) {
+                    hidePopup();
+                }
+            });
+            
+            // Quiz functionality
+            const quizAnswers = {
+                1: 'b',
+                2: 'c'
+            };
+            
+            const quizFeedbacks = {
+                1: {
+                    b: "Correct! The theory posits that matter and energy provide resistance to the flow of time.",
+                    a: "Incorrect. It suggests matter slows down, or resists, the flow of time.",
+                    c: "Incorrect. The temporal field is proposed as a fundamental property of the universe, not something created by matter."
+                },
+                2: {
+                    c: "Correct! Ultra-precise atomic clocks are sensitive enough to potentially detect the subtle variations in time predicted by the theory.",
+                    a: "Incorrect. Telescopes are for observing distant objects, not for measuring fine-grained time differences.",
+                    b: "Incorrect. While particle accelerators are crucial in physics, atomic clocks are the primary tool for this specific type of temporal measurement."
+                }
+            };
+
+            const quizOptions = document.querySelectorAll('.quiz-option');
+            quizOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const questionNumber = option.parentElement.dataset.question;
+                    const selectedAnswer = option.dataset.answer;
+                    const feedbackEl = document.getElementById(`feedback-${questionNumber}`);
+                    const optionsForQuestion = document.querySelectorAll(`[data-question="${questionNumber}"] .quiz-option`);
+
+                    optionsForQuestion.forEach(opt => {
+                        opt.disabled = true; // Disable all options for this question
+                        opt.classList.remove('correct', 'incorrect');
+                    });
+
+                    feedbackEl.textContent = quizFeedbacks[questionNumber][selectedAnswer];
+                    feedbackEl.classList.remove('hidden');
+
+                    if (selectedAnswer === quizAnswers[questionNumber]) {
+                        option.classList.add('correct');
+                        feedbackEl.classList.add('text-green-600');
+                        feedbackEl.classList.remove('text-red-600');
+                    } else {
+                        option.classList.add('incorrect');
+                        feedbackEl.classList.add('text-red-600');
+                        feedbackEl.classList.remove('text-green-600');
+                        // Highlight the correct answer
+                        document.querySelector(`[data-question="${questionNumber}"] [data-answer="${quizAnswers[questionNumber]}"]`).classList.add('correct');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embodied AGI Research Proposal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 1rem 2rem;
+            border: 2px solid white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-button:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            background: white;
+            margin: 2rem 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .section-header {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .section-header:hover {
+            background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .toggle-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .section-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .section-content.active {
+            padding: 2rem;
+            max-height: 2000px;
+        }
+
+        .section-content p {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .section-content ul {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .pillar-card {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .pillar-card:nth-child(2) {
+            background: linear-gradient(135deg, #fd79a8, #e84393);
+        }
+
+        .pillar-card:nth-child(3) {
+            background: linear-gradient(135deg, #fdcb6e, #e17055);
+        }
+
+        .pillar-card:nth-child(4) {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+        }
+
+        .pillar-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            min-width: 200px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #74b9ff;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .interactive-demo {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .demo-button {
+            background: linear-gradient(45deg, #00b894, #00a085);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,184,148,0.4);
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, #2d3436, #636e72);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #00b894, #00a085);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            justify-self: center;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,184,148,0.4);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #74b9ff, #0984e3);
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .pillars-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8e6cf 0%, #dcedc1 100%);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .tech-item {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* --- Gemini API Feature Styles --- */
+        .loader {
+            width: 24px;
+            height: 24px;
+            border: 4px solid #ddd;
+            border-left-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .ai-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .ai-modal-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .ai-modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .ai-modal-overlay.visible .ai-modal-content {
+            transform: scale(1);
+        }
+        .ai-modal-content h3 { color: #667eea; margin-bottom: 1rem; font-size: 1.5rem; }
+        .ai-modal-content p { color: #555; line-height: 1.6; }
+        .ai-modal-content .loader { margin: 2rem auto; }
+        .ai-modal-close-btn {
+            background: #eee; color: #555; border: none; padding: 0.5rem 1rem; border-radius: 20px;
+            cursor: pointer; margin-top: 1.5rem; float: right; transition: background 0.2s ease;
+        }
+        .ai-modal-close-btn:hover { background: #ddd; }
+
+        .ai-chat-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            border: none;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+        .ai-chat-button:hover { transform: scale(1.1); }
+        .ai-chat-widget {
+            position: fixed;
+            bottom: 6rem;
+            right: 2rem;
+            width: 350px;
+            max-width: 90vw;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        .ai-chat-widget.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .ai-chat-header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 1rem; text-align: center; }
+        .ai-chat-body { flex-grow: 1; padding: 1rem; overflow-y: auto; height: 300px; }
+        .ai-chat-body .message { margin-bottom: 1rem; line-height: 1.5; max-width: 90%; }
+        .ai-chat-body .user-message { background: #e0e7ff; color: #3730a3; padding: 0.5rem 1rem; border-radius: 15px 15px 0 15px; align-self: flex-end; }
+        .ai-chat-body .ai-message { background: #f3f4f6; color: #374151; padding: 0.5rem 1rem; border-radius: 15px 15px 15px 0; align-self: flex-start; }
+        .ai-chat-footer { border-top: 1px solid #eee; padding: 0.5rem; display: flex; gap: 0.5rem; }
+        #chatInput { flex-grow: 1; border: 1px solid #ddd; padding: 0.5rem 1rem; border-radius: 20px; }
+        #chatSendBtn { background: #667eea; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Embodied AGI for Robotics</h1>
+            <p>Advancing robotics through brain-inspired cognitive architectures, semantic AI, and integrated development toolchains</p>
+            <a href="#vision" class="cta-button" onclick="scrollToSection('vision')">Explore Our Vision</a>
+        </div>
+        <div class="stats-container">
+            <div class="stat-card">
+                <span class="stat-number">4</span>
+                <div class="stat-label">Research Pillars</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">∞</span>
+                <div class="stat-label">Possibilities</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">AGI</span>
+                <div class="stat-label">Ultimate Goal</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <section class="section" id="vision">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>🎯 Executive Summary: Towards Embodied AGI</h2>
+                <span class="toggle-icon">+</span>
+            </div>
+            <div class="section-content">
+                <p>Our core objective is to pioneer a pathway towards <span class="highlight">"natural-like" Artificial General Intelligence (AGI)</span> for robotics, moving beyond statistical pattern matching to achieve genuine understanding, causality, and adaptability.</p>
+                <p>This involves developing systems that can interpret high-level, multimodal human intent and translate it into precise, intelligent actions through a synergistic integration of:</p>
+                <ul>
+                    <li><strong>Dr. Howard Schneider's Causal Cognitive Architecture (CCA)</strong></li>
+                    <li><strong>Google's Gemini API for semantic cognition</strong></li>
+                    <li><strong>Professional-grade digital twin development toolchain</strong></li>
+                </ul>
+                <div class="tech-stack">
+                    <div class="tech-item">Fusion 360</div>
+                    <div class="tech-item">KiCad</div>
+                    <div class="tech-item">NVIDIA Isaac Sim</div>
+                    <div class="tech-item">Neuromorphic Computing</div>
+                    <div class="tech-item">Semantic Compression</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="capabilities">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>🤖 Our Vision: Intelligent, Grounded, and Explainable Robotics</h2>
+                <span class="toggle-icon">+</span>
+            </div>
+            <div class="section-content">
+                <p>We envision a future where robots are not just automated machines but <span class="highlight">truly intelligent agents</span> capable of:</p>
+                <div class="interactive-demo">
+                    <h3>Interactive Capability Demo</h3>
+                    <button class="demo-button" onclick="showCapability('embodied')">Embodied Cognition</button>
+                    <button class="demo-button" onclick="showCapability('intuitive')">Intuitive Understanding</button>
+                    <button class="demo-button" onclick="showCapability('adaptive')">Adaptive Problem-Solving</button>
+                    <button class="demo-button" onclick="showCapability('explainable')">Explainable Reasoning</button>
+                    <div id="capabilityDemo" style="margin-top: 2rem; padding: 1rem; background: white; border-radius: 10px; display: none; text-align: left;">
+                        <div id="demoContent"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="pillars">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>🏛️ Research Pillars</h2>
+                <span class="toggle-icon">+</span>
+            </div>
+            <div class="section-content">
+                <p>Our comprehensive plan is structured around four interconnected research pillars:</p>
+                <div class="pillars-grid">
+                    <div class="pillar-card" onclick="showPillarDetails(this)">
+                        <h3>Pillar 1: Brain-Inspired Cognitive Architectures</h3>
+                        <p>Developing and validating the Causal Cognitive Architecture (CCA) for edge robotics, using navigation maps as universal data structures.</p>
+                    </div>
+                    <div class="pillar-card" onclick="showPillarDetails(this)">
+                        <h3>Pillar 2: Semantic Machine Cognition</h3>
+                        <p>Integrating Gemini API for multimodal intent understanding and structured semantic control systems.</p>
+                    </div>
+                    <div class="pillar-card" onclick="showPillarDetails(this)">
+                        <h3>Pillar 3: Digital Twin Development</h3>
+                        <p>Leveraging integrated toolchain with Fusion 360, KiCad, and Isaac Sim for rapid prototyping and validation.</p>
+                    </div>
+                    <div class="pillar-card" onclick="showPillarDetails(this)">
+                        <h3>Pillar 4: Future Hardware Paradigms</h3>
+                        <p>Researching neuromorphic computing and semantically-aware compression for efficient AI systems.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="challenges">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>⚡ Challenges & Research Directions</h2>
+                <span class="toggle-icon">+</span>
+            </div>
+            <div class="section-content">
+                <p>While our vision is ambitious, we recognize critical challenges that require focused, long-term research:</p>
+                <ul>
+                    <li><strong>CCA Empirical Validation:</strong> Extensive validation on large-scale, standardized benchmarks to prove robustness and performance</li>
+                    <li><strong>Scalability of Navigation Maps:</strong> Addressing computational and memory challenges for practical edge device implementation</li>
+                    <li><strong>Primitive Acquisition:</strong> Developing robust mechanisms for autonomous learning and discovery of primitives</li>
+                    <li><strong>Semantically-Aware Compression:</strong> Revolutionary approach to data compression preserving task-critical information</li>
+                    <li><strong>Verifiable Handoff Protocols:</strong> Ensuring safe transitions between edge CCA and cloud-based semantic models</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <section class="contact-section">
+        <div class="container">
+            <h2 style="margin-bottom: 2rem; font-size: 2.5rem;">Join Our Research Journey</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Ready to shape the future of intelligent robotics? Get in touch with our research team.</p>
+            <form class="contact-form" onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Dr. Jane Smith" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="jane.smith@university.edu" required>
+                </div>
+                <div class="form-group">
+                    <label for="affiliation">Institution/Organization</label>
+                    <input type="text" id="affiliation" name="affiliation" placeholder="MIT Robotics Lab">
+                </div>
+                <div class="form-group">
+                    <label for="expertise">Research Expertise</label>
+                    <input type="text" id="expertise" name="expertise" placeholder="Cognitive Architectures, AI/ML, Robotics">
+                </div>
+                <div class="form-group">
+                    <label for="message">Interest & Collaboration Ideas</label>
+                    <textarea id="message" name="message" rows="5" placeholder="I'm particularly interested in the CCA architecture..."></textarea>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <button type="button" class="submit-btn" style="background: #6c5ce7;" onclick="generateMessageIdea()">💡 Generate Idea</button>
+                    <button type="submit" class="submit-btn">Join the Research</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Gemini API Features: Modal and Chatbot -->
+    <div class="ai-modal-overlay" id="aiModal">
+        <div class="ai-modal-content">
+            <h3 id="aiModalTitle"></h3>
+            <div id="aiModalBody"></div>
+            <button class="ai-modal-close-btn" onclick="closeAiModal()">Close</button>
+        </div>
+    </div>
+
+    <button class="ai-chat-button" id="chatToggleBtn">💬</button>
+    <div class="ai-chat-widget" id="chatWidget">
+        <div class="ai-chat-header">
+            <h3>AI Research Assistant</h3>
+        </div>
+        <div class="ai-chat-body" id="chatBody">
+             <div class="message ai-message">Hi! How can I help you understand our research proposal?</div>
+        </div>
+        <div class="ai-chat-footer">
+            <input type="text" id="chatInput" placeholder="Ask a question...">
+            <button id="chatSendBtn">➤</button>
+        </div>
+    </div>
+
+
+    <script>
+        const API_KEY = "AIzaSyBmyFRBnyDEDF-rdB6BOLKIyG-uum8FyQY"; // Use an empty string as per instructions
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+        let pageContext = ''; // To be populated on load
+
+        /**
+         * Reusable function to call the Gemini API with exponential backoff.
+         */
+        async function callGemini(prompt, systemInstruction, retries = 3, delay = 1000) {
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemInstruction }] }
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    return candidate.content.parts[0].text;
+                }
+                throw new Error("Invalid response structure from Gemini API.");
+            } catch (error) {
+                console.error(`Error calling Gemini API: ${error.message}`);
+                if (retries > 0) {
+                    await new Promise(res => setTimeout(res, delay));
+                    return callGemini(prompt, systemInstruction, retries - 1, delay * 2);
+                }
+                return "Sorry, I couldn't get a response. Please try again later.";
+            }
+        }
+
+        // --- Modal Controls ---
+        const aiModal = document.getElementById('aiModal');
+        const aiModalTitle = document.getElementById('aiModalTitle');
+        const aiModalBody = document.getElementById('aiModalBody');
+        function openAiModal(title) {
+            aiModalTitle.textContent = title;
+            aiModalBody.innerHTML = '<div class="loader"></div>';
+            aiModal.classList.add('visible');
+        }
+        function closeAiModal() {
+            aiModal.classList.remove('visible');
+        }
+
+        // --- Gemini Feature: Dynamic Pillar Explanations ---
+        async function showPillarDetails(element) {
+            const title = element.querySelector('h3').textContent;
+            const description = element.querySelector('p').textContent;
+            openAiModal(title);
+
+            const systemPrompt = "You are a research scientist. Elaborate on the following research pillar in a compelling, concise paragraph (around 80-100 words). Explain its significance to the overall goal of Embodied AGI.";
+            const prompt = `Pillar: "${title}"\nDescription: "${description}"`;
+            
+            const response = await callGemini(prompt, systemPrompt);
+            aiModalBody.innerHTML = `<p>${response.replace(/\n/g, '<br>')}</p>`;
+        }
+        
+        // --- Gemini Feature: AI-Generated Capability Examples ---
+        async function showCapability(type) {
+            const demo = document.getElementById('capabilityDemo');
+            const content = document.getElementById('demoContent');
+            demo.style.display = 'block';
+            content.innerHTML = '<div class="loader" style="margin: 1rem auto;"></div>';
+
+            const capabilities = {
+                embodied: { title: 'Embodied Cognition', description: 'Building rich, causal models of their environment through direct sensorimotor interaction.' },
+                intuitive: { title: 'Intuitive Understanding', description: 'Comprehending and acting upon complex human intent, going beyond simple command execution.' },
+                adaptive: { title: 'Adaptive Problem-Solving', description: 'Generalizing from past experiences to autonomously generate novel solutions.' },
+                explainable: { title: 'Explainable Reasoning', description: 'Providing transparent, traceable decision-making processes, crucial for safety and alignment.' }
+            };
+            const cap = capabilities[type];
+
+            const systemPrompt = "You are a creative robotics scenario writer. Given a capability and its description, provide a novel, brief, and vivid real-world example of a robot demonstrating this. Start with 'Example:'";
+            const prompt = `Capability: ${cap.title}\nDescription: ${cap.description}`;
+
+            const response = await callGemini(prompt, systemPrompt);
+            content.innerHTML = `
+                <h4 style="color: #667eea; margin-bottom: 1rem;">${cap.title}</h4>
+                <p style="margin-bottom: 1rem; color: #333;">${cap.description}</p>
+                <div style="background: #f0f2ff; padding: 1rem; border-left: 4px solid #667eea; border-radius: 0 8px 8px 0;">
+                    <strong>${response}</strong>
+                </div>
+            `;
+        }
+
+        // --- Gemini Feature: Smart Contact Form Assistance ---
+        async function generateMessageIdea() {
+            const name = document.getElementById('name').value || "a researcher";
+            const affiliation = document.getElementById('affiliation').value || "their institution";
+            const expertise = document.getElementById('expertise').value || "a relevant field";
+            const messageTextarea = document.getElementById('message');
+            
+            messageTextarea.placeholder = "Generating a message idea...";
+            const systemPrompt = "You are a professional research assistant. Draft a concise, polite, and professional message for a contact form. The user wants to express interest in the Embodied AGI research and explore collaboration. Use the provided user details.";
+            const prompt = `User Details:\n- Name: ${name}\n- Affiliation: ${affiliation}\n- Expertise: ${expertise}`;
+            
+            const response = await callGemini(prompt, systemPrompt);
+            messageTextarea.value = response;
+            messageTextarea.placeholder = "I'm particularly interested in the CCA architecture...";
+        }
+
+        // --- Gemini Feature: AI Research Assistant Chatbot ---
+        const chatToggleBtn = document.getElementById('chatToggleBtn');
+        const chatWidget = document.getElementById('chatWidget');
+        const chatBody = document.getElementById('chatBody');
+        const chatInput = document.getElementById('chatInput');
+        const chatSendBtn = document.getElementById('chatSendBtn');
+
+        chatToggleBtn.addEventListener('click', () => {
+            chatWidget.classList.toggle('visible');
+        });
+
+        async function handleChat() {
+            const userInput = chatInput.value.trim();
+            if (!userInput) return;
+
+            // Add user message to chat
+            chatBody.innerHTML += `<div class="message user-message">${userInput}</div>`;
+            chatInput.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            // Add loader for AI response
+            const loaderId = `loader-${Date.now()}`;
+            chatBody.innerHTML += `<div class="message ai-message" id="${loaderId}"><div class="loader"></div></div>`;
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            const systemPrompt = "You are an expert AI assistant for the 'Embodied AGI for Robotics' research proposal. Your goal is to answer questions clearly and concisely based ONLY on the provided context. If the answer isn't in the context, politely state that the information is not available in the proposal document.";
+            const prompt = `CONTEXT:\n---\n${pageContext}\n---\n\nQUESTION: ${userInput}`;
+            
+            const response = await callGemini(prompt, systemPrompt);
+            
+            // Replace loader with AI response
+            document.getElementById(loaderId).innerHTML = response.replace(/\n/g, '<br>');
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        chatSendBtn.addEventListener('click', handleChat);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleChat(); });
+        
+        // --- Page Initialization ---
+        function extractPageContext() {
+            const mainContent = document.querySelector('body').innerText;
+            // Basic cleanup to remove script content and extra whitespace
+            pageContext = mainContent.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                                     .replace(/\s+/g, ' ').trim();
+        }
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById('progressBar').style.width = ((winScroll / height) * 100) + '%';
+        });
+
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.toggle-icon');
+            const isActive = content.classList.contains('active');
+            
+            document.querySelectorAll('.section-content.active').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.toggle-icon').forEach(i => { i.textContent = '+'; i.style.transform = 'rotate(0deg)'; });
+            
+            if (!isActive) {
+                content.classList.add('active');
+                icon.textContent = '−';
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            const submitBtn = event.target.querySelector('.submit-btn[type="submit"]');
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+            setTimeout(() => {
+                alert(`Thank you! Your interest has been recorded. We'll be in touch soon.`);
+                event.target.reset();
+                submitBtn.textContent = 'Join the Research';
+                submitBtn.disabled = false;
+            }, 1500);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleSection(document.querySelector('.section-header'));
+            extractPageContext();
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>

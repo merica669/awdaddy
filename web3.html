@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3 App Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --matrix-green: #00ff41;
+            --dark-bg: #0d0208;
+            --light-green: #90ee90;
+            --yellow: #ffd700;
+            --gradient: linear-gradient(90deg, var(--matrix-green), #00bfff);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        /* General Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--dark-bg);
+            color: var(--light-green);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        #matrix-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.3;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        .btn {
+            display: inline-block; padding: 0.75rem 1.5rem; text-decoration: none;
+            border-radius: 5px; font-weight: 700; transition: all 0.3s ease;
+            border: none; cursor: pointer;
+        }
+        .btn-primary { background: var(--gradient); color: var(--dark-bg); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 255, 65, 0.4); }
+        .btn:disabled { background: #555; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* Header */
+        .app-header {
+            background-color: rgba(13, 2, 8, 0.8); backdrop-filter: blur(10px);
+            padding: 1rem 0; border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .app-header .container { display: flex; justify-content: space-between; align-items: center; }
+        .app-header .logo a { font-size: 1.5rem; color: var(--matrix-green); font-weight: 700; text-decoration: none; }
+
+        /* Dashboard Layout */
+        .dashboard { padding: 2rem 0; }
+        .dashboard-grid {
+            display: grid; grid-template-columns: 1fr 1.5fr 1fr;
+            grid-template-areas: "tasks wallet dapps" "tasks portfolio feed" "tasks chatbot chatbot";
+            gap: 1.5rem;
+        }
+        .dash-card {
+            background: var(--card-bg); border: var(--card-border);
+            border-radius: 10px; padding: 1.5rem; backdrop-filter: blur(5px);
+        }
+        .dash-card h3 {
+            font-size: 1.25rem; color: #fff; margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.3); padding-bottom: 0.5rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+
+        /* Grid Areas */
+        #tasks { grid-area: tasks; }
+        #wallet { grid-area: wallet; }
+        #dapps { grid-area: dapps; }
+        #portfolio { grid-area: portfolio; }
+        #feed { grid-area: feed; }
+        #chatbot { grid-area: chatbot; }
+
+        /* Task Module */
+        .task-list { list-style: none; }
+        .task-item {
+            margin-bottom: 1rem; padding: 0.75rem; border-radius: 5px;
+            background: rgba(0,0,0,0.2); transition: background 0.3s;
+        }
+        .task-item.completed { background: rgba(0, 255, 65, 0.1); }
+        .task-item p { margin-left: 1.75rem; font-size: 0.9rem; }
+        .task-item i { margin-right: 0.75rem; color: var(--matrix-green); transition: color 0.3s; }
+        .task-item.completed i { color: #fff; }
+        
+        /* Wallet Module */
+        .wallet-info strong { color: #fff; }
+        #wallet-address { color: var(--matrix-green); font-size: 0.8rem; }
+        #wallet-balance { font-size: 1.5rem; font-weight: 700; color: #fff; }
+        .faucet { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); }
+        .faucet p { font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+        /* dApps Module */
+        .dapp-actions { display: flex; flex-direction: column; gap: 1rem; }
+        .dapp-action-card {
+            padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 5px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .dapp-action-card i { font-size: 2rem; color: var(--matrix-green); }
+
+        /* Portfolio Module */
+        .asset-list { list-style: none; }
+        .asset-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .asset-item:last-child { border-bottom: none; margin-bottom: 0; }
+        .asset-info { display: flex; align-items: center; gap: 1rem; }
+        .asset-info i { font-size: 1.5rem; }
+        .fa-bitcoin { color: #f7931a; } .fa-ethereum { color: #627eea; } .fa-dollar-sign { color: var(--matrix-green); }
+        .asset-value { text-align: right; } .asset-value strong { color: #fff; }
+
+        /* Transaction Feed Module */
+        .transaction-feed { list-style: none; max-height: 250px; overflow-y: auto; }
+        .transaction-feed::-webkit-scrollbar { width: 5px; }
+        .transaction-feed::-webkit-scrollbar-track { background: transparent; }
+        .transaction-feed::-webkit-scrollbar-thumb { background: var(--matrix-green); border-radius: 5px; }
+        .tx-item { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.75rem 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .tx-hash { color: var(--light-green); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+        .tx-hash a { color: var(--matrix-green); text-decoration: none; }
+        .tx-amount { color: #fff; font-weight: 700; }
+        .tx-status { text-align: right; }
+        .tx-status-confirmed { color: var(--matrix-green); }
+        .tx-status-pending { color: var(--yellow); }
+
+        /* Chatbot Module */
+        #chatbot-messages { height: 180px; overflow-y: auto; margin-bottom: 1rem; padding-right: 0.5rem; }
+        .chat-message { margin-bottom: 1rem; }
+        .chat-message p { padding: 0.5rem 1rem; border-radius: 10px; max-width: 80%; line-height: 1.4;}
+        .user-message p { background: var(--matrix-green); color: var(--dark-bg); float: right; }
+        .bot-message p { background: #333; float: left; }
+        .chat-input { display: flex; gap: 0.5rem; }
+        .chat-input input { flex-grow: 1; background: rgba(0,0,0,0.3); border: var(--card-border); color: #fff; padding: 0.75rem; border-radius: 5px; font-family: 'Roboto Mono'; }
+        
+        /* Notification Toast */
+        #toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            background: var(--gradient); color: var(--dark-bg); padding: 1rem 2rem;
+            border-radius: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            z-index: 1000; font-weight: 700; opacity: 0;
+            transition: opacity 0.5s, transform 0.5s;
+            visibility: hidden;
+        }
+        #toast.show { opacity: 1; transform: translate(-50%, -1rem); visibility: visible; }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .dashboard-grid { grid-template-columns: 1.5fr 1fr; grid-template-areas: "tasks wallet" "dapps portfolio" "feed feed" "chatbot chatbot"; }
+        }
+        @media (max-width: 768px) {
+            .dashboard-grid { grid-template-columns: 1fr; grid-template-areas: "wallet" "tasks" "dapps" "feed" "portfolio" "chatbot"; }
+            .app-header .container { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-background"></canvas>
+    <div id="toast"></div>
+
+    <header class="app-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html" title="Back to Home"><i class="fa-solid fa-cubes"></i> Web3 Dashboard</a>
+            </div>
+            <button id="connect-wallet-btn" class="btn btn-primary">
+                <i class="fa-solid fa-wallet"></i> <span>Connect Wallet</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="dashboard container">
+        <div class="dashboard-grid">
+            <!-- Tasks Module -->
+            <div id="tasks" class="dash-card">
+                <h3><i class="fa-solid fa-list-check"></i> Your First Steps</h3>
+                <ul class="task-list">
+                    <li id="task-connect" class="task-item"><i class="fa-regular fa-circle"></i> Connect Your Wallet<p>The first step into Web3. This is your new digital identity.</p></li>
+                    <li id="task-faucet" class="task-item"><i class="fa-regular fa-circle"></i> Get Testnet ETH<p>Use a faucet to get free Sepolia ETH for testing transactions.</p></li>
+                    <li id="task-mint" class="task-item"><i class="fa-regular fa-circle"></i> Mint an NFT Badge<p>Create your first NFT—a digital badge showing your progress.</p></li>
+                    <li id="task-chat" class="task-item"><i class="fa-regular fa-circle"></i> Ask the AI Tutor<p>Have a question? Ask our AI assistant to learn more about Web3.</p></li>
+                </ul>
+            </div>
+
+            <!-- Wallet Module -->
+            <div id="wallet" class="dash-card">
+                <h3><i class="fa-solid fa-user-shield"></i> Wallet Status</h3>
+                <div class="wallet-info">
+                    <p><strong>Status:</strong> <span id="wallet-status" style="color: var(--yellow);">Not Connected</span></p>
+                    <p><strong>Balance:</strong> <span id="wallet-balance">0.00 ETH</span></p>
+                    <p><strong>Address:</strong> <span id="wallet-address">N/A</span></p>
+                </div>
+                <div class="faucet">
+                    <p>Need funds for testing?</p>
+                    <button id="faucet-btn" class="btn" disabled>Get 0.01 Sepolia ETH</button>
+                </div>
+            </div>
+
+            <!-- dApps Module -->
+            <div id="dapps" class="dash-card">
+                <h3><i class="fa-solid fa-rocket"></i> dApp Sandbox</h3>
+                <div class="dapp-actions">
+                    <div class="dapp-action-card">
+                        <div>
+                            <h4>DeFi Staking</h4>
+                            <p>Simulate staking tokens.</p>
+                        </div>
+                        <button id="stake-btn" class="btn" disabled>Stake</button>
+                    </div>
+                    <div class="dapp-action-card">
+                        <div>
+                            <h4>NFT Badge</h4>
+                            <p>Mint your first achievement NFT.</p>
+                        </div>
+                        <button id="mint-btn" class="btn" disabled>Mint NFT</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Module -->
+            <div id="portfolio" class="dash-card">
+                <h3><i class="fa-solid fa-chart-pie"></i> Mock Portfolio</h3>
+                <ul class="asset-list" id="asset-list">
+                    <!-- JS will populate this -->
+                    <li>Loading assets...</li>
+                </ul>
+            </div>
+
+            <!-- Transaction Feed Module -->
+            <div id="feed" class="dash-card">
+                <h3><i class="fa-solid fa-receipt"></i> Live Transaction Feed</h3>
+                <ul class="transaction-feed" id="tx-feed-list">
+                    <li style="text-align: center; color: #aaa;">Connect your wallet to see live activity...</li>
+                </ul>
+            </div>
+
+            <!-- Chatbot Module -->
+            <div id="chatbot" class="dash-card">
+                <h3><i class="fa-solid fa-robot"></i> Web3 AI Tutor</h3>
+                <div id="chatbot-messages">
+                    <div class="chat-message bot-message"><p>Welcome! Ask me anything about Web3, like "what is a gas fee?"</p></div>
+                </div>
+                <form id="chat-form" class="chat-input">
+                    <input type="text" id="chat-input-text" placeholder="Type your question..." autocomplete="off">
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- CONFIGURATION ---
+        const API_BASE_URL = 'http://localhost:3000'; // Backend server URL
+
+        // --- STATE MANAGEMENT ---
+        const appState = {
+            walletAddress: null,
+            tasks: {
+                connect: false,
+                faucet: false,
+                mint: false,
+                chat: false,
+            },
+        };
+
+        // --- DOM ELEMENTS ---
+        const connectBtn = document.getElementById('connect-wallet-btn');
+        const walletStatusEl = document.getElementById('wallet-status');
+        const walletAddressEl = document.getElementById('wallet-address');
+        const walletBalanceEl = document.getElementById('wallet-balance');
+        const faucetBtn = document.getElementById('faucet-btn');
+        const mintBtn = document.getElementById('mint-btn');
+        const stakeBtn = document.getElementById('stake-btn');
+        const txFeedList = document.getElementById('tx-feed-list');
+        const assetList = document.getElementById('asset-list');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input-text');
+        const chatMessages = document.getElementById('chatbot-messages');
+        const toastEl = document.getElementById('toast');
+
+        // --- UI & NOTIFICATION FUNCTIONS ---
+
+        /** Shows a notification toast message */
+        function showToast(message) {
+            toastEl.textContent = message;
+            toastEl.classList.add('show');
+            setTimeout(() => {
+                toastEl.classList.remove('show');
+            }, 3000);
+        }
+
+        /** Updates the UI for a specific task */
+        function updateTaskUI(taskName) {
+            const taskItem = document.getElementById(`task-${taskName}`);
+            if (taskItem && !appState.tasks[taskName]) {
+                appState.tasks[taskName] = true;
+                taskItem.classList.add('completed');
+                const icon = taskItem.querySelector('i');
+                icon.classList.remove('fa-regular', 'fa-circle');
+                icon.classList.add('fa-solid', 'fa-check-circle');
+                showToast(`Task Complete: ${taskItem.textContent.trim().split('\n')[0]}`);
+            }
+        }
+        
+        /** Renders the portfolio based on fetched data */
+        function renderPortfolio(assets, prices) {
+            assetList.innerHTML = '';
+            assets.forEach(asset => {
+                const price = prices[asset.id] ? prices[asset.id].usd : 0;
+                const value = (asset.balance * price).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+                const iconClass = asset.symbol === 'ETH' ? 'fa-ethereum' : asset.symbol === 'BTC' ? 'fa-bitcoin' : 'fa-dollar-sign';
+                
+                assetList.innerHTML += `
+                    <li class="asset-item">
+                        <div class="asset-info">
+                            <i class="fa-brands ${iconClass}"></i>
+                            <span>${asset.name}</span>
+                        </div>
+                        <div class="asset-value">
+                            <strong>${asset.balance} ${asset.symbol}</strong>
+                            <p>${value}</p>
+                        </div>
+                    </li>`;
+            });
+        }
+
+        // --- API & BACKEND COMMUNICATION ---
+
+        /** Fetches initial portfolio and price data */
+        async function fetchPortfolioData() {
+            try {
+                const [assetsRes, pricesRes] = await Promise.all([
+                    fetch(`${API_BASE_URL}/api/portfolio/get-user-assets?address=${appState.walletAddress}`),
+                    fetch(`${API_BASE_URL}/api/prices/get-token-prices`)
+                ]);
+                const assets = await assetsRes.json();
+                const prices = await pricesRes.json();
+                renderPortfolio(assets, prices);
+            } catch (error) {
+                console.error("Error fetching portfolio data:", error);
+                assetList.innerHTML = '<li>Error loading assets.</li>';
+            }
+        }
+
+        /** Handles wallet connection */
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    appState.walletAddress = accounts[0];
+                    
+                    // UI Updates
+                    walletStatusEl.textContent = 'Connected';
+                    walletStatusEl.style.color = 'var(--matrix-green)';
+                    walletAddressEl.textContent = `${appState.walletAddress.substring(0, 6)}...${appState.walletAddress.substring(appState.walletAddress.length - 4)}`;
+                    connectBtn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Connected</span>`;
+                    connectBtn.disabled = true;
+                    faucetBtn.disabled = false;
+                    mintBtn.disabled = false;
+                    stakeBtn.disabled = false;
+                    txFeedList.innerHTML = ''; // Clear initial message
+
+                    // Post-connection actions
+                    updateTaskUI('connect');
+                    initWebSocket();
+                    fetchPortfolioData();
+
+                } catch (error) {
+                    console.error("User rejected connection:", error);
+                    showToast("Wallet connection was rejected.");
+                }
+            } else {
+                showToast("Please install a Web3 wallet like MetaMask!");
+            }
+        }
+        
+        // --- WEBSOCKET HANDLING ---
+        function initWebSocket() {
+            const ws = new WebSocket('ws://localhost:3000');
+            
+            ws.onopen = () => console.log('WebSocket connection established.');
+            ws.onclose = () => console.log('WebSocket connection closed.');
+            ws.onerror = (error) => console.error('WebSocket Error:', error);
+
+            ws.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                console.log('WebSocket message received:', message);
+                
+                if (message.type === 'transactionUpdate' && message.data.address.toLowerCase() === appState.walletAddress.toLowerCase()) {
+                    updateTransactionFeed(message.data);
+                } else if (message.type === 'notification') {
+                    showToast(message.data.message);
+                }
+            };
+        }
+
+        function updateTransactionFeed({ status, txHash, message }) {
+            let txItem = document.getElementById(`tx-${txHash}`);
+            if (txItem) { // Update existing item
+                const statusEl = txItem.querySelector('.tx-status p');
+                statusEl.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+                statusEl.className = `tx-status-${status}`;
+            } else { // Create new item
+                txItem = document.createElement('li');
+                txItem.className = 'tx-item';
+                txItem.id = `tx-${txHash}`;
+                txItem.innerHTML = `
+                    <div>
+                        <span class="tx-hash"><a href="https://sepolia.etherscan.io/tx/${txHash}" target="_blank">${txHash.substring(0, 12)}...</a></span>
+                        <p style="font-size: 0.8rem; color: #aaa;">${message}</p>
+                    </div>
+                    <div class="tx-status">
+                        <p class="tx-status-${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</p>
+                    </div>`;
+                txFeedList.prepend(txItem);
+            }
+             if (status === 'confirmed' && message.includes('Test ETH')) {
+                updateTaskUI('faucet');
+            }
+        }
+
+
+        // --- EVENT LISTENERS ---
+        connectBtn.addEventListener('click', connectWallet);
+
+        faucetBtn.addEventListener('click', async () => {
+            faucetBtn.disabled = true;
+            faucetBtn.textContent = 'Requesting...';
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/faucet/request-testnet-eth`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ address: appState.walletAddress })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showToast("Faucet request sent! Check the feed.");
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (error) {
+                console.error("Faucet error:", error);
+                showToast("Faucet request failed.");
+                faucetBtn.disabled = false;
+            }
+            faucetBtn.textContent = 'Get 0.01 Sepolia ETH';
+        });
+        
+        mintBtn.addEventListener('click', async () => {
+             try {
+                const response = await fetch(`${API_BASE_URL}/api/nft/mint-badge`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ address: appState.walletAddress })
+                });
+                const data = await response.json();
+                if(data.success) {
+                    showToast("NFT Minting process initiated!");
+                    updateTaskUI('mint');
+                }
+            } catch (error) {
+                showToast("NFT minting failed.");
+            }
+        });
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const question = chatInput.value.trim();
+            if (!question) return;
+            
+            // Display user message
+            chatMessages.innerHTML += `<div class="chat-message user-message clearfix"><p>${question}</p></div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            chatInput.value = '';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/chatbot/query`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question })
+                });
+                const data = await response.json();
+                // Display bot response
+                chatMessages.innerHTML += `<div class="chat-message bot-message clearfix"><p>${data.answer}</p></div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                updateTaskUI('chat');
+
+            } catch(error) {
+                chatMessages.innerHTML += `<div class="chat-message bot-message clearfix"><p>Sorry, I'm having trouble connecting.</p></div>`;
+            }
+        });
+
+        // --- INITIALIZATION ---
+        window.addEventListener('load', () => {
+            // Matrix background (same as before)
+            const canvas = document.getElementById('matrix-background');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const alphabet = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const rainDrops = Array.from({ length: columns }).fill(1);
+            const draw = () => {
+                ctx.fillStyle = 'rgba(13, 2, 8, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#00ff41';
+                ctx.font = fontSize + 'px monospace';
+                rainDrops.forEach((y, i) => {
+                    const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                    ctx.fillText(text, i * fontSize, y * fontSize);
+                    if (y * fontSize > canvas.height && Math.random() > 0.975) { rainDrops[i] = 0; }
+                    rainDrops[i]++;
+                });
+            };
+            setInterval(draw, 33);
+        });
+
+    </script>
+</body>
+</html>
+

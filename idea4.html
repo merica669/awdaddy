@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SH@W: Engineering Miracles Across Time</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Hero Section with Impact Counter */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(ellipse at center, rgba(255,165,0,0.15) 0%, transparent 60%);
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffd700, #ff4500, #ffa500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: powerGlow 3s ease-in-out infinite alternate;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @keyframes powerGlow {
+            from { 
+                filter: drop-shadow(0 0 20px rgba(255,165,0,0.8)); 
+                transform: scale(1);
+            }
+            to { 
+                filter: drop-shadow(0 0 40px rgba(255,69,0,1)); 
+                transform: scale(1.02);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            text-align: center;
+            max-width: 700px;
+            color: #ffd700;
+        }
+
+        /* Lives Saved Counter */
+        .impact-counter {
+            display: flex;
+            gap: 60px;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,215,0,0.3);
+        }
+
+        .counter-box {
+            text-align: center;
+        }
+
+        .counter-number {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00ff00, #00cc00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: countUp 2s ease-out;
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .counter-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Timeline Navigation with Icons */
+        .timeline-nav {
+            position: fixed;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(255,215,0,0.3);
+            border: 3px solid #ffd700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .timeline-dot:hover::after {
+            content: attr(data-label);
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #1a1a2e, #2a2a3e);
+            padding: 8px 15px;
+            border-radius: 10px;
+            white-space: nowrap;
+            font-size: 1rem;
+            border: 1px solid rgba(255,215,0,0.5);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px) translateY(-50%); }
+            to { opacity: 1; transform: translateX(0) translateY(-50%); }
+        }
+
+        .timeline-dot.active {
+            background: linear-gradient(135deg, #ffd700, #ff4500);
+            transform: scale(1.8);
+            box-shadow: 0 0 30px rgba(255,215,0,0.8);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(255,215,0,0.8); }
+            50% { box-shadow: 0 0 50px rgba(255,69,0,1); }
+        }
+
+        /* Story Sections */
+        .story-section {
+            min-height: 100vh;
+            padding: 100px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .story-content {
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .story-text {
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,215,0,0.02));
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,215,0,0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story-text::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .story-text:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255,215,0,0.6);
+            box-shadow: 0 20px 60px rgba(255,215,0,0.2);
+        }
+
+        .era-badge {
+            display: inline-block;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #ff4500, #ffd700);
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+            animation: glow 2s ease-in-out infinite alternate;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 10px rgba(255,215,0,0.6); }
+            to { box-shadow: 0 0 25px rgba(255,69,0,0.9); }
+        }
+
+        .story-title {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #ffd700, #ff4500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .story-description {
+            font-size: 1.2rem;
+            line-height: 1.9;
+            opacity: 0.95;
+        }
+
+        .impact-stat {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(0,255,0,0.1);
+            border: 1px solid rgba(0,255,0,0.3);
+            border-radius: 15px;
+            margin: 0 5px;
+            font-weight: bold;
+            color: #00ff00;
+        }
+
+        /* Enhanced Visual Elements */
+        .visual-box {
+            width: 100%;
+            height: 450px;
+            background: linear-gradient(135deg, rgba(30,30,45,0.5), rgba(255,215,0,0.05));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid rgba(255,215,0,0.3);
+            box-shadow: 0 10px 50px rgba(255,215,0,0.2);
+        }
+
+        /* Animated Bulldozer */
+        .bulldozer-scene {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(to bottom, #87CEEB 0%, #87CEEB 60%, #8B7355 60%, #654321 100%);
+        }
+
+        .mountain {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 200px solid #666;
+            animation: crumble 4s ease-in-out infinite;
+        }
+
+        @keyframes crumble {
+            0%, 100% { border-bottom-width: 200px; }
+            50% { border-bottom-width: 150px; }
+        }
+
+        .bulldozer {
+            position: absolute;
+            bottom: 100px;
+            left: 10%;
+            width: 120px;
+            height: 80px;
+            background: #ffa500;
+            border-radius: 5px;
+            animation: pushMountain 4s ease-in-out infinite;
+        }
+
+        .bulldozer::before {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: repeating-linear-gradient(
+                90deg,
+                #444 0px,
+                #444 10px,
+                #222 10px,
+                #222 20px
+            );
+            animation: moveTrack 0.5s linear infinite;
+        }
+
+        @keyframes pushMountain {
+            0%, 100% { left: 10%; }
+            50% { left: 30%; }
+        }
+
+        @keyframes moveTrack {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(20px); }
+        }
+
+        /* Autonomous Scout Saving Lives */
+        .scout-scene {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(to bottom, #001a33 0%, #003366 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scout-vehicle {
+            width: 180px;
+            height: 100px;
+            background: linear-gradient(135deg, #2a4d8f, #1a3d6f);
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,255,0,0.3);
+        }
+
+        .lidar-scan {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            border: 2px solid rgba(0,255,0,0.3);
+            border-radius: 50%;
+            animation: scan 2s linear infinite;
+        }
+
+        .lidar-scan::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff00, transparent);
+            transform-origin: left center;
+            animation: sweep 2s linear infinite;
+        }
+
+        @keyframes sweep {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .danger-avoided {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: rgba(255,0,0,0.8);
+            color: white;
+            border-radius: 10px;
+            font-weight: bold;
+            animation: flash 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes flash {
+            0% { opacity: 0.3; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(255,215,0,0.05);
+            border-radius: 20px;
+            border: 2px solid rgba(255,215,0,0.3);
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,215,0,0.03));
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00ff00, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+
+        /* Interactive Comparison */
+        .comparison-section {
+            background: radial-gradient(ellipse at center, rgba(255,215,0,0.1) 0%, transparent 50%);
+            padding: 80px 20px;
+        }
+
+        .comparison-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, #ffd700, #ff4500, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: slideGradient 3s ease-in-out infinite;
+        }
+
+        @keyframes slideGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 40px;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .comparison-card {
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,215,0,0.03));
+            border-radius: 20px;
+            border: 2px solid rgba(255,215,0,0.4);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-card::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 50%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(255,215,0,0.3);
+        }
+
+        .vs-divider {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ffd700;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Call to Action */
+        .cta-section {
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), transparent);
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ffd700, #ff4500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #ff4500, #ffd700, #ff4500);
+            background-size: 200% 100%;
+            border: none;
+            padding: 20px 60px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            color: white;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: bold;
+            transition: all 0.4s ease;
+            animation: shimmerButton 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmerButton {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 20px 50px rgba(255,215,0,0.5);
+        }
+
+        /* Fun Facts Ticker */
+        .ticker {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.9);
+            padding: 15px;
+            border-top: 2px solid #ffd700;
+            z-index: 999;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 30s linear infinite;
+            white-space: nowrap;
+            color: #ffd700;
+            font-size: 1.1rem;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3rem; }
+            .story-content { grid-template-columns: 1fr; gap: 30px; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .vs-divider { display: none; }
+            .impact-counter { flex-direction: column; gap: 30px; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease;
+        }
+
+        .slide-in-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s ease;
+        }
+
+        .slide-in-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section with Impact -->
+    <section class="hero" id="section-0">
+        <h1 class="hero-title">SH@W</h1>
+        <p class="hero-subtitle">Two Engineers. Two Centuries. Millions of Lives Changed.</p>
+        <div class="impact-counter">
+            <div class="counter-box">
+                <div class="counter-number" id="infrastructure-counter">0</div>
+                <div class="counter-label">Cities Built by Caterpillar</div>
+            </div>
+            <div class="counter-box">
+                <div class="counter-number" id="lives-counter">0</div>
+                <div class="counter-label">Lives to Save Annually</div>
+            </div>
+        </div>
+        <button class="cta-button" onclick="scrollToSection(1)" style="margin-top: 40px;">
+            Discover the Revolution
+        </button>
+    </section>
+
+    <!-- Timeline Navigation -->
+    <div class="timeline-nav">
+        <div class="timeline-dot active" data-label="Start Here" onclick="scrollToSection(0)"></div>
+        <div class="timeline-dot" data-label="1904: The Mud Crisis" onclick="scrollToSection(1)"></div>
+        <div class="timeline-dot" data-label="Moving Mountains" onclick="scrollToSection(2)"></div>
+        <div class="timeline-dot" data-label="2025: The Safety Crisis" onclick="scrollToSection(3)"></div>
+        <div class="timeline-dot" data-label="Battle for Lives" onclick="scrollToSection(4)"></div>
+        <div class="timeline-dot" data-label="Your Role" onclick="scrollToSection(5)"></div>
+    </div>
+
+    <!-- Section 1: The Impossible Challenge -->
+    <section class="story-section" id="section-1">
+        <div class="story-content fade-in">
+            <div class="story-text slide-in-left">
+                <span class="era-badge">1904 - The Crisis</span>
+                <h2 class="story-title">When Progress Literally Got Stuck</h2>
+                <p class="story-description">
+                    Picture this: California's Central Valley, 1904. Farmers watch helplessly as 
+                    <span class="impact-stat">$50,000 machines</span> (that's $1.7 million today!) 
+                    sink into the earth like ships in quicksand. Steam tractors with 
+                    <span class="impact-stat">9-foot wheels</span> weighing 
+                    <span class="impact-stat">40 tons</span> are swallowed whole by the soft soil.
+                </p>
+                <p class="story-description" style="margin-top: 20px;">
+                    Benjamin Holt faced a choice: accept that vast swaths of America would remain 
+                    unfarmable, or invent something the world had never seen. His decision would 
+                    feed billions and build the modern world.
+                </p>
+            </div>
+            <div class="visual-box">
+                <div class="bulldozer-scene">
+                    <div class="mountain"></div>
+                    <div class="bulldozer"></div>
+                    <div style="position: absolute; top: 20px; left: 20px; color: white; font-weight: bold;">
+                        Watch the Mountain Move!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: The Breakthrough -->
+    <section class="story-section" id="section-2">
+        <div class="story-content fade-in">
+            <div class="visual-box" style="background: radial-gradient(ellipse at center, rgba(255,215,0,0.2) 0%, transparent 60%);">
+                <div style="text-align: center; padding: 40px;">
+                    <h3 style="color: #ffd700; font-size: 2.5rem; margin-bottom: 30px;">The Moment Everything Changed</h3>
+                    <div style="font-size: 1.3rem; line-height: 2; opacity: 0.9;">
+                        "It crawls like a caterpillar!" - Charles Clements, 1904
+                    </div>
+                    <div class="stats-grid" style="margin-top: 40px; background: transparent; border: none;">
+                        <div class="stat-card">
+                            <div class="stat-number">75%</div>
+                            <div class="stat-label">Less Ground Pressure</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">500%</div>
+                            <div class="stat-label">More Terrain Accessible</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">100+</div>
+                            <div class="stat-label">Countries Transformed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">∞</div>
+                            <div class="stat-label">Impossible Made Possible</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="story-text slide-in-right">
+                <span class="era-badge">The Revolution</span>
+                <h2 class="story-title">Tracks That Built Civilization</h2>
+                <p class="story-description">
+                    Holt didn't just solve the mud problem. He unlocked humanity's ability to:
+                </p>
+                <ul style="margin: 20px 0; line-height: 2;">
+                    <li>Build the <span class="impact-stat">Panama Canal</span></li>
+                    <li>Construct <span class="impact-stat">Every Major Dam</span> in America</li>
+                    <li>Clear land for <span class="impact-stat">10,000+ Cities</span></li>
+                    <li>Feed <span class="impact-stat">8 Billion People</span> through mechanized farming</li>
+                </ul>
+                <p class="story-description">
+                    Without Holt's tracks, half the infrastructure you see today wouldn't exist. 
+                    Mountains stayed where nature put them until Caterpillar came along.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: The Modern Crisis -->
+    <section class="story-section" id="section-3">
+        <div class="story-content fade-in">
+            <div class="story-text slide-in-left">
+                <span class="era-badge" style="background: linear-gradient(135deg, #ff0000, #ff4500);">2025 - The Emergency</span>
+                <h2 class="story-title">38,000 Reasons to Act</h2>
+                <p class="story-description">
+                    That's how many Americans die in traffic accidents every year. 
+                    <span class="impact-stat">One person every 14 minutes</span>. 
+                    It's the leading cause of death for people under 30.
+                </p>
+                <p class="story-description" style="margin-top: 20px; font-weight: bold; color: #ff6b6b;">
+                    Shaw, watching Caterpillar's autonomous mining trucks operate with 
+                    <span class="impact-stat">zero fatalities</span> over millions of hours, 
+                    had his "Holt moment": Why should only mining sites be safe?
+                </p>
+                <p class="story-description" style="margin-top: 20px;">
+                    The answer: They shouldn't. Every Scout truck equipped with SH@W's 
+                    autonomy package is a life-saving machine on wheels.
+                </p>
+            </div>
+            <div class="visual-box">
+                <div class="scout-scene">
+                    <div class="lidar-scan"></div>
+                    <div class="scout-vehicle">
+                        <div style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); 
+                                    background: #00ff00; padding: 5px 10px; border-radius: 5px; 
+                                    font-size: 0.8rem; white-space: nowrap;">
+                            COLLISION AVOIDED
+                        </div>
+                    </div>
+                    <div class="danger-avoided">THREAT DETECTED</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Epic Comparison Section -->
+    <section class="comparison-section" id="section-4">
+        <h2 class="comparison-title">Two Rebels Against the Impossible</h2>
+        <div class="comparison-grid">
+            <div class="comparison-card slide-in-left">
+                <h3 style="font-size: 2rem; color: #ffd700; margin-bottom: 30px;">
+                    Benjamin Holt - 1904
+                </h3>
+                <div style="font-size: 1.2rem; line-height: 2;">
+                    <p>🚜 <strong>Enemy:</strong> Impassable terrain</p>
+                    <p>⚙️ <strong>Weapon:</strong> Continuous tracks</p>
+                    <p>🏗️ <strong>Victory:</strong> Built the modern world</p>
+                    <p>🌍 <strong>Impact:</strong> Fed billions, connected continents</p>
+                    <p style="margin-top: 20px; padding: 15px; background: rgba(0,255,0,0.1); border-radius: 10px;">
+                        <strong>Legacy:</strong> Every road, dam, and farm you see exists because 
+                        machines could finally go anywhere.
+                    </p>
+                </div>
+            </div>
+            <div class="vs-divider">⚡VS⚡</div>
+            <div class="comparison-card slide-in-right">
+                <h3 style="font-size: 2rem; color: #ffd700; margin-bottom: 30px;">
+                    Shaw - 2025
+                </h3>
+                <div style="font-size: 1.2rem; line-height: 2;">
+                    <p>🚗 <strong>Enemy:</strong> Human driving errors</p>
+                    <p>🤖 <strong>Weapon:</strong> Autonomous intelligence</p>
+                    <p>💚 <strong>Victory:</strong> Zero traffic deaths</p>
+                    <p>👨‍👩‍👧‍👦 <strong>Impact:</strong> Save 38,000 lives annually</p>
+                    <p style="margin-top: 20px; padding: 15px; background: rgba(0,255,0,0.1); border-radius: 10px;">
+                        <strong>Mission:</strong> Every Scout equipped with SH@W is a guardian angel 
+                        preventing tragedies before they happen.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Future Section -->
+    <section class="story-section" id="section-5">
+        <div style="max-width: 1000px; text-align: center;" class="fade-in">
+            <span class="era-badge" style="background: linear-gradient(135deg, #00ff00, #ffd700);">The Future You Choose</span>
+            <h2 class="story-title" style="font-size: 3.5rem; margin: 40px 0;">
+                What If Every Vehicle Could Save Lives?
+            </h2>
+            
+            <div class="stats-grid" style="max-width: 800px; margin: 40px auto;">
+                <div class="stat-card">
+                    <div class="stat-number">94%</div>
+                    <div class="stat-label">Crashes Caused by Human Error</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1.3M</div>
+                    <div class="stat-label">Global Deaths Per Year</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50M</div>
+                    <div class="stat-label">Injuries Annually</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">SH@W's Acceptable Death Toll</div>
+                </div>
+            </div>
+
+            <p style="font-size: 1.4rem; line-height: 2; margin: 40px auto; max-width: 800px; opacity: 0.95;">
+                Just as Holt's tracks turned impossible terrain into productive land, 
+                Shaw's autonomy packages will transform dangerous roads into safe passages. 
+                The ironies are perfect: An IH competitor's engineer invented Caterpillar by 
+                modifying tractors. Now a Caterpillar engineer will revolutionize IH Scouts.
+            </p>
+
+            <div style="margin-top: 60px; padding: 40px; background: rgba(255,215,0,0.1); border-radius: 20px;">
+                <h3 style="color: #ffd700; font-size: 2rem; margin-bottom: 20px;">The Choice Is Yours</h3>
+                <p style="font-size: 1.2rem; margin-bottom: 30px;">
+                    Every Scout equipped with SH@W technology is a vote for a future where 
+                    getting home safe isn't luck—it's guaranteed.
+                </p>
+                <button class="cta-button" onclick="showImpact()">
+                    See Your Impact
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <h2 class="cta-title">Ready to Change History?</h2>
+        <p style="font-size: 1.3rem; max-width: 700px; margin: 0 auto 40px; opacity: 0.9;">
+            Holt didn't wait for someone else to solve the mud problem. 
+            Shaw isn't waiting for someone else to end traffic deaths. 
+            What about you?
+        </p>
+        <button class="cta-button" onclick="alert('Welcome to the SH@W Revolution! Together, we save lives.')">
+            Join the SH@W Revolution
+        </button>
+    </section>
+
+    <!-- Fun Facts Ticker -->
+    <div class="ticker">
+        <div class="ticker-content">
+            🚜 Fun Fact: Caterpillar machines helped build 70% of the world's infrastructure! 
+            🤖 By 2030, SH@W aims to prevent 100,000 accidents annually! 
+            🏗️ The first Caterpillar tractor could pull 25 tons through mud! 
+            🚗 Every 12 seconds, someone is injured in a car accident - SH@W can stop this! 
+            💡 Holt's tracks increased farmable land by 40 million acres! 
+            🛡️ SH@W's sensors react 100x faster than human reflexes! 
+            🌍 Caterpillar operates in 180 countries! 
+            ⚡ Autonomous vehicles could save $190 billion in healthcare costs! 
+            🚜 Fun Fact: Caterpillar machines helped build 70% of the world's infrastructure!
+        </div>
+    </div>
+
+    <script>
+        // Animated counters
+        function animateCounter(id, target, suffix = '') {
+            const element = document.getElementById(id);
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current).toLocaleString() + suffix;
+            }, 20);
+        }
+
+        // Start counters when page loads
+        setTimeout(() => {
+            animateCounter('infrastructure-counter', 10000, '+');
+            animateCounter('lives-counter', 38000);
+        }, 500);
+
+        // Smooth scrolling
+        function scrollToSection(index) {
+            const section = document.getElementById('section-' + index);
+            section.scrollIntoView({ behavior: 'smooth' });
+            
+            // Update timeline
+            document.querySelectorAll('.timeline-dot').forEach(dot => {
+                dot.classList.remove('active');
+            });
+            document.querySelectorAll('.timeline-dot')[index].classList.add('active');
+        }
+
+        // Show impact function
+        function showImpact() {
+            const years = prompt("How many years will you drive a SH@W-equipped Scout?", "10");
+            if (years) {
+                const accidents_prevented = Math.floor(years * 2.3);
+                const lives_influenced = Math.floor(years * 47);
+                alert(`Amazing! In ${years} years, your SH@W Scout could:\n\n` +
+                      `🛡️ Prevent ${accidents_prevented} potential accidents\n` +
+                      `👨‍👩‍👧‍👦 Protect ${lives_influenced} people (passengers, other drivers, pedestrians)\n` +
+                      `💚 Save approximately $${(years * 12000).toLocaleString()} in societal costs\n\n` +
+                      `You're not just buying a truck. You're investing in humanity's safety!`);
+            }
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Update timeline based on scroll
+        let ticking = false;
+        function updateTimeline() {
+            const sections = document.querySelectorAll('.story-section, .hero, .comparison-section, .cta-section');
+            const scrollPosition = window.scrollY + window.innerHeight / 2;
+
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+
+                if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+                    document.querySelectorAll('.timeline-dot').forEach(dot => {
+                        dot.classList.remove('active');
+                    });
+                    if (document.querySelectorAll('.timeline-dot')[index]) {
+                        document.querySelectorAll('.timeline-dot')[index].classList.add('active');
+                    }
+                }
+            });
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateTimeline);
+                ticking = true;
+            }
+        });
+
+        // Parallax effect for hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+                hero.style.opacity = 1 - scrolled / 1000;
+            }
+        });
+
+        // Random safety facts
+        const safetyFacts = [
+            "A SH@W sensor suite processes 1 billion data points per second!",
+            "Caterpillar machines have moved enough earth to bury Mount Everest 10 times!",
+            "Autonomous vehicles never get tired, distracted, or angry!",
+            "Holt's first caterpillar track was made from wooden planks!",
+            "SH@W technology can detect a child's ball rolling into the street 200 feet away!"
+        ];
+
+        setInterval(() => {
+            const fact = safetyFacts[Math.floor(Math.random() * safetyFacts.length)];
+            console.log('🌟 Amazing Fact:', fact);
+        }, 10000);
+    </script>
+</body>
+</html>

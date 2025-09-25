@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Corn-Cubit Protocol: An Interactive Exploration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Earthy Harmony -->
+    <!-- Application Structure Plan: A tab-based SPA structure was chosen to deconstruct the dense, multi-disciplinary research proposal into digestible, thematic sections: Overview, The Protocol, Global Impact, Cultural Resonance, and Research Roadmap. This non-linear approach allows users (e.g., funders, academics, engineers) to navigate directly to their area of interest, enhancing usability and comprehension. Interactions like dropdowns for regional data and clickable cards for cultural archetypes encourage exploration rather than passive reading. This structure prioritizes user-led discovery of the protocol's technical, social, and mythic layers. -->
+    <!-- Visualization & Content Choices: 
+        - Overview: Goal: Inform. Method: Hero section with key stats. Interaction: Static intro. Justification: Immediately establishes the project's core value proposition.
+        - The Protocol: Goal: Organize/Inform. Method: HTML/Tailwind diagram for the Corn-Cubit breakdown; Chart.js bar chart for unit conversion. Interaction: Clickable diagram elements. Justification: Visually explains the core technical concept and its relationship to existing standards without using SVG.
+        - Global Impact: Goal: Compare. Method: Dynamic Chart.js donut and bar charts. Interaction: Dropdown to filter data by region. Justification: Interactively demonstrates the protocol's adaptability and equity benefits across diverse environments.
+        - Cultural Resonance: Goal: Organize. Method: HTML/Tailwind clickable cards. Interaction: Clicking a card reveals detailed text. Justification: Connects abstract mythological concepts to the protocol in a structured, engaging way.
+        - Research Roadmap: Goal: Show Progress. Method: HTML/Tailwind progress bars and a simple table. Interaction: Static display. Justification: Clearly and concisely summarizes the project's methodology and status. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #FDFBF8;
+            color: #3D3522;
+        }
+        h1, h2, h3 {
+            font-family: 'Merriweather', serif;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active {
+            color: #4A6A59;
+            border-bottom-color: #4A6A59;
+        }
+        .nav-link:hover {
+            color: #4A6A59;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="min-h-screen bg-[#FDFBF8]">
+        <header class="bg-[#FDFBF8]/80 backdrop-blur-sm border-b border-[#E1C16E]/50 sticky top-0 z-10">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <span class="text-2xl font-bold text-[#4A6A59]">🌽</span>
+                        <h1 class="text-xl font-bold ml-2">Corn-Cubit Protocol</h1>
+                    </div>
+                    <nav id="main-nav" class="hidden md:flex space-x-8">
+                        <a href="#" class="nav-link active" data-target="overview">Overview</a>
+                        <a href="#" class="nav-link" data-target="protocol">The Protocol</a>
+                        <a href="#" class="nav-link" data-target="impact">Global Impact</a>
+                        <a href="#" class="nav-link" data-target="culture">Cultural Resonance</a>
+                        <a href="#" class="nav-link" data-target="roadmap">Research Roadmap</a>
+                    </nav>
+                    <div class="md:hidden">
+                        <select id="mobile-nav" class="bg-white border border-gray-300 rounded-md py-2 px-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4A6A59]">
+                            <option value="overview">Overview</option>
+                            <option value="protocol">The Protocol</option>
+                            <option value="impact">Global Impact</option>
+                            <option value="culture">Cultural Resonance</option>
+                            <option value="roadmap">Research Roadmap</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+            
+            <section id="overview" class="content-section active">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#4A6A59] mb-4">A Universal Standard for Autonomous Agriculture</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-8">
+                        The Corn-Cubit Protocol (CCP) proposes a biologically-grounded unit of measure—based on a canonical 10-foot corn stalk—to create a universal language for autonomous agricultural equipment. This system aims to unite machine precision with human-verifiable standards, ensuring safety, equity, and resilience from terrestrial fields to extraterrestrial habitats.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mt-12">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-[#E1C16E]">
+                        <h3 class="text-xl font-bold mb-2">Global Equity</h3>
+                        <p>Empowering low-resource farmers to verify autonomous work with simple tools, bridging the digital divide.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-[#4A6A59]">
+                        <h3 class="text-xl font-bold mb-2">Machine Cooperation</h3>
+                        <p>A shared protocol for safe and efficient communication between planters, drones, and harvesters.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-[#E1C16E]">
+                        <h3 class="text-xl font-bold mb-2">Future-Proof</h3>
+                        <p>A scalable standard designed for agriculture on Earth, Mars, and beyond, adapting to any environment.</p>
+                    </div>
+                </div>
+                <div class="mt-16 bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-6">Civilizational Theology: The Chain of Stewardship</h3>
+                    <p class="text-center text-gray-600 mb-8">This research situates autonomous machines within a mythic arc of inheritance. The authority to measure and cultivate prosperity flows from raw nature to divine order, to human stewardship, and now to automated systems. The Corn-Cubit ensures this inheritance is rooted in life, not abstract code.</p>
+                    <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 text-center">
+                        <div class="flex items-center"><span class="text-2xl mr-2">🌋</span><span class="font-bold">Titans</span><span class="text-gray-400 ml-4">&rarr;</span></div>
+                        <div class="flex items-center"><span class="text-2xl mr-2">👑</span><span class="font-bold">Gods</span><span class="text-gray-400 ml-4">&rarr;</span></div>
+                        <div class="flex items-center"><span class="text-2xl mr-2">🧑‍🌾</span><span class="font-bold">Man</span><span class="text-gray-400 ml-4">&rarr;</span></div>
+                        <div class="flex items-center"><span class="text-2xl mr-2">🤖</span><span class="font-bold">Machine</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="protocol" class="content-section">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#4A6A59] mb-4">Defining the Corn-Cubit</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-8">
+                        The protocol is built upon a hierarchical, biologically-derived measurement system. This structure allows for both macro-level field planning and micro-level seed placement to be described in the same intuitive language, which is as understandable to a machine as it is to a farmer with a measuring rod.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 text-center">Hierarchical Breakdown</h3>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-[#FDFBF8] rounded-md border border-gray-200">
+                                <h4 class="font-bold">1 Corn-Cubit</h4>
+                                <p class="text-sm text-gray-600">A canonical 10-foot corn stalk.</p>
+                            </div>
+                            <div class="pl-6 border-l-2 border-[#E1C16E]">
+                                <div class="p-3 bg-white rounded-md border border-gray-200 mb-2">
+                                    <h4 class="font-bold">1 Foot</h4>
+                                    <p class="text-sm text-gray-600">1/10th of a Corn-Cubit.</p>
+                                </div>
+                                <div class="p-3 bg-white rounded-md border border-gray-200 mb-2">
+                                    <h4 class="font-bold">1 Cob-Length</h4>
+                                    <p class="text-sm text-gray-600">A subdivision for row spacing.</p>
+                                </div>
+                                <div class="p-3 bg-white rounded-md border border-gray-200">
+                                    <h4 class="font-bold">1 Kernel-Width</h4>
+                                    <p class="text-sm text-gray-600">The smallest unit for precision planting depth and spacing.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 text-center">Unit Conversion Framework</h3>
+                        <div class="chart-container">
+                            <canvas id="conversionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-12 bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-6">The "Field Ark" Manifest</h3>
+                    <p class="text-center text-gray-600 mb-8">Inspired by the Ark of the Covenant holding Aaron's rod (a cubit standard), the "Field Ark" is a cryptographically verifiable calibration record. It ensures all autonomous machines on a farm are synchronized to the same Corn-Cubit standard, preventing errors and enhancing safety.</p>
+                     <div class="flex flex-col md:flex-row items-stretch justify-center space-y-4 md:space-y-0 md:space-x-4 text-center">
+                        <div class="p-4 rounded-lg bg-gray-50 border w-full md:w-1/3">
+                            <h4 class="font-bold">1. Calibration</h4>
+                            <p class="text-sm text-gray-600">Master machine establishes the farm's canonical Corn-Cubit.</p>
+                        </div>
+                        <div class="flex items-center justify-center text-2xl text-gray-400">&rarr;</div>
+                        <div class="p-4 rounded-lg bg-gray-50 border w-full md:w-1/3">
+                            <h4 class="font-bold">2. Manifest Creation</h4>
+                            <p class="text-sm text-gray-600">A signed digital "Field Ark" is created with geometry and safety rules.</p>
+                        </div>
+                         <div class="flex items-center justify-center text-2xl text-gray-400">&rarr;</div>
+                        <div class="p-4 rounded-lg bg-gray-50 border w-full md:w-1/3">
+                            <h4 class="font-bold">3. Synchronization</h4>
+                            <p class="text-sm text-gray-600">Drones, tractors, and harvesters all sync to the manifest before operation.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="impact" class="content-section">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#4A6A59] mb-4">Equity, Resilience & Global Reach</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-8">
+                        The Corn-Cubit Protocol is designed not just for high-tech farms, but as a bridge to bring autonomous agriculture to low-resource settings. Its manual verifiability ensures resilience and empowers farmers who lack access to expensive digital tools.
+                    </p>
+                </div>
+                <div class="flex justify-center mb-8">
+                    <div class="w-full md:w-1/3">
+                        <label for="region-selector" class="block text-sm font-medium text-gray-700">Select a Trial Region:</label>
+                        <select id="region-selector" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#4A6A59] focus:border-[#4A6A59] sm:text-sm rounded-md">
+                            <option value="midwest">Midwest U.S.A.</option>
+                            <option value="africa">Sub-Saharan Africa</option>
+                            <option value="mars">Mars/Lunar Analog</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+                    <div id="region-info" class="lg:col-span-2 bg-white p-6 rounded-lg shadow-lg">
+                        
+                    </div>
+                    <div class="lg:col-span-3 bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 text-center">Verification Parity & Adoption Potential</h3>
+                        <div class="chart-container">
+                            <canvas id="parityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="culture" class="content-section">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#4A6A59] mb-4">Mythic & Cultural Framing</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-8">
+                        For technology to be trusted and adopted, it must resonate with cultural values. The CCP is framed within timeless archetypes of stewardship, legitimacy, and abundance, transforming a technical standard into a "sacred protocol" that accelerates trust and safe practices.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="culture-cards">
+                    
+                </div>
+                <div id="culture-details" class="mt-8 bg-white p-6 rounded-lg shadow-lg min-h-[120px]">
+                    <p class="text-gray-600 italic">Click on a card above to explore its connection to the protocol.</p>
+                </div>
+            </section>
+
+            <section id="roadmap" class="content-section">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#4A6A59] mb-4">Research & Development Roadmap</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-8">
+                        This project follows a multi-disciplinary methodology, combining literature reviews, advanced simulation, diverse field trials, and sociocultural studies to ensure the protocol is robust, equitable, and culturally resonant.
+                    </p>
+                </div>
+
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-6">Project Phases & Progress</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-base font-medium text-[#4A6A59]">Literature Review</span>
+                                <span class="text-sm font-medium text-[#4A6A59]">90%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-[#4A6A59] h-2.5 rounded-full" style="width: 90%"></div>
+                            </div>
+                            <p class="text-sm mt-1 text-gray-500">Analysis of ancient measures, ISO 11783, and human factors research.</p>
+                        </div>
+                         <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-base font-medium text-[#E1C16E]">ROS/Gazebo Simulation</span>
+                                <span class="text-sm font-medium text-[#E1C16E]">65%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-[#E1C16E] h-2.5 rounded-full" style="width: 65%"></div>
+                            </div>
+                            <p class="text-sm mt-1 text-gray-500">Modeling CCP geometry, communication protocols, and conflict resolution.</p>
+                        </div>
+                         <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-base font-medium text-[#4A6A59]">Field Trials</span>
+                                <span class="text-sm font-medium text-[#4A6A59]">25%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-[#4A6A59] h-2.5 rounded-full" style="width: 25%"></div>
+                            </div>
+                             <p class="text-sm mt-1 text-gray-500">Deployment in diverse geographical and technological environments.</p>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-base font-medium text-[#E1C16E]">Sociocultural Study</span>
+                                <span class="text-sm font-medium text-[#E1C16E]">15%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-[#E1C16E] h-2.5 rounded-full" style="width: 15%"></div>
+                            </div>
+                            <p class="text-sm mt-1 text-gray-500">Ethnographic interviews with farmers, engineers, and faith leaders.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileNav = document.getElementById('mobile-nav');
+            const contentSections = document.querySelectorAll('.content-section');
+            let conversionChart, parityChart;
+
+            const data = {
+                regions: {
+                    midwest: {
+                        title: 'Midwest U.S.A.',
+                        description: 'In the high-tech environment of the American Midwest, the CCP focuses on interoperability between equipment from different manufacturers and enhancing the precision of large-scale hybrid planting. Manual verification serves as a crucial fallback during GPS or software failure.',
+                        parity: [98, 2],
+                        adoption: 75,
+                        labels: ['Machine Precision', 'Manual Deviation']
+                    },
+                    africa: {
+                        title: 'Sub-Saharan Africa',
+                        description: 'Here, the CCP is a tool for equity. It enables the adoption of lower-cost autonomous systems by smallholder farmers. The ability to manually verify planting depth and density with a simple rod is paramount for building trust and ensuring operational continuity without expensive diagnostic tools.',
+                        parity: [95, 5],
+                        adoption: 85,
+                        labels: ['Machine Precision', 'Manual Deviation']
+                    },
+                    mars: {
+                        title: 'Mars/Lunar Analog',
+                        description: 'In closed-loop hydroponic habitats, precision is critical for survival. The CCP must adapt to altered growth heights due to different gravity and lighting. It serves as a resilient, non-digital verification method, vital in environments where system failure can be catastrophic.',
+                        parity: [99, 1],
+                        adoption: 95,
+                        labels: ['Machine Precision', 'Manual Deviation']
+                    }
+                },
+                culture: [
+                    {
+                        id: 'aaron',
+                        icon: '🌿',
+                        title: 'Aaron\'s Staff',
+                        short: 'Legitimacy & Measurement',
+                        details: 'Just as Aaron\'s budding staff confirmed his priestly legitimacy and served as a divine cubit, the CCP provides a verifiable, "legitimate" standard for machine work. Calibration rituals like the "Field Ark" manifest echo this ancient act of establishing a trusted measure.'
+                    },
+                    {
+                        id: 'freyr',
+                        icon: '👑',
+                        title: 'Freyr\'s Kingship',
+                        short: 'Peace & Abundance',
+                        details: 'Associated with peaceful abundance and fertility, the Norse god Freyr represents prosperity achieved through stewardship, not conflict. The CCP embodies this by creating a cooperative, non-proprietary standard where machines work together for shared abundance. "Freyr-checks" in the code could prioritize sustainable yields over aggressive efficiency.'
+                    },
+                    {
+                        id: 'baal',
+                        icon: '⚡',
+                        title: 'Baal\'s Lordship',
+                        short: 'Fertility & Order',
+                        details: 'Baal, the ancient Levantine lord of fertility and storms, brought order to the chaotic forces of nature to ensure bountiful harvests. The CCP acts as a modern ordering principle, structuring the work of autonomous machines to maximize the fertility and potential of the land.'
+                    },
+                    {
+                        id: 'civic',
+                        icon: '🇺🇸',
+                        title: 'American Civic Ethos',
+                        short: 'Democracy & Prosperity',
+                        details: 'The protocol reflects American ideals of democratic access and shared prosperity. By being a non-proprietary standard that is verifiable with simple tools, it prevents vendor lock-in and ensures the benefits of autonomy are accessible to all, not just large corporations, fostering a more democratic technological landscape.'
+                    }
+                ]
+            };
+            
+            function switchTab(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.dataset.target === targetId) {
+                        link.classList.add('active');
+                    }
+                });
+                
+                if(mobileNav.value !== targetId) {
+                    mobileNav.value = targetId;
+                }
+
+                if (targetId === 'protocol') initConversionChart();
+                if (targetId === 'impact') {
+                    updateImpactSection('midwest');
+                }
+                if (targetId === 'culture') {
+                    renderCultureCards();
+                }
+            }
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    switchTab(e.target.dataset.target);
+                });
+            });
+
+            mobileNav.addEventListener('change', (e) => {
+                switchTab(e.target.value);
+            });
+
+            function initConversionChart() {
+                const ctx = document.getElementById('conversionChart');
+                if (!ctx) return;
+                if (conversionChart) conversionChart.destroy();
+                
+                conversionChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Length (1 Corn-Cubit)'],
+                        datasets: [
+                            {
+                                label: 'Feet',
+                                data: [10],
+                                backgroundColor: '#4A6A59',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Meters',
+                                data: [3.048],
+                                backgroundColor: '#E1C16E',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '1 Corn-Cubit vs. Imperial & Metric'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Value'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const regionSelector = document.getElementById('region-selector');
+            regionSelector.addEventListener('change', (e) => {
+                updateImpactSection(e.target.value);
+            });
+
+            function updateImpactSection(regionKey) {
+                const regionData = data.regions[regionKey];
+                
+                const infoEl = document.getElementById('region-info');
+                infoEl.innerHTML = `
+                    <h3 class="text-2xl font-bold mb-4">${regionData.title}</h3>
+                    <p class="text-gray-700">${regionData.description}</p>
+                `;
+
+                const ctx = document.getElementById('parityChart');
+                 if (!ctx) return;
+                if (parityChart) parityChart.destroy();
+
+                parityChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Verification Parity', 'Adoption Potential'],
+                        datasets: [
+                             {
+                                label: regionData.labels[0],
+                                data: [regionData.parity[0], null],
+                                backgroundColor: '#4A6A59',
+                                stack: 'Stack 0',
+                            },
+                             {
+                                label: regionData.labels[1],
+                                data: [regionData.parity[1], null],
+                                backgroundColor: '#D1D5DB',
+                                stack: 'Stack 0',
+                            },
+                            {
+                                label: 'Potential',
+                                data: [null, regionData.adoption],
+                                backgroundColor: '#E1C16E',
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: `Analysis for ${regionData.title}`
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y + '%';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                stacked: true,
+                            },
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: 'Percentage (%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function renderCultureCards() {
+                const container = document.getElementById('culture-cards');
+                const detailsEl = document.getElementById('culture-details');
+                if(container.childElementCount > 0) return;
+
+                data.culture.forEach(cardData => {
+                    const card = document.createElement('div');
+                    card.className = 'card bg-white p-4 rounded-lg shadow-md cursor-pointer border-t-4 border-transparent';
+                    card.dataset.id = cardData.id;
+                    card.innerHTML = `
+                        <div class="text-3xl">${cardData.icon}</div>
+                        <h3 class="text-lg font-bold mt-2">${cardData.title}</h3>
+                        <p class="text-sm text-gray-500">${cardData.short}</p>
+                    `;
+                    container.appendChild(card);
+                });
+                
+                container.addEventListener('click', (e) => {
+                    const card = e.target.closest('.card');
+                    if(card) {
+                        const cardId = card.dataset.id;
+                        const cardData = data.culture.find(c => c.id === cardId);
+                        
+                        document.querySelectorAll('#culture-cards .card').forEach(c => {
+                            c.classList.remove('border-[#4A6A59]');
+                        });
+                        card.classList.add('border-[#4A6A59]');
+
+                        detailsEl.innerHTML = `
+                            <h3 class="text-xl font-bold mb-2">${cardData.title}</h3>
+                            <p>${cardData.details}</p>
+                        `;
+                    }
+                });
+            }
+
+            switchTab('overview');
+        });
+    </script>
+
+</body>
+</html>

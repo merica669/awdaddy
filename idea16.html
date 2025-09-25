@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Web3: Your Interactive Journey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --matrix-green: #00ff41;
+            --dark-bg: #0d0208;
+            --light-green: #90ee90;
+            --gradient: linear-gradient(90deg, var(--matrix-green), #00bfff);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--dark-bg);
+            color: var(--light-green);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        #matrix-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header & Navigation */
+        .main-header {
+            background-color: rgba(13, 2, 8, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-header .logo {
+            font-size: 1.5rem;
+            color: var(--matrix-green);
+            font-weight: 700;
+        }
+        
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+
+        .main-nav ul li {
+            margin-left: 2rem;
+        }
+
+        .main-nav ul li a {
+            color: var(--light-green);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav ul li a:hover {
+            color: var(--matrix-green);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: var(--dark-bg);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 6rem 0;
+            background: radial-gradient(circle, rgba(0, 255, 65, 0.1), transparent 70%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--light-green);
+            margin-bottom: 2rem;
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 0;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #fff;
+        }
+
+        /* Welcome Section */
+        .concept-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 255, 65, 0.2);
+        }
+        
+        .card i {
+            font-size: 3rem;
+            color: var(--matrix-green);
+            margin-bottom: 1rem;
+        }
+        
+        .card h3 {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+        
+        .network-diagram {
+            text-align: center;
+        }
+
+        .network-diagram img {
+            max-width: 100%;
+            height: auto;
+            filter: invert(1) hue-rotate(100deg);
+        }
+
+        /* Wallet Section */
+        .wallet-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            padding: 3rem;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+            text-align: center;
+        }
+
+        .wallet-options button {
+            margin: 0 1rem;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+        
+        .security-tip {
+            background-color: rgba(255, 255, 0, 0.1);
+            border: 1px solid yellow;
+            color: yellow;
+            padding: 1rem;
+            border-radius: 5px;
+            max-width: 600px;
+            margin: 2rem auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .security-tip i {
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Explore dApps Section */
+        .dapps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        /* Accordion */
+        .accordion-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            margin-bottom: 1rem;
+            border-radius: 5px;
+        }
+        
+        .accordion-title {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .accordion-title::after {
+            content: '\f078'; /* Font Awesome down arrow */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-title::after {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 1.5rem;
+        }
+        
+        .accordion-content p {
+            padding-bottom: 1.5rem;
+        }
+
+        /* Knowledge Check */
+        .quiz-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quiz-question {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .quiz-options ul {
+            list-style: none;
+        }
+        
+        .quiz-options li {
+            background-color: rgba(0, 255, 65, 0.1);
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-options li:hover {
+            border-color: var(--matrix-green);
+        }
+
+        /* Final CTA & Footer */
+        .final-cta {
+            text-align: center;
+            background: none;
+        }
+        
+        .final-cta h2 {
+            font-size: 3rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+        
+        .main-footer {
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .progress-indicator {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 50;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.active {
+            background-color: var(--matrix-green);
+            transform: scale(1.5);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-background"></canvas>
+
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">Web3 Journey</div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#welcome">Welcome</a></li>
+                    <li><a href="#wallet">Your Wallet</a></li>
+                    <li><a href="#dapps">Explore dApps</a></li>
+                    <li><a href="#demo">Live Demo</a></li>
+                    <li><a href="#knowledge">Knowledge Check</a></li>
+                </ul>
+            </nav>
+            <a href="web3.html" class="btn btn-primary">Launch App</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="welcome-hero">
+            <div class="container">
+                <h1>Welcome to Web3: Your Interactive Journey</h1>
+                <p>Learn the fundamentals of the new internet, one step at a time.</p>
+            </div>
+        </section>
+
+        <section id="welcome" class="section">
+            <div class="container">
+                <div class="concept-cards">
+                    <div class="card">
+                        <i class="fa-solid fa-users-viewfinder"></i>
+                        <h3>What is Decentralization?</h3>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-cubes"></i>
+                        <h3>What is a Blockchain?</h3>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-key"></i>
+                        <h3>True Digital Ownership</h3>
+                    </div>
+                </div>
+                <div class="network-diagram">
+                    <h2 class="section-title">Web2 (Centralized) vs. Web3 (Decentralized)</h2>
+                    <svg width="800" height="300" viewBox="0 0 800 300" style="max-width: 100%; height: auto;">
+                        <defs>
+                            <style>
+                                .node { fill: #90ee90; }
+                                .center-node { fill: #00ff41; }
+                                .line { stroke: rgba(0, 255, 65, 0.5); stroke-width: 1; }
+                                .text { font-family: 'Roboto Mono', monospace; fill: #fff; font-size: 14px; text-anchor: middle; }
+                            </style>
+                        </defs>
+                        <text x="150" y="30" class="text">Web2: Centralized</text>
+                        <circle cx="150" cy="150" r="20" class="center-node"/>
+                        <circle cx="50" cy="70" r="10" class="node"/><line x1="150" y1="150" x2="50" y2="70" class="line"/>
+                        <circle cx="100" cy="60" r="10" class="node"/><line x1="150" y1="150" x2="100" y2="60" class="line"/>
+                        <circle cx="200" cy="60" r="10" class="node"/><line x1="150" y1="150" x2="200" y2="60" class="line"/>
+                        <circle cx="250" cy="70" r="10" class="node"/><line x1="150" y1="150" x2="250" y2="70" class="line"/>
+                        <circle cx="50" cy="230" r="10" class="node"/><line x1="150" y1="150" x2="50" y2="230" class="line"/>
+                        <circle cx="100" cy="240" r="10" class="node"/><line x1="150" y1="150" x2="100" y2="240" class="line"/>
+                        <circle cx="200" cy="240" r="10" class="node"/><line x1="150" y1="150" x2="200" y2="240" class="line"/>
+                        <circle cx="250" cy="230" r="10" class="node"/><line x1="150" y1="150" x2="250" y2="230" class="line"/>
+                        <text x="600" y="30" class="text">Web3: Decentralized</text>
+                        <circle cx="550" cy="100" r="10" class="node" id="n1"/> <circle cx="650" cy="100" r="10" class="node" id="n2"/>
+                        <circle cx="500" cy="170" r="10" class="node" id="n3"/> <circle cx="700" cy="170" r="10" class="node" id="n4"/>
+                        <circle cx="550" cy="240" r="10" class="node" id="n5"/> <circle cx="650" cy="240" r="10" class="node" id="n6"/>
+                        <line x1="550" y1="100" x2="650" y2="100" class="line"/> <line x1="550" y1="100" x2="500" y2="170" class="line"/>
+                        <line x1="650" y1="100" x2="700" y2="170" class="line"/> <line x1="500" y1="170" x2="550" y2="240" class="line"/>
+                        <line x1="700" y1="170" x2="650" y2="240" class="line"/> <line x1="550" y1="240" x2="650" y2="240" class="line"/>
+                        <line x1="650" y1="100" x2="550" y2="240" class="line"/> <line x1="550" y1="100" x2="650" y2="240" class="line"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <section id="wallet" class="section">
+            <div class="container">
+                <h2 class="section-title">Manage Your Digital Identity</h2>
+                <div class="wallet-panel">
+                    <div class="wallet-options">
+                        <button class="btn btn-primary">Connect Existing Wallet</button>
+                        <button class="btn">Create a New Wallet</button>
+                    </div>
+                </div>
+                <div class="security-tip">
+                    <i class="fa-solid fa-lock"></i>
+                    <span><strong>Security Tip:</strong> Never share your secret recovery phrase with anyone.</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="dapps" class="section">
+            <div class="container">
+                <h2 class="section-title">Explore Decentralized Applications</h2>
+                <div class="dapps-grid">
+                    <div class="card">
+                        <i class="fa-solid fa-coins"></i>
+                        <h3>DeFi Sandbox</h3>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-palette"></i>
+                        <h3>NFT Minting Station</h3>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-comments"></i>
+                        <h3>Decentralized Social Hub</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="demo" class="section">
+            <div class="container">
+                <h2 class="section-title">Live Demo</h2>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-title">Real-Time Wallet Activity</div>
+                        <div class="accordion-content">
+                            <p>Watch transactions and interactions as they happen on the blockchain. (Demo Content)</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-title">Cross-Chain Explorer</div>
+                        <div class="accordion-content">
+                            <p>Explore how assets can move between different blockchain networks. (Demo Content)</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-title">Mock Portfolio Manager</div>
+                        <div class="accordion-content">
+                            <p>Create a simulated portfolio to track crypto assets without any risk. (Demo Content)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="knowledge" class="section">
+            <div class="container">
+                <h2 class="section-title">Knowledge Check</h2>
+                <div class="quiz-container">
+                    <h3 class="quiz-question">What is the most important rule for wallet security?</h3>
+                    <div class="quiz-options">
+                        <ul>
+                            <li>Store your recovery phrase on a cloud drive.</li>
+                            <li>Share your phrase with a trusted friend.</li>
+                            <li>Keep your secret recovery phrase offline and private.</li>
+                            <li>Use the same password for everything.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="final-cta" class="section final-cta">
+            <div class="container">
+                <h2>Ready to Dive In?</h2>
+                <a href="web3.html" class="btn btn-primary" style="font-size: 1.25rem; padding: 1rem 3rem;">Explore Web3 Now</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="progress-indicator">
+            <div class="progress-dot" data-section="welcome"></div>
+            <div class="progress-dot" data-section="wallet"></div>
+            <div class="progress-dot" data-section="dapps"></div>
+            <div class="progress-dot" data-section="demo"></div>
+            <div class="progress-dot" data-section="knowledge"></div>
+        </div>
+    </footer>
+
+    <script>
+        // Matrix Rain Background
+        const canvas = document.getElementById('matrix-background');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const rainDrops = [];
+
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+
+        const draw = () => {
+            ctx.fillStyle = 'rgba(13, 2, 8, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+
+        setInterval(draw, 30);
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Accordion
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        accordionItems.forEach(item => {
+            const title = item.querySelector('.accordion-title');
+            const content = item.querySelector('.accordion-content');
+            title.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                accordionItems.forEach(i => {
+                    i.classList.remove('active');
+                    i.querySelector('.accordion-content').style.maxHeight = null;
+                });
+                
+                if (!isActive) {
+                    item.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
+        });
+
+        // Progress Indicator on Scroll
+        const sections = document.querySelectorAll('section[id]:not(#welcome-hero):not(#final-cta)');
+        const dots = document.querySelectorAll('.progress-dot');
+        
+        const activateDot = (sectionId) => {
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.dataset.section === sectionId) {
+                    dot.classList.add('active');
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    activateDot(entry.target.id);
+                }
+            });
+        }, { threshold: 0.5 }); // Activate when 50% of the section is visible
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding KidKit.ai - Interactive Learning Experience</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .launch-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #fbbf24;
+            color: #333;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .launch-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            background: #facc15;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            background: #6c757d;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .nav-btn.active {
+            background: #3b82f6;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .concept-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .concept-card h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+        
+        .expandable {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .expandable-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            transition: background 0.3s ease;
+        }
+        
+        .expandable-header:hover {
+            background: #f1f3f5;
+        }
+        
+        .expandable-header h3 {
+            color: #495057;
+            font-size: 1.3em;
+        }
+        
+        .expand-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+        
+        .expandable.expanded .expand-icon {
+            transform: rotate(90deg);
+        }
+        
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: white;
+        }
+        
+        .expandable.expanded .expandable-content {
+            max-height: 2000px;
+            padding: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .flow-step {
+            background: white;
+            border: 3px solid #3b82f6;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            position: relative;
+            animation: bounceIn 0.5s ease;
+        }
+        
+        .flow-step h4 {
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+        
+        .flow-arrow {
+            font-size: 2em;
+            color: #8b5cf6;
+            animation: pulse 2s infinite;
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+        }
+        
+        .highlight {
+            background: #fbbf24;
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: #333;
+        }
+        
+        .quiz-container {
+            background: #f3f4f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .quiz-question {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .quiz-option {
+            display: block;
+            padding: 12px;
+            margin: 8px 0;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover {
+            border-color: #3b82f6;
+            transform: translateX(5px);
+        }
+        
+        .quiz-option.correct {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        
+        .quiz-option.incorrect {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: #3b82f6;
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .interactive-demo {
+            background: #eff6ff;
+            border: 2px solid #3b82f6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .demo-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #cbd5e1;
+            border-radius: 5px;
+            font-size: 1em;
+            margin: 10px 0;
+        }
+        
+        .demo-button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s ease;
+        }
+        
+        .demo-button:hover {
+            background: #2563eb;
+        }
+        
+        .demo-output {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .warning-box {
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #991b1b;
+        }
+        
+        .success-box {
+            background: #f0fdf4;
+            border: 2px solid #10b981;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #166534;
+        }
+        
+        .info-box {
+            background: #eff6ff;
+            border: 2px solid #3b82f6;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #1e40af;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.active {
+            background: #3b82f6;
+            transform: scale(1.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Understanding KidKit.ai</h1>
+            <p>An Interactive Journey Through Child-Safe AI Technology</p>
+            <a href="kidkitai.html" class="launch-btn">Launch the Creative Playground!</a>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn active" onclick="showSection('overview')">Overview</button>
+            <button class="nav-btn" onclick="showSection('howItWorks')">How It Works</button>
+            <button class="nav-btn" onclick="showSection('architecture')">Architecture</button>
+            <button class="nav-btn" onclick="showSection('implementation')">Implementation</button>
+            <button class="nav-btn" onclick="showSection('tryIt')">Try It Out</button>
+            <button class="nav-btn" onclick="showSection('quiz')">Test Knowledge</button>
+        </div>
+        
+        <div class="content">
+            <div id="overview" class="section active">
+                <div class="concept-card">
+                    <h2>🌟 What is KidKit.ai?</h2>
+                    <p>KidKit.ai is a revolutionary approach to making AI safe and engaging for children. It creates a protected creative playground where kids can interact with AI while parents maintain complete control over safety boundaries.</p>
+                </div>
+                
+                <div class="feature-grid">
+                    <div class="feature-card" onclick="expandFeature('guardian')">
+                        <div class="feature-icon">🛡️</div>
+                        <h3>Guardian AI Layer</h3>
+                        <p>Every prompt is filtered through a protective AI before processing</p>
+                    </div>
+                    <div class="feature-card" onclick="expandFeature('parental')">
+                        <div class="feature-icon">👨‍👩‍👧</div>
+                        <h3>Parental Controls</h3>
+                        <p>Parents define age-appropriate boundaries and content filters</p>
+                    </div>
+                    <div class="feature-card" onclick="expandFeature('creative')">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Living Webpage</h3>
+                        <p>Children build their own creative webpage with AI-generated content</p>
+                    </div>
+                    <div class="feature-card" onclick="expandFeature('safe')">
+                        <div class="feature-icon">✅</div>
+                        <h3>100% Safe Content</h3>
+                        <p>Multi-layer safety ensures only appropriate content is generated</p>
+                    </div>
+                </div>
+                
+                <div class="expandable" id="coreConceptExpand">
+                    <div class="expandable-header" onclick="toggleExpand('coreConceptExpand')">
+                        <h3>📚 Core Concepts Explained</h3>
+                        <span class="expand-icon">▶</span>
+                    </div>
+                    <div class="expandable-content">
+                        <h4>The Problem It Solves</h4>
+                        <p>Traditional AI systems like ChatGPT or Claude aren't designed specifically for children. They can:</p>
+                        <ul style="margin: 15px 0; padding-left: 30px;">
+                            <li>Generate age-inappropriate content</li>
+                            <li>Discuss complex or sensitive topics</li>
+                            <li>Lack parental oversight capabilities</li>
+                            <li>Be overwhelming or confusing for young users</li>
+                        </ul>
+                        
+                        <h4 style="margin-top: 20px;">The KidKit Solution</h4>
+                        <p>KidKit.ai introduces a <span class="highlight">dual-AI architecture</span> where:</p>
+                        <ol style="margin: 15px 0; padding-left: 30px;">
+                            <li><strong>Guardian AI:</strong> Acts as a smart filter, rewriting children's prompts to be safe</li>
+                            <li><strong>Core AI:</strong> Generates creative content based on the sanitized prompt</li>
+                            <li><strong>Living Webpage:</strong> Provides a visual, interactive output medium perfect for kids</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>💡 Key Insight:</strong> Instead of restricting what children can ask, KidKit.ai transforms their requests into safe versions while preserving creative intent.
+                </div>
+            </div>
+            
+            <div id="howItWorks" class="section">
+                <h2 style="color: #1f2937; margin-bottom: 20px;">🔄 The KidKit.ai Pipeline</h2>
+                
+                <div class="flow-diagram">
+                    <div class="flow-step">
+                        <h4>Step 1</h4>
+                        <p>Child enters prompt</p>
+                        <small>"Make a scary monster story"</small>
+                    </div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-step">
+                        <h4>Step 2</h4>
+                        <p>Guardian AI rewrites</p>
+                        <small>"Create a friendly adventure story"</small>
+                    </div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-step">
+                        <h4>Step 3</h4>
+                        <p>Core AI generates</p>
+                        <small>Safe, engaging content</small>
+                    </div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-step">
+                        <h4>Step 4</h4>
+                        <p>Display on webpage</p>
+                        <small>Visual, interactive result</small>
+                    </div>
+                </div>
+                
+                <div class="expandable" id="guardianAIExpand">
+                    <div class="expandable-header" onclick="toggleExpand('guardianAIExpand')">
+                        <h3>🛡️ Deep Dive: The Guardian AI</h3>
+                        <span class="expand-icon">▶</span>
+                    </div>
+                    <div class="expandable-content">
+                        <p>The Guardian AI is the heart of KidKit's safety system. Here's how it works:</p>
+                        
+                        <h4 style="margin-top: 20px;">Input Analysis</h4>
+                        <p>When a child submits a prompt, the Guardian AI:</p>
+                        <ul style="margin: 15px 0; padding-left: 30px;">
+                            <li>Analyzes the intent behind the request</li>
+                            <li>Identifies potentially problematic elements</li>
+                            <li>Considers the child's age and interests</li>
+                            <li>Applies parent-defined guardrails</li>
+                        </ul>
+                        
+                        <h4 style="margin-top: 20px;">Prompt Transformation</h4>
+                        <p>The Guardian AI then rewrites the prompt to:</p>
+                        <ul style="margin: 15px 0; padding-left: 30px;">
+                            <li>Remove any inappropriate themes</li>
+                            <li>Enhance educational value</li>
+                            <li>Add age-appropriate context</li>
+                            <li>Incorporate the child's interests</li>
+                        </ul>
+                        
+                        <div class="code-block">
+// Example Guardian AI transformation
+Original: "Tell me about wars and weapons"
+Child Profile: { age: "7-9", interests: "dinosaurs, space" }
+Guardrails: ["No violence", "Educational focus"]
+
+Transformed: "Create an educational story about how dinosaurs protected their families and territories using teamwork and communication, with fun facts about different dinosaur species"
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="interactive-demo">
+                    <h3>🎮 Try the Guardian AI Simulator</h3>
+                    <p>Enter a potentially unsafe prompt to see how the Guardian AI would transform it:</p>
+                    <input type="text" class="demo-input" id="guardianInput" placeholder="Enter a child's prompt (e.g., 'make a scary ghost story')">
+                    <button class="demo-button" onclick="simulateGuardian()">Transform Prompt</button>
+                    <div class="demo-output" id="guardianOutput" style="display:none;">
+                        <strong>Original:</strong> <span id="originalPrompt"></span><br><br>
+                        <strong>Guardian AI Transformation:</strong> <span id="transformedPrompt"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="architecture" class="section">
+                <h2 style="color: #1f2937; margin-bottom: 20px;">🏗️ Technical Architecture</h2>
+                
+                <div class="expandable" id="techStackExpand">
+                    <div class="expandable-header" onclick="toggleExpand('techStackExpand')">
+                        <h3>💻 Technology Stack</h3>
+                        <span class="expand-icon">▶</span>
+                    </div>
+                    <div class="expandable-content">
+                        <h4>Frontend Technologies</h4>
+                        <ul style="margin: 15px 0; padding-left: 30px;">
+                            <li><strong>HTML5:</strong> Structure and semantic markup</li>
+                            <li><strong>Tailwind CSS:</strong> Rapid styling with utility classes</li>
+                            <li><strong>Vanilla JavaScript:</strong> No framework dependencies for simplicity</li>
+                            <li><strong>Local Storage:</strong> Persistent child profile storage</li>
+                        </ul>
+                        
+                        <h4 style="margin-top: 20px;">AI Integration</h4>
+                        <ul style="margin: 15px 0; padding-left: 30px;">
+                            <li><strong>Google Gemini API:</strong> Both Guardian and Core AI processing</li>
+                            <li><strong>Imagen 3.0:</strong> Safe image generation</li>
+                            <li><strong>Dual Model Architecture:</strong> Separate instances for safety layer</li>
+                        </ul>
+                        
+                        <div class="code-block">
+// API Architecture
+const guardianModel = 'gemini-2.5-flash-preview-05-20';
+const coreModel = 'gemini-2.5-flash-preview-05-20';
+const imageModel = 'imagen-3.0-generate-002';
+
+// Safety Pipeline
+async function processSafePrompt(rawPrompt) {
+    const guardianResult = await callGuardianAI(rawPrompt);
+    const safePrompt = guardianResult.sanitized;
+    const finalContent = await callCoreAI(safePrompt);
+    return finalContent;
+}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="expandable" id="dataFlowExpand">
+                    <div class="expandable-header" onclick="toggleExpand('dataFlowExpand')">
+                        <h3>📊 Data Flow & Security</h3>
+                        <span class="expand-icon">▶</span>
+                    </div>
+                    <div class="expandable-content">
+                        <h4>Data Flow Diagram</h4>
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <pre style="font-family: monospace; line-height: 1.6;">
+1. Parent Input → Local Storage (Profile)
+   ↓
+2. Child Input → JavaScript Validation
+   ↓
+3. Guardian AI API Call (with profile context)
+   ↓
+4. Sanitized Prompt → Core AI API Call
+   ↓
+5. Generated Content → DOM Manipulation
+   ↓
+6. Visual Block → Child's Webpage
+                            </pre>
+                        </div>
+                        
+                        <h4>Security Considerations</h4>
+                        <ul style="margin: 15px 0; padding-left: 30px;">
+                            <li><strong>API Key Security:</strong> Should be stored server-side in production</li>
+                            <li><strong>Content Filtering:</strong> Double-layer validation (Guardian + Core)</li>
+                            <li><strong>Data Privacy:</strong> No personal data sent to AI beyond first name</li>
+                            <li><strong>Rate Limiting:</strong> Built-in retry logic with exponential backoff</li>
+                        </ul>
+                        
+                        <div class="warning-box">
+                            <strong>⚠️ Production Warning:</strong> The current implementation stores the API key in the frontend. For production use, implement a backend proxy to secure API credentials.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="implementation" class="section">
+                <h2 style="color: #1f2937; margin-bottom: 20px;">🚀 Implementation Guide</h2>
+                
+                <div class="expandable" id="setupExpand">
+                    <div class="expandable-header" onclick="toggleExpand('setupExpand')">
+                        <h3>⚙️ Setting Up KidKit.ai</h3>
+                        <span class="expand-icon">▶</span>
+                    </div>
+                    <div class="expandable-content">
+                        <h4>Step 1: Get API Key</h4>
+                        <ol style="margin: 15px 0; padding-left: 30px;">
+                            <li>Go to <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a></li>
+                            <li>Create a new API key for Gemini</li>
+                            <li>Enable Imagen API access</li>
+                        </ol>
+                        
+                        <h4 style="margin-top: 20px;">Step 2: Configure the Code</h4>
+                        <p>You'll need to add your API key to the `kidkitai.html` file.</p>
+                        <div class="code-block">
+// Find this line in the kidkitai.html file:
+const API_KEY = ""; 
+
+// Replace with your API key:
+const API_KEY = "API_KEY_HERE";
+                        </div>
+                        
+                        <h4 style="margin-top: 20px;">Step 3: Deploy</h4>
+                        <p>Options for deployment:</p>
+                        <ul style="margin: 15px 0; padding-left: 30px;">
+                            <li><strong>Local:</strong> Open HTML file directly in browser</li>
+                            <li><strong>GitHub Pages:</strong> Free static hosting</li>
+                            <li><strong>Netlify/Vercel:</strong> Advanced static hosting with forms</li>
+                            <li><strong>Custom Server:</strong> Add backend for API key security</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="expandable" id="customExpand">
+                    <div class="expandable-header" onclick="toggleExpand('customExpand')">
+                        <h3>🎨 Customization Options</h3>
+                        <span class="expand-icon">▶</span>
+                    </div>
+                    <div class="expandable-content">
+                        <h4>Guardian AI Prompts</h4>
+                        <p>Customize the Guardian AI's behavior by modifying the system instruction in `kidkitai.html`:</p>
+                        <div class="code-block">
+const guardianSystemInstruction = `
+You are a Guardian AI. Additional rules:
+- Convert all violence to friendship themes
+- Add educational facts when possible
+- Include ${childProfile.interests} when relevant
+- Ensure reading level matches ${childProfile.age}
+`;
+                        </div>
+                        
+                        <h4 style="margin-top: 20px;">Add New Block Types</h4>
+                        <div class="code-block">
+// In the HTML select element:
+&lt;option value="quiz"&gt;Quiz Block&lt;/option&gt;
+&lt;option value="game"&gt;Game Block&lt;/option&gt;
+
+// In the JavaScript handler:
+case 'quiz':
+    title = 'A Fun Quiz!';
+    // Add quiz generation logic
+    break;
+                        </div>
+                        
+                        <h4 style="margin-top: 20px;">Styling Customization</h4>
+                        <ul style="margin: 15px 0; padding-left: 30px;">
+                            <li>Modify CSS variables for instant style changes</li>
+                            <li>Add themes for different age groups</li>
+                            <li>Include child's favorite colors in the profile</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="expandable" id="enhanceExpand">
+                    <div class="expandable-header" onclick="toggleExpand('enhanceExpand')">
+                        <h3>🔧 Advanced Enhancements</h3>
+                        <span class="expand-icon">▶</span>
+                    </div>
+                    <div class="expandable-content">
+                        <h4>Backend Integration</h4>
+                        <div class="code-block">
+// Node.js Express backend example
+app.post('/api/guardian', authenticateParent, async (req, res) => {
+    const { prompt, profile } = req.body;
+    const sanitized = await callGuardianAI(prompt, profile);
+    
+    // Log for parental review
+    await logPromptTransformation(req.user.id, prompt, sanitized);
+    
+    res.json({ sanitized });
+});
+                        </div>
+                        
+                        <h4 style="margin-top: 20px;">Additional Features to Add</h4>
+                        <ul style="margin: 15px 0; padding-left: 30px;">
+                            <li><strong>Parental Dashboard:</strong> Review all prompts and generated content</li>
+                            <li><strong>Time Limits:</strong> Set daily usage restrictions</li>
+                            <li><strong>Export Function:</strong> Save webpage as PDF or image</li>
+                            <li><strong>Collaboration:</strong> Multiple children sharing a webpage</li>
+                            <li><strong>Voice Input:</strong> Speech-to-text for younger children</li>
+                            <li><strong>Achievements:</strong> Gamification with badges for creativity</li>
+                        </ul>
+                        
+                        <h4 style="margin-top: 20px;">Performance Optimizations</h4>
+                        <ul style="margin: 15px 0; padding-left: 30px;">
+                            <li>Implement caching for repeated prompts</li>
+                            <li>Use WebWorkers for API calls</li>
+                            <li>Lazy load webpage blocks</li>
+                            <li>Implement virtual scrolling for many blocks</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tryIt" class="section">
+                <h2 style="color: #1f2937; margin-bottom: 20px;">🎯 Interactive Demonstration</h2>
+                
+                <div style="text-align:center; margin-bottom:30px;">
+                    <a href="kidkitai.html" class="launch-btn" style="font-size: 1.2em; padding: 15px 35px;">🚀 Try the Full App Now!</a>
+                </div>
+
+                <div class="interactive-demo" style="background: linear-gradient(135deg, #fef3c7, #fde68a);">
+                    <h3>👶 Simulate the Full KidKit Experience</h3>
+                    <p>Let's walk through a complete interaction:</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <label><strong>1. Set Child Profile:</strong></label>
+                        <input type="text" id="demoName" placeholder="Child's name" class="demo-input" style="width: 200px; display: inline-block; margin-left: 10px;">
+                        <select id="demoAge" class="demo-input" style="width: 150px; display: inline-block; margin-left: 10px;">
+                            <option value="4-6">4-6 years</option>
+                            <option value="7-9">7-9 years</option>
+                            <option value="10-12">10-12 years</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <label><strong>2. Child's Prompt:</strong></label>
+                        <input type="text" id="demoPrompt" placeholder="e.g., 'tell me about fighting dragons'" class="demo-input">
+                    </div>
+                    
+                    <button class="demo-button" onclick="runFullDemo()">Run Full Simulation</button>
+                    
+                    <div id="demoResults" style="display:none;">
+                        <div class="demo-output" style="background: #fee2e2; margin-top: 20px;">
+                            <strong>🚫 Original Prompt:</strong>
+                            <p id="demoOriginal"></p>
+                        </div>
+                        <div class="demo-output" style="background: #dcfce7; margin-top: 10px;">
+                            <strong>✅ Guardian AI Rewrite:</strong>
+                            <p id="demoRewritten"></p>
+                        </div>
+                        <div class="demo-output" style="background: #dbeafe; margin-top: 10px;">
+                            <strong>📖 Final Safe Content:</strong>
+                            <p id="demoFinal"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="success-box">
+                    <strong>✨ Try These Scenarios:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>"Make a story about guns and fighting" → Becomes adventure & teamwork story</li>
+                        <li>"Tell me scary ghost stories" → Becomes friendly mystery adventure</li>
+                        <li>"How do I hack computers" → Becomes introduction to ethical coding</li>
+                        <li>"I hate my teacher" → Becomes tips for better communication</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="quiz" class="section">
+                <h2 style="color: #1f2937; margin-bottom: 20px;">🧠 Test Your Knowledge</h2>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">Question 1: What is the primary role of the Guardian AI?</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">To generate creative content</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true)">To rewrite prompts to be safe and age-appropriate</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">To store user data</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">To create images</div>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">Question 2: Which AI models does KidKit.ai use?</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">Only ChatGPT</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">Custom trained models</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true)">Google Gemini and Imagen</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">Microsoft Azure AI</div>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">Question 3: What happens to inappropriate content requests?</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">They are blocked completely</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true)">They are transformed into safe, educational alternatives</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">They are sent to parents for approval</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">They generate warning messages</div>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">Question 4: Where is the child's profile stored?</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">In the cloud</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">On Google's servers</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true)">In browser local storage</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">It's not stored anywhere</div>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">Question 5: What makes KidKit.ai different from regular AI chat?</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">It's faster</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true)">It has a dual-AI safety architecture</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">It's free to use</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">It only works offline</div>
+                </div>
+                
+                <div id="quizResults" style="display:none; margin-top: 20px;" class="success-box">
+                    <h3>🎉 Quiz Complete!</h3>
+                    <p id="quizScore"></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="progress-indicator">
+            <div class="progress-dot" id="dot-0"></div>
+            <div class="progress-dot" id="dot-1"></div>
+            <div class="progress-dot" id="dot-2"></div>
+            <div class="progress-dot" id="dot-3"></div>
+            <div class="progress-dot" id="dot-4"></div>
+            <div class="progress-dot" id="dot-5"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update navigation buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update progress dots
+            const sections = ['overview', 'howItWorks', 'architecture', 'implementation', 'tryIt', 'quiz'];
+            const index = sections.indexOf(sectionId);
+            document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+                if (i <= index) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        // Expandable sections
+        function toggleExpand(id) {
+            const element = document.getElementById(id);
+            element.classList.toggle('expanded');
+        }
+        
+        // Feature cards
+        function expandFeature(feature) {
+            const messages = {
+                guardian: "The Guardian AI uses advanced NLP to understand context and intent, ensuring every interaction is safe while preserving creativity.",
+                parental: "Parents can set granular controls including content themes, vocabulary level, time limits, and specific topic restrictions.",
+                creative: "The living webpage grows with each interaction, creating a portfolio of the child's creativity that can be shared with family.",
+                safe: "Multiple safety layers include prompt sanitization, content filtering, and output validation to ensure 100% child-appropriate content."
+            };
+            alert(messages[feature]);
+        }
+        
+        // Guardian AI Simulator
+        function simulateGuardian() {
+            const input = document.getElementById('guardianInput').value;
+            if (!input) {
+                alert('Please enter a prompt to transform');
+                return;
+            }
+            
+            const transformations = {
+                'scary': 'friendly and fun',
+                'ghost': 'friendly character',
+                'monster': 'cute creature',
+                'fight': 'work together',
+                'kill': 'help',
+                'war': 'peace',
+                'weapon': 'tool for good',
+                'blood': 'colorful paint',
+                'die': 'go on an adventure',
+                'hate': 'learn to understand'
+            };
+            
+            let transformed = input.toLowerCase();
+            for (const [bad, good] of Object.entries(transformations)) {
+                transformed = transformed.replace(new RegExp(bad, 'gi'), good);
+            }
+            
+            // Make it more educational
+            transformed = "Create an educational and fun story about " + transformed + " that teaches kindness and creativity";
+            
+            document.getElementById('originalPrompt').textContent = input;
+            document.getElementById('transformedPrompt').textContent = transformed;
+            document.getElementById('guardianOutput').style.display = 'block';
+        }
+        
+        // Full demo simulation
+        function runFullDemo() {
+            const name = document.getElementById('demoName').value || 'Alex';
+            const age = document.getElementById('demoAge').value;
+            const prompt = document.getElementById('demoPrompt').value || 'tell me about fighting dragons';
+            
+            // Simulate the transformation
+            const transformations = {
+                'fighting dragons': {
+                    rewritten: `Create a friendly adventure story about ${name} befriending a dragon and learning about different types of dragons, their habitats, and how they help their ecosystem. Make it educational and age-appropriate for ${age} year olds.`,
+                    final: `Once upon a time, ${name} discovered a friendly dragon named Sparkle who loved to help garden flowers grow with warm breath! Together they learned that dragons are protectors of nature...`
+                },
+                'scary ghost': {
+                    rewritten: `Create a fun mystery story about ${name} meeting a friendly, glowing spirit who needs help finding their lost teddy bear. Make it heartwarming for ${age} year olds.`,
+                    final: `${name} met Casper, a gentle glowing friend who had lost their favorite teddy bear! With detective skills and kindness, ${name} helped search the magical forest...`
+                }
+            };
+            
+            // Default transformation
+            let result = transformations['fighting dragons'];
+            
+            // Check if prompt matches known patterns
+            if (prompt.toLowerCase().includes('ghost')) {
+                result = transformations['scary ghost'];
+            }
+            
+            document.getElementById('demoOriginal').textContent = prompt;
+            document.getElementById('demoRewritten').textContent = result.rewritten;
+            document.getElementById('demoFinal').textContent = result.final;
+            document.getElementById('demoResults').style.display = 'block';
+        }
+        
+        // Quiz functionality
+        let quizScore = 0;
+        let questionsAnswered = 0;
+        
+        function checkAnswer(element, isCorrect) {
+            // Prevent re-answering
+            if (element.classList.contains('correct') || element.classList.contains('incorrect')) {
+                return;
+            }
+            
+            questionsAnswered++;
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                quizScore++;
+            } else {
+                element.classList.add('incorrect');
+                // Show correct answer
+                const options = element.parentElement.querySelectorAll('.quiz-option');
+                options.forEach(opt => {
+                    if (opt !== element && opt.onclick.toString().includes('true')) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            
+            // Check if quiz is complete
+            if (questionsAnswered === 5) {
+                document.getElementById('quizScore').textContent = 
+                    `You got ${quizScore} out of 5 correct! ${quizScore === 5 ? '🏆 Perfect score!' : quizScore >= 3 ? '👍 Great job!' : '📚 Review the material and try again!'}`;
+                document.getElementById('quizResults').style.display = 'block';
+            }
+        }
+        
+        // Initialize first progress dot
+        document.getElementById('dot-0').classList.add('active');
+    </script>
+</body>
+</html>

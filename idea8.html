@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spaces.AI - Professional Design Permitting Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --dark: #111827;
+            --gray: #6b7280;
+            --light-gray: #f3f4f6;
+            --white: #ffffff;
+            --error: #ef4444;
+            --success: #22c55e;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .main-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Landing Page */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--gray);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .cta-buttons .btn {
+            padding: 15px 40px;
+            font-size: 16px;
+        }
+
+        /* Onboarding Form */
+        .onboarding-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            margin: 40px auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--light-gray);
+            border-radius: 3px;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient);
+            transition: width 0.3s;
+            border-radius: 3px;
+        }
+
+        .form-step {
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .user-profile {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 2px solid var(--light-gray);
+            margin-bottom: 25px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 32px;
+            color: white;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: var(--light-gray);
+        }
+
+        .main-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* AI Assistant Interface */
+        .ai-assistant {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .search-box:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .action-card p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Response Area */
+        .response-area {
+            background: var(--light-gray);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 200px;
+            margin-top: 30px;
+        }
+
+        .response-message {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .response-message.ai {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--gray);
+            border-radius: 50%;
+            animation: bounce 1.4s ease-in-out infinite;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(1); opacity: 0.5; }
+            40% { transform: scale(1.3); opacity: 1; }
+        }
+
+        /* Project Cards */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .project-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <span>🏗️</span>
+                <span>spaces.ai</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link" onclick="showSection('landing')">Home</a>
+                <a href="#" class="nav-link" onclick="showSection('dashboard')">Dashboard</a>
+                <a href="#" class="nav-link">Projects</a>
+                <a href="#" class="nav-link">Messages</a>
+                <button class="btn btn-primary" onclick="showSection('onboarding')">Get Started</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Landing Page -->
+        <div id="landing" class="main-content active">
+            <div class="hero">
+                <h1>Professional Design Permitting Made Simple</h1>
+                <p>Connect with expert designers for your permitting needs. Get personalized guidance and complete your projects faster with AI-powered assistance.</p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary" onclick="showSection('onboarding')">I Need Designs</button>
+                    <button class="btn btn-secondary" onclick="showSection('onboarding')">I'm a Designer</button>
+                </div>
+            </div>
+
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>🏠 Residential Permits</h3>
+                    <p>Get professional drawings for home additions, renovations, and new construction permits.</p>
+                    <span class="project-status status-active">High Demand</span>
+                </div>
+                <div class="project-card">
+                    <h3>🏢 Commercial Projects</h3>
+                    <p>Expert CAD drawings for commercial buildings, offices, and retail spaces.</p>
+                    <span class="project-status status-active">High Demand</span>
+                </div>
+                <div class="project-card">
+                    <h3>🌳 Landscape Design</h3>
+                    <p>Professional landscape plans for permits including grading, drainage, and hardscaping.</p>
+                    <span class="project-status status-pending">Available</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onboarding -->
+        <div id="onboarding" class="main-content">
+            <div class="onboarding-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar" style="width: 25%"></div>
+                </div>
+
+                <form id="onboardingForm">
+                    <!-- Step 1: User Type -->
+                    <div class="form-step active" id="step1">
+                        <h2>Welcome to Spaces.AI</h2>
+                        <p>Let's get you set up. Are you looking for designs or are you a designer?</p>
+                        <div class="form-group">
+                            <label>I am a:</label>
+                            <select id="userType" onchange="updateForm()">
+                                <option value="">Select...</option>
+                                <option value="client">Client/Contractor (Need Designs)</option>
+                                <option value="designer">Professional Designer</option>
+                            </select>
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn btn-secondary" onclick="showSection('landing')">Cancel</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Basic Info -->
+                    <div class="form-step" id="step2">
+                        <h2>Basic Information</h2>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="fullName" placeholder="John Smith">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="email" placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="phone" placeholder="(555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label>Company (Optional)</label>
+                            <input type="text" id="company" placeholder="ABC Construction">
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Expertise/Needs -->
+                    <div class="form-step" id="step3">
+                        <h2 id="step3Title">Your Expertise</h2>
+                        <div id="designerFields" style="display:none;">
+                            <div class="form-group">
+                                <label>Years of Experience</label>
+                                <input type="number" id="experience" placeholder="5">
+                            </div>
+                            <div class="form-group">
+                                <label>Specializations (Check all that apply)</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="residential" value="residential">
+                                        <label for="residential">Residential</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="commercial" value="commercial">
+                                        <label for="commercial">Commercial</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="landscape" value="landscape">
+                                        <label for="landscape">Landscape</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="structural" value="structural">
+                                        <label for="structural">Structural</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="mep" value="mep">
+                                        <label for="mep">MEP</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Software Proficiency</label>
+                                <input type="text" id="software" placeholder="AutoCAD, Revit, SketchUp...">
+                            </div>
+                            <div class="form-group">
+                                <label>License Number (if applicable)</label>
+                                <input type="text" id="license" placeholder="CA-12345">
+                            </div>
+                        </div>
+                        <div id="clientFields" style="display:none;">
+                            <div class="form-group">
+                                <label>Project Type</label>
+                                <select id="projectType">
+                                    <option value="">Select...</option>
+                                    <option value="new-construction">New Construction</option>
+                                    <option value="addition">Addition</option>
+                                    <option value="renovation">Renovation</option>
+                                    <option value="commercial">Commercial</option>
+                                    <option value="landscape">Landscape</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Project Location</label>
+                                <input type="text" id="location" placeholder="City, State">
+                            </div>
+                            <div class="form-group">
+                                <label>Estimated Budget</label>
+                                <select id="budget">
+                                    <option value="">Select...</option>
+                                    <option value="under-5k">Under $5,000</option>
+                                    <option value="5k-15k">$5,000 - $15,000</option>
+                                    <option value="15k-50k">$15,000 - $50,000</option>
+                                    <option value="over-50k">Over $50,000</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Timeline</label>
+                                <select id="timeline">
+                                    <option value="">Select...</option>
+                                    <option value="asap">ASAP</option>
+                                    <option value="1-week">Within 1 week</option>
+                                    <option value="2-weeks">Within 2 weeks</option>
+                                    <option value="1-month">Within 1 month</option>
+                                    <option value="flexible">Flexible</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Additional Details -->
+                    <div class="form-step" id="step4">
+                        <h2>Additional Information</h2>
+                        <div class="form-group">
+                            <label>Tell us more about your needs/expertise</label>
+                            <textarea id="details" rows="5" placeholder="Describe your project requirements or your design experience..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>How did you hear about us?</label>
+                            <select id="referral">
+                                <option value="">Select...</option>
+                                <option value="search">Google/Search</option>
+                                <option value="social">Social Media</option>
+                                <option value="referral">Referral</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="completeOnboarding()">Complete Setup</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="main-content">
+            <div class="dashboard">
+                <div class="sidebar">
+                    <div class="user-profile">
+                        <div class="avatar">👤</div>
+                        <h3 id="userName">User Name</h3>
+                        <p id="userRole" style="color: var(--gray); font-size: 14px;">Designer</p>
+                    </div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="active">🏠 Dashboard</a></li>
+                        <li><a href="#">📋 Projects</a></li>
+                        <li><a href="#">💬 Messages</a></li>
+                        <li><a href="#">🤖 AI Assistant</a></li>
+                        <li><a href="#">📊 Analytics</a></li>
+                        <li><a href="#">⚙️ Settings</a></li>
+                    </ul>
+                </div>
+
+                <div class="main-panel">
+                    <h2>Welcome to Your Dashboard</h2>
+                    <p style="color: var(--gray); margin-bottom: 30px;">Get started by searching for help or browsing available projects.</p>
+
+                    <!-- AI Assistant Section -->
+                    <div class="ai-assistant">
+                        <h3>AI Design Assistant</h3>
+                        <p style="color: var(--gray); margin-bottom: 20px;">Ask me anything about your permitting needs or design requirements.</p>
+                        
+                        <div class="search-container">
+                            <input type="text" class="search-box" id="aiQuery" placeholder="e.g., 'I need help with residential permit drawings for a deck addition'">
+                            <button class="search-btn" onclick="processAIQuery()">Ask AI</button>
+                        </div>
+
+                        <div class="quick-actions">
+                            <div class="action-card" onclick="quickAction('permit-checklist')">
+                                <h3>📋</h3>
+                                <h3>Permit Checklist</h3>
+                                <p>Get requirements for your area</p>
+                            </div>
+                            <div class="action-card" onclick="quickAction('find-designer')">
+                                <h3>🔍</h3>
+                                <h3>Find Designer</h3>
+                                <p>Match with professionals</p>
+                            </div>
+                            <div class="action-card" onclick="quickAction('cost-estimate')">
+                                <h3>💰</h3>
+                                <h3>Cost Estimate</h3>
+                                <p>Get pricing for your project</p>
+                            </div>
+                            <div class="action-card" onclick="quickAction('tutorials')">
+                                <h3>📚</h3>
+                                <h3>Tutorials</h3>
+                                <p>Learn the process</p>
+                            </div>
+                        </div>
+
+                        <div class="response-area" id="responseArea" style="display: none;">
+                            <div class="typing-indicator" id="typingIndicator">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                            <div id="aiResponses"></div>
+                        </div>
+                    </div>
+
+                    <!-- Active Projects -->
+                    <div style="margin-top: 40px;">
+                        <h3>Active Projects</h3>
+                        <div class="projects-grid" style="margin-top: 20px;">
+                            <div class="project-card">
+                                <h4>Kitchen Remodel Plans</h4>
+                                <p style="color: var(--gray); font-size: 14px;">Client: Sarah Johnson</p>
+                                <p style="margin: 10px 0;">Residential permit drawings for 200 sq ft kitchen expansion.</p>
+                                <span class="project-status status-active">In Progress</span>
+                            </div>
+                            <div class="project-card">
+                                <h4>Commercial Office Layout</h4>
+                                <p style="color: var(--gray); font-size: 14px;">Client: Tech Startup Inc.</p>
+                                <p style="margin: 10px 0;">5,000 sq ft office space design and permit drawings.</p>
+                                <span class="project-status status-pending">Review Pending</span>
+                            </div>
+                            <div class="project-card">
+                                <h4>Deck Addition</h4>
+                                <p style="color: var(--gray); font-size: 14px;">Client: Mike Thompson</p>
+                                <p style="margin: 10px 0;">Structural drawings for 400 sq ft deck with pergola.</p>
+                                <span class="project-status status-completed">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let currentStep = 1;
+        let userData = {
+            userType: '',
+            profile: {},
+            preferences: {},
+            onboardingComplete: false
+        };
+
+        // AI Response Templates
+        const aiResponses = {
+            'permit-checklist': {
+                title: 'Permit Requirements Checklist',
+                content: `Based on your profile, here's what you'll typically need for permit submission:
+                
+                • Site Plan: Shows property boundaries, existing structures, and proposed work
+                • Floor Plans: Detailed layout with dimensions, doors, windows, and fixtures
+                • Elevation Drawings: Exterior views from all sides
+                • Structural Details: Foundation, framing, and load-bearing elements
+                • Electrical Plan: Outlet locations, lighting, and panel information
+                • Plumbing Plan: Fixture locations and water/waste lines
+                • Energy Calculations: Required in many jurisdictions
+                
+                Would you like me to create a customized checklist for your specific project?`
+            },
+            'find-designer': {
+                title: 'Finding the Right Designer',
+                content: `I'll help you find the perfect designer for your project. Based on your requirements:
+                
+                • Project Type: ${userData.profile.projectType || 'Not specified'}
+                • Location: ${userData.profile.location || 'Not specified'}
+                • Timeline: ${userData.profile.timeline || 'Flexible'}
+                
+                I've identified 3 designers who match your needs:
+                
+                1. **John Martinez** - 15 years experience, specializes in residential
+                2. **Sarah Chen** - 10 years experience, fast turnaround times
+                3. **David Williams** - 20 years experience, complex projects
+                
+                Would you like to see detailed profiles or send a project brief?`
+            },
+            'cost-estimate': {
+                title: 'Project Cost Estimate',
+                content: `Based on similar projects in your area, here's a rough estimate:
+                
+                • Basic Permit Drawings: $1,500 - $3,000
+                • Detailed Construction Plans: $3,000 - $8,000
+                • Full Architectural Package: $8,000 - $20,000
+                
+                Factors affecting cost:
+                - Project complexity
+                - Square footage
+                - Number of revisions
+                - Local requirements
+                - Timeline urgency
+                
+                Would you like a detailed quote for your specific project?`
+            },
+            'tutorials': {
+                title: 'Getting Started Tutorials',
+                content: `Here are personalized tutorials based on your needs:
+                
+                📖 **Understanding Permit Requirements**
+                Learn what drawings are needed and why
+                
+                📐 **Reading Construction Drawings**
+                Basic guide to understanding plans
+                
+                🏗️ **Working with Designers**
+                How to communicate your vision effectively
+                
+                ⚡ **Fast-Track Your Project**
+                Tips for avoiding common delays
+                
+                Which tutorial would you like to start with?`
+            }
+        };
+
+        // Navigation functions
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.main-content');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Onboarding functions
+        function updateForm() {
+            const userType = document.getElementById('userType').value;
+            userData.userType = userType;
+            
+            if (userType === 'designer') {
+                document.getElementById('step3Title').textContent = 'Your Expertise';
+                document.getElementById('designerFields').style.display = 'block';
+                document.getElementById('clientFields').style.display = 'none';
+            } else if (userType === 'client') {
+                document.getElementById('step3Title').textContent = 'Project Details';
+                document.getElementById('designerFields').style.display = 'none';
+                document.getElementById('clientFields').style.display = 'block';
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < 4) {
+                document.getElementById('step' + currentStep).classList.remove('active');
+                currentStep++;
+                document.getElementById('step' + currentStep).classList.add('active');
+                updateProgressBar();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById('step' + currentStep).classList.remove('active');
+                currentStep--;
+                document.getElementById('step' + currentStep).classList.add('active');
+                updateProgressBar();
+            }
+        }
+
+        function updateProgressBar() {
+            const progress = (currentStep / 4) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function completeOnboarding() {
+            // Collect all form data
+            userData.profile = {
+                name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                company: document.getElementById('company').value,
+                details: document.getElementById('details').value
+            };
+
+            if (userData.userType === 'designer') {
+                userData.profile.experience = document.getElementById('experience').value;
+                userData.profile.software = document.getElementById('software').value;
+                userData.profile.license = document.getElementById('license').value;
+            } else {
+                userData.profile.projectType = document.getElementById('projectType').value;
+                userData.profile.location = document.getElementById('location').value;
+                userData.profile.budget = document.getElementById('budget').value;
+                userData.profile.timeline = document.getElementById('timeline').value;
+            }
+
+            userData.onboardingComplete = true;
+
+            // Update dashboard with user info
+            document.getElementById('userName').textContent = userData.profile.name || 'User';
+            document.getElementById('userRole').textContent = userData.userType === 'designer' ? 'Professional Designer' : 'Client';
+
+            // Show dashboard
+            showSection('dashboard');
+
+            // Show welcome message
+            showAIResponse({
+                title: 'Welcome to Spaces.AI!',
+                content: `Hello ${userData.profile.name}! Your profile is all set up. I'm your AI assistant, ready to help with your ${userData.userType === 'designer' ? 'design projects' : 'permitting needs'}. 
+                
+                You can ask me anything about:
+                • Permit requirements in your area
+                • Finding the right ${userData.userType === 'designer' ? 'clients' : 'designers'}
+                • Project timelines and costs
+                • Technical drawing standards
+                • And much more!
+                
+                Try asking a question or use the quick action buttons above.`
+            });
+        }
+
+        // AI Assistant functions
+        function processAIQuery() {
+            const query = document.getElementById('aiQuery').value;
+            if (!query) return;
+
+            // Show response area
+            document.getElementById('responseArea').style.display = 'block';
+            
+            // Show typing indicator
+            const typingIndicator = document.getElementById('typingIndicator');
+            typingIndicator.classList.add('active');
+
+            // Simulate AI processing
+            setTimeout(() => {
+                typingIndicator.classList.remove('active');
+                
+                // Generate personalized response based on user data and query
+                const response = generateAIResponse(query);
+                showAIResponse(response);
+                
+                // Clear input
+                document.getElementById('aiQuery').value = '';
+            }, 1500);
+        }
+
+        function generateAIResponse(query) {
+            const lowerQuery = query.toLowerCase();
+            
+            // Keywords matching for intelligent responses
+            const keywords = {
+                permit: ['permit', 'requirement', 'submission', 'approval'],
+                cost: ['cost', 'price', 'budget', 'estimate', 'quote'],
+                timeline: ['timeline', 'how long', 'duration', 'deadline'],
+                designer: ['designer', 'architect', 'professional', 'find', 'hire'],
+                help: ['help', 'assist', 'guide', 'tutorial', 'learn']
+            };
+
+            // Check for keyword matches
+            for (const [key, words] of Object.entries(keywords)) {
+                if (words.some(word => lowerQuery.includes(word))) {
+                    if (key === 'permit') {
+                        return {
+                            title: 'Permit Requirements',
+                            content: `Based on your query about "${query}", here's what you need to know:
+                            
+                            ${userData.profile.location ? `For ${userData.profile.location}, ` : ''}typical permit requirements include:
+                            
+                            • **Drawings Required**: Site plan, floor plans, elevations, and structural details
+                            • **Processing Time**: Usually 2-4 weeks for residential, 4-8 weeks for commercial
+                            • **Fees**: Typically $500-$2,000 depending on project scope
+                            
+                            Your specific project (${userData.profile.projectType || 'type not specified'}) may have additional requirements.
+                            
+                            Would you like me to:
+                            1. Generate a complete checklist for your project?
+                            2. Connect you with a designer who knows local requirements?
+                            3. Provide submittal templates?`
+                        };
+                    }
+                    
+                    if (key === 'cost') {
+                        return aiResponses['cost-estimate'];
+                    }
+                    
+                    if (key === 'designer') {
+                        return aiResponses['find-designer'];
+                    }
+                }
+            }
+
+            // Default intelligent response
+            return {
+                title: 'AI Assistant Response',
+                content: `I understand you're asking about "${query}". 
+                
+                Based on your profile as a ${userData.userType || 'user'}, here's my personalized recommendation:
+                
+                ${userData.userType === 'designer' ? 
+                    `As a designer with ${userData.profile.experience || 'your'} years of experience, you might benefit from our advanced project management tools and client matching system.` :
+                    `For your ${userData.profile.projectType || 'project'}, I can help you find qualified designers and navigate the permit process efficiently.`
+                }
+                
+                Here are your next best steps:
+                1. Review local permit requirements
+                2. ${userData.userType === 'designer' ? 'Set up your portfolio' : 'Define your project scope'}
+                3. ${userData.userType === 'designer' ? 'Browse available projects' : 'Get designer quotes'}
+                
+                Is there something specific you'd like help with?`
+            };
+        }
+
+        function quickAction(action) {
+            document.getElementById('responseArea').style.display = 'block';
+            
+            const typingIndicator = document.getElementById('typingIndicator');
+            typingIndicator.classList.add('active');
+
+            setTimeout(() => {
+                typingIndicator.classList.remove('active');
+                showAIResponse(aiResponses[action]);
+            }, 1000);
+        }
+
+        function showAIResponse(response) {
+            const responsesContainer = document.getElementById('aiResponses');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'response-message ai';
+            messageDiv.innerHTML = `
+                <h4>${response.title}</h4>
+                <div style="margin-top: 10px; line-height: 1.6;">
+                    ${response.content.replace(/\n/g, '<br>')}
+                </div>
+            `;
+            
+            responsesContainer.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            responsesContainer.scrollTop = responsesContainer.scrollHeight;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default section
+            showSection('landing');
+        });
+    </script>
+</body>
+</html>

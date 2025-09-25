@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 
+    SH@WDADDY.net Multi-Site Homepage
+    
+    FILE STRUCTURE FOR YOUR WEBSITE:
+    Your main folder should contain all of the following files:
+    - index.html (this file)
+    - ideas.html (the new idea browser)
+    - idea1.html to idea6.html
+    - awdaddy.html, mymoneytalks.html, etc.
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SH@WDADDY.net - AI Innovation Hub</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --dark-bg: #0f0f1e;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0c0;
+            --accent-1: #667eea;
+            --glow: rgba(102, 126, 234, 0.3);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        .bg-animation {
+            position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.15) 0%, transparent 50%);
+            animation: bgShift 20s ease-in-out infinite;
+        }
+        @keyframes bgShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+        .container { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; padding: 20px; }
+        header { text-align: center; padding: 60px 20px; animation: slideDown 1s ease-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+        .logo-container { display: inline-block; position: relative; margin-bottom: 20px; }
+        .logo {
+            font-size: 4rem; font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            letter-spacing: -2px;
+            animation: glow 3s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 20px var(--glow)); }
+            50% { filter: brightness(1.2) drop-shadow(0 0 40px var(--glow)); }
+        }
+        .tagline {
+            font-size: 1.3rem; color: var(--text-secondary); margin-bottom: 10px;
+            letter-spacing: 2px; text-transform: uppercase;
+            opacity: 0; animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+        @keyframes fadeIn { to { opacity: 1; } }
+        .subtitle { font-size: 1rem; color: var(--text-secondary); opacity: 0; animation: fadeIn 1s ease-out 0.7s forwards; margin-bottom: 50px; }
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        .site-card {
+            background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
+            padding: 30px; text-decoration: none; color: var(--text-primary);
+            position: relative; overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            animation: slideUp 0.8s ease-out both;
+        }
+        .site-card:nth-child(1) { animation-delay: 0.1s; } .site-card:nth-child(2) { animation-delay: 0.15s; }
+        .site-card:nth-child(3) { animation-delay: 0.2s; } .site-card:nth-child(4) { animation-delay: 0.25s; }
+        .site-card:nth-child(5) { animation-delay: 0.3s; } .site-card:nth-child(6) { animation-delay: 0.35s; }
+        .site-card:nth-child(7) { animation-delay: 0.4s; } .site-card:nth-child(8) { animation-delay: 0.45s; }
+        .site-card:nth-child(9) { animation-delay: 0.5s; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        .site-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .site-icon {
+            width: 60px; height: 60px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; border-radius: 15px;
+        }
+        .site-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; }
+        .site-description { color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; }
+        .launch-btn {
+            display: inline-flex; align-items: center; gap: 8px; margin-top: 20px;
+            padding: 12px 24px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px; color: var(--text-primary); font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .launch-btn:hover { background: rgba(255, 255, 255, 0.2); transform: translateX(5px); }
+        footer { text-align: center; padding: 40px 20px; margin-top: 100px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .footer-text { color: var(--text-secondary); font-size: 0.9rem; }
+        
+        .ideas-section {
+            margin-top: 80px;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        .ideas-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .password-form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .password-input {
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2);
+            color: white;
+            font-size: 1rem;
+        }
+        .unlock-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            background: var(--accent-1);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .unlock-btn:hover {
+            background: #764ba2;
+        }
+        #ideas-content {
+            display: none;
+        }
+        .ideas-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            background: var(--accent-1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .ideas-link:hover {
+            background: #764ba2;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .logo { font-size: 2.5rem; }
+            .tagline { font-size: 1rem; }
+            .sites-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <h1 class="logo">SH@WDADDY.net</h1>
+            </div>
+            <p class="tagline">AI Innovation Hub</p>
+            <p class="subtitle">A portfolio of intelligent solutions designed to empower your life.</p>
+        </header>
+
+        <main>
+            <div class="sites-grid">
+                <!-- AwDaddy.ai -->
+                <a href="awdaddy.html" class="site-card">
+                    <div class="site-icon" style="background: linear-gradient(135deg, #3b82f6, #10b981);">👨‍👧‍👦</div>
+                    <h2 class="site-title">AwDaddy.ai</h2>
+                    <p class="site-description">Your AI parenting assistant. Get personalized advice for every stage of fatherhood, from tantrums to teenagers.</p>
+                    <span class="launch-btn">Launch App →</span>
+                </a>
+
+                <!-- MyMoneyTalks.ai -->
+                <a href="mymoneytalks.html" class="site-card">
+                    <div class="site-icon" style="background: linear-gradient(135deg, #10b981, #3b82f6);">💰</div>
+                    <h2 class="site-title">MyMoneyTalks.ai</h2>
+                    <p class="site-description">Your AI financial advisor. Master budgeting, investing, and financial planning with personalized, intelligent guidance.</p>
+                    <span class="launch-btn">Launch App →</span>
+                </a>
+
+                <!-- WorkWisdom.ai -->
+                <a href="workwisdom.html" class="site-card">
+                    <div class="site-icon" style="background: linear-gradient(135deg, #4f46e5, #7c3aed);">🧠</div>
+                    <h2 class="site-title">WorkWisdom.ai</h2>
+                    <p class="site-description">Your AI career coach. Accelerate your professional development with AI-powered tools for productivity and growth.</p>
+                    <span class="launch-btn">Launch App →</span>
+                </a>
+
+                <!-- OneVibe.ai -->
+                <a href="onevibe.html" class="site-card">
+                    <div class="site-icon" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">✨</div>
+                    <h2 class="site-title">OneVibe.ai</h2>
+                    <p class="site-description">Your AI wellness companion. A person-centered tool for self-reflection, growth, and finding clarity on your wellness journey.</p>
+                    <span class="launch-btn">Launch App →</span>
+                </a>
+                
+                <!-- MyFreetime.ai -->
+                <a href="myfreetime.html" class="site-card">
+                    <div class="site-icon" style="background: linear-gradient(135deg, #0d9488, #f97316);">🎉</div>
+                    <h2 class="site-title">MyFreetime.ai</h2>
+                    <p class="site-description">Your AI guide to leisure. Discover and plan your perfect weekends, vacations, and nights out, tailored to your mood and budget.</p>
+                    <span class="launch-btn">Launch App →</span>
+                </a>
+
+                <!-- MyBrainstorm.ai -->
+                <a href="mybrainstorm.html" class="site-card">
+                    <div class="site-icon" style="background: linear-gradient(135deg, #3b82f6, #10b981);">💡</div>
+                    <h2 class="site-title">MyBrainstorm.ai</h2>
+                    <p class="site-description">Your AI academic partner. Brainstorm ideas, structure essays, and understand complex topics with an AI designed for students.</p>
+                    <span class="launch-btn">Launch App →</span>
+                </a>
+
+                <!-- SmartHealthHub.ai -->
+                <a href="smarthealthhub.html" class="site-card">
+                    <div class="site-icon" style="background: linear-gradient(135deg, #2563eb, #16a34a);">⚕️</div>
+                    <h2 class="site-title">SmartHealthHub.ai</h2>
+                    <p class="site-description">Your AI health companion. Navigate your fitness, nutrition, and medical questions with a comprehensive and intelligent health tool.</p>
+                    <span class="launch-btn">Launch App →</span>
+                </a>
+                
+                <!-- SoulIgnition.ai -->
+                <a href="soulignition.html" class="site-card">
+                    <div class="site-icon" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">🔥</div>
+                    <h2 class="site-title">SoulIgnition.ai</h2>
+                    <p class="site-description">Your AI guide for the soul. Explore spiritual, philosophical, theological, and historical questions with a wise and thoughtful companion.</p>
+                    <span class="launch-btn">Launch App →</span>
+                </a>
+
+                <!-- FindTribe.ai -->
+                <a href="findtribe.html" class="site-card">
+                    <div class="site-icon" style="background: linear-gradient(135deg, #facc15, #ec4899);">👥</div>
+                    <h2 class="site-title">FindTribe.ai</h2>
+                    <p class="site-description">Your AI social connector. Discover communities, plan group events, and find your tribe to get out there and make memories.</p>
+                    <span class="launch-btn">Launch App →</span>
+                </a>
+            </div>
+
+            <!-- Ideas Section -->
+            <section class="ideas-section">
+                <h2>Interactive Ideas</h2>
+                <div id="password-gate">
+                    <p class="text-secondary" style="margin-bottom: 15px;">This section is restricted. Please enter the password to continue.</p>
+                    <form class="password-form" onsubmit="checkPassword(event)">
+                        <input type="password" id="password-input" class="password-input" placeholder="Password">
+                        <button type="submit" class="unlock-btn">Unlock Ideas</button>
+                    </form>
+                    <p id="error-message" style="color: #ef4444; display: none;">Incorrect password. Please try again.</p>
+                </div>
+
+                <div id="ideas-content">
+                    <p class="text-secondary">Password accepted. The ideas are unlocked.</p>
+                    <a href="ideas.html" class="ideas-link">Explore the Idea Browser →</a>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <p class="footer-text">© 2025 SH@WDADDY.net - All Rights Reserved</p>
+        </footer>
+    </div>
+    <script>
+        function checkPassword(event) {
+            event.preventDefault();
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+            const passwordGate = document.getElementById('password-gate');
+            const ideasContent = document.getElementById('ideas-content');
+            
+            // Simple password check
+            if (passwordInput.value === 'sublime') {
+                passwordGate.style.display = 'none';
+                ideasContent.style.display = 'block';
+                errorMessage.style.display = 'none';
+            } else {
+                errorMessage.style.display = 'block';
+                passwordInput.value = '';
+            }
+        }
+    </script>
+</body>
+</html>

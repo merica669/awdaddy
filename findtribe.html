@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindTribe.ai - Your AI Social Connector</title>
+    <meta name="description" content="A social and community-based AI tool that encourages users to find their tribe, make friends, and get out there. Generate free prompts or upgrade to Pro for a guided AI Wingman.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ec4899; /* Pink */
+            --primary-dark: #be185d;
+            --secondary: #facc15; /* Yellow */
+            --background: #fffbeb; /* Light Yellow */
+            --surface: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --border: #fef3c7;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+            --gradient: linear-gradient(135deg, var(--primary), #a855f7); /* Pink to Purple */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+        }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-gradient { background: var(--gradient); }
+        .step.active { display: block; }
+        .step { display: none; }
+        .response-text p { margin-bottom: 1rem; }
+        .response-text ul { list-style-type: disc; list-style-position: inside; margin-left: 1rem; margin-bottom: 1rem; }
+        .response-text li { margin-bottom: 0.5rem; }
+        .loader-dots div { animation: bounce 1.4s infinite ease-in-out both; }
+        .loader-dots .dot1 { animation-delay: -0.32s; }
+        .loader-dots .dot2 { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+        .nav-link.active { color: var(--primary); font-weight: 700; }
+        .prompt-cue-card { white-space: pre-wrap; word-wrap: break-word; line-height: 1.6; }
+        .interest-checkbox:checked + label { background-color: var(--primary); color: white; border-color: var(--primary); }
+    </style>
+</head>
+<body class="bg-yellow-50 text-gray-900">
+
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-lg border-b border-yellow-200 fixed top-0 left-0 right-0 z-40">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+            <a href="#" onclick="showPage('home')" class="text-2xl font-extrabold gradient-text flex items-center gap-2">
+                <span class="text-3xl">👥</span> FindTribe.ai
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" id="nav-home" class="nav-link text-gray-600 hover:text-pink-600 transition-colors" onclick="showPage('home')">Home</a>
+                <a href="#" id="nav-wingman" class="nav-link text-gray-600 hover:text-pink-600 transition-colors" onclick="showPage('wingman')">AI Wingman</a>
+                <a href="#" id="nav-horizon" class="nav-link text-gray-600 hover:text-pink-600 transition-colors" onclick="showPage('horizon')">Event Horizon</a>
+                <a href="#" id="nav-hub" class="nav-link text-gray-600 hover:text-pink-600 transition-colors" onclick="showPage('hub')">Community Hub</a>
+            </div>
+            <button class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-5 rounded-full shadow-md transition-transform transform hover:scale-105" onclick="showOnboarding()">
+                My Profile
+            </button>
+        </nav>
+    </header>
+
+    <main class="pt-20">
+
+        <!-- Home Page -->
+        <div id="homePage" class="page-content">
+            <section class="hero-gradient text-white">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+                    <h1 class="text-4xl md:text-6xl font-extrabold mb-4">Your Social Life, Supercharged</h1>
+                    <p class="text-lg md:text-xl text-pink-100 mb-8 max-w-3xl mx-auto">Stop wondering what to do. Your AI Wingman helps you discover events, plan unforgettable group outings, and connect with people who share your vibe.</p>
+                    <button onclick="showPage('wingman')" class="bg-white text-pink-600 font-bold py-3 px-8 rounded-full shadow-xl transition-transform transform hover:scale-105">Find Your Tribe</button>
+                </div>
+            </section>
+
+             <section class="py-20 bg-yellow-50">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                         <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Never Be Bored Again</h2>
+                         <p class="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">Tools designed to get you offline and into the world.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center"><div class="text-4xl mb-4">🎯</div><h3 class="text-xl font-bold mb-2">Personalized Suggestions</h3><p class="text-gray-600">Our AI uses your social profile to suggest group activities, events, and venues you'll actually love.</p></div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center"><div class="text-4xl mb-4">🗺️</div><h3 class="text-xl font-bold mb-2">Effortless Planning</h3><p class="text-gray-600">Upgrade to Pro to chat with your AI Wingman and create detailed itineraries for group hangouts in seconds.</p></div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center"><div class="text-4xl mb-4">🤝</div><h3 class="text-xl font-bold mb-2">Connect with Your People</h3><p class="text-gray-600">Use our Community Hub to post your plans, find people to join, and discover what others in your area are up to.</p></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- AI Wingman Page (Free & Pro) -->
+        <div id="wingmanPage" class="page-content">
+             <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="max-w-4xl mx-auto">
+                    
+                    <!-- Free Version UI -->
+                    <div id="freeVersionUI">
+                        <div class="text-center pt-12 pb-8">
+                            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">AI Social Prompt Generator</h1>
+                            <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">What's the plan? Enter a keyword to generate a personalized prompt for your next social adventure.</p>
+                            <div class="max-w-xl mx-auto">
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input type="text" id="searchInputFree" class="w-full px-4 py-3 rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-pink-500 outline-none transition" placeholder="e.g., 'Saturday night', 'Find new friends'">
+                                    <button onclick="handleFreeSearch()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full shadow-md flex-shrink-0">Generate Prompt</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="promptGeneratedState" class="hidden bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200 my-8">
+                            <div class="mb-6 p-4 bg-gradient-to-r from-pink-50 to-yellow-50 rounded-lg border-l-4 border-pink-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+                               <div>
+                                   <h3 class="font-bold text-pink-800">Upgrade to FindTribe.ai Pro</h3>
+                                   <p class="text-sm text-pink-700">Unlock your AI Wingman for interactive chat, instant event itineraries, and help drafting invites!</p>
+                               </div>
+                               <button onclick="switchToPro()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full shadow-md flex-shrink-0">Unlock Pro</button>
+                            </div>
+                            <h2 class="text-2xl font-bold text-slate-900 mb-2">Your Personalized Prompt is Ready</h2>
+                            <p class="text-slate-600 mb-4">Copy the text below and paste it into your favorite AI chat tool to get amazing ideas for your next outing.</p>
+                            <div class="prompt-cue-card bg-slate-100 p-4 rounded-lg border-2 border-slate-200 text-slate-700" id="promptCueCard"></div>
+                            <div class="mt-6 flex flex-col sm:flex-row justify-end gap-3">
+                                <button onclick="resetFreeState()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-full transition">Create Another</button>
+                                <button onclick="copyPrompt()" class="bg-secondary text-gray-800 font-bold py-2 px-6 rounded-full shadow-md flex items-center gap-2">Copy to Clipboard</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pro Version UI -->
+                    <div id="proVersionUI" class="hidden">
+                        <div id="welcomeState" class="text-center py-12">
+                            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">Welcome to <span class="gradient-text">FindTribe.ai Pro</span></h1>
+                            <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">Your AI Wingman is ready to plan. What kind of fun are we having?</p>
+                             <div class="max-w-xl mx-auto">
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input type="text" id="searchInputPro" class="w-full px-4 py-3 rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-pink-500 outline-none transition" placeholder="e.g., 'Brewery tour', 'Group hike'">
+                                    <button onclick="handleProSearch()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full shadow-md">Get Curated Prompt</button>
+                                </div>
+                            </div>
+                        </div>
+                         <div id="loadingState" class="hidden text-center py-20">
+                             <div class="flex justify-center items-center space-x-2">
+                                <div class="loader-dots"><div class="dot1 w-4 h-4 bg-pink-500 rounded-full"></div><div class="dot2 w-4 h-4 bg-pink-500 rounded-full"></div><div class="dot3 w-4 h-4 bg-pink-500 rounded-full"></div></div>
+                                <p class="text-lg text-slate-600" id="loadingMessage">Scouting for vibes...</p>
+                            </div>
+                        </div>
+                        <div id="curatedPromptState" class="hidden bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200 my-8">
+                            <h2 class="text-2xl font-bold text-slate-900 mb-2">Your Curated Prompt</h2>
+                            <p class="text-slate-600 mb-4">We've created this starting point based on your social profile. Edit it for a more specific plan.</p>
+                            <textarea id="curatedPromptTextarea" class="w-full h-48 p-4 rounded-lg border-2 border-slate-200 bg-slate-50 focus:ring-2 focus:ring-pink-500 outline-none transition"></textarea>
+                            <div class="mt-4 flex flex-col sm:flex-row justify-end gap-3">
+                                <button onclick="resetProState()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-full transition">Start Over</button>
+                                <button onclick="getAdvice()" class="bg-secondary text-gray-800 font-bold py-2 px-6 rounded-full shadow-md">Ask AI Wingman</button>
+                            </div>
+                        </div>
+                        <div id="chatHistory" class="space-y-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Horizon Page -->
+        <div id="horizonPage" class="page-content">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center mb-12"><h1 class="text-4xl md:text-5xl font-extrabold text-slate-900">Event Horizon</h1><p class="text-lg text-slate-600 mt-4 max-w-2xl mx-auto">Curated ideas and stories to spark your next great time with your tribe.</p></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blogPosts"></div>
+            </div>
+        </div>
+
+        <!-- Community Hub Page -->
+        <div id="hubPage" class="page-content">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                 <div class="text-center mb-12"><h1 class="text-4xl md:text-5xl font-extrabold text-slate-900">Community Hub</h1><p class="text-lg text-slate-600 mt-4 max-w-2xl mx-auto">Find your tribe! Post your plans to find people to join, or see what others are up to.</p></div>
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-white p-8 rounded-lg shadow-md mb-8">
+                        <h3 class="text-2xl font-bold mb-4">Post a Plan or Find a Tribe</h3>
+                         <div class="space-y-4">
+                            <input type="text" id="topicTitle" placeholder="Event title (e.g., 'Board Game Night at my place!')" class="w-full p-2 border border-slate-300 rounded-md">
+                            <textarea id="topicContent" rows="6" placeholder="Paste your AI-generated plan here, or describe the event. Let people know who you're looking for!" class="w-full p-2 border border-slate-300 rounded-md"></textarea>
+                            <button onclick="postTopic()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-6 rounded-full">Post to the Hub</button>
+                        </div>
+                    </div>
+                    <div id="messageBoard" class="space-y-6"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Onboarding Modal -->
+     <div id="onboardingModal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto transform scale-95 transition-all duration-300">
+             <div class="p-6 sm:p-8 relative">
+                <button onclick="closeOnboarding()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-3xl">&times;</button>
+                <div class="text-center mb-6"><h2 class="text-2xl font-bold text-slate-900">Welcome to FindTribe.ai!</h2><p class="text-slate-600">Let's find your social scene in 3 steps.</p></div>
+                <div class="h-2 w-full bg-yellow-200 rounded-full mb-6"><div id="progressFill" class="h-2 bg-pink-600 rounded-full transition-all duration-300" style="width: 33.3%;"></div></div>
+                <div id="onboardingSteps">
+                    <div id="step1" class="step active">
+                        <h3 class="text-xl font-semibold text-center mb-4">Your Crew</h3>
+                        <div class="space-y-4">
+                            <select id="company" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option value="">I'm usually...</option><option value="Solo, looking to meet people">Solo, looking to meet people</option><option value="With a partner">With a partner</option><option value="With a small group of friends">With a small group of friends</option><option value="Planning for a large group">Planning for a large group</option></select>
+                            <input type="text" id="location" placeholder="Your City, State (e.g., Peoria, IL)" class="w-full p-2 border border-slate-300 rounded-md">
+                        </div>
+                    </div>
+                    <div id="step2" class="step">
+                        <h3 class="text-xl font-semibold text-center mb-4">Your Vibe</h3>
+                        <div class="space-y-4">
+                           <select id="vibe" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option value="">My ideal vibe is...</option><option value="Chill & Casual (e.g., coffee shops, parks)">Chill & Casual</option><option value="High-Energy & Loud (e.g., concerts, sports bars)">High-Energy & Loud</option><option value="Creative & Artsy (e.g., galleries, workshops)">Creative & Artsy</option><option value="Adventurous & Outdoorsy (e.g., hiking, kayaking)">Adventurous & Outdoorsy</option></select>
+                           <select id="occasion" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option value="">This is for a...</option><option value="Casual weeknight hang">Casual weeknight hang</option><option value="Fun weekend activity">Fun weekend activity</option><option value="Special occasion">Special occasion</option></select>
+                        </div>
+                    </div>
+                    <div id="step3" class="step">
+                        <h3 class="text-xl font-semibold text-center mb-4">Your Interests</h3>
+                        <p class="text-center text-slate-500 mb-4">Choose as many as you like.</p>
+                        <div id="interests-checkboxes" class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 bg-slate-50 rounded-b-2xl flex justify-between items-center">
+                <div class="text-sm font-medium text-slate-500">Step <span id="currentStep">1</span> of 3</div>
+                <div><button id="prevBtn" onclick="previousStep()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-full transition mr-2 hidden">Back</button><button id="nextBtn" onclick="nextStep()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full transition">Next</button></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white py-2 px-5 rounded-lg shadow-xl translate-x-[calc(100%+2rem)] transition-transform duration-300"><p id="toastMessage"></p></div>
+
+    <script>
+        // --- GLOBAL STATE ---
+        let userProfile = {}; let chatHistory = []; let currentOnboardingStep = 1; let isPro = false;
+        
+        // --- SAMPLE DATA ---
+        const sampleBlogPosts = [{image:'🍻',tag:'Nightlife',date:'Sep 22, 2025',title:'How to Plan the Perfect Brewery Crawl',excerpt:'A step-by-step guide to organizing a fun and responsible brewery tour for your tribe.'},{image:'🤝',tag:'Community',date:'Sep 20, 2025',title:"Breaking the Ice: 5 Tips for Meeting New People",excerpt:"Feeling shy? Here are some simple, low-pressure ways to turn strangers into friends."}, {image:'🎉',tag:'Events',date:'Sep 18, 2025',title:'Hosting a Board Game Night People Actually Enjoy',excerpt:"Go beyond Monopoly with these tips for hosting an epic, fun-filled game night for any group."}];
+        const sampleThreads = [{title:'Organizing a weekly volleyball group at Central Park. Who is in?',author:'SpikeMaster',content:"Looking to get a casual, friendly game of volleyball going every Sunday afternoon. All skill levels welcome! I used the AI Wingman to create a basic plan.",replies:25,time:'1 hour ago'},{title:'Any metalheads in Peoria want to go to the Lamncest show?',author:'Metalhead82',content:"My usual concert buddy bailed. Anyone want to form a tribe for the show next Friday? I'm down to grab a beer before.",replies:8,time:'6 hours ago'}];
+        const interests = ['Live Music','Breweries','Sports Bars','Hiking','Board Games','Art Galleries','Food Festivals','Nightclubs','Trivia Nights'];
+
+        // --- PAGE & TIER MANAGEMENT ---
+        function showPage(page) {
+            document.querySelectorAll('.page-content').forEach(p=>p.classList.remove('active'));
+            document.getElementById(`${page}Page`).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
+            const navId = {home:'nav-home',wingman:'nav-wingman',horizon:'nav-horizon',hub:'nav-hub'}[page];
+            document.getElementById(navId).classList.add('active');
+            window.scrollTo(0, 0);
+            if(page === 'wingman') renderAdvisorPage();
+        }
+        function switchToPro() { isPro = true; localStorage.setItem('findtribePro', 'true'); renderAdvisorPage(); showToast("Pro Version Activated!"); }
+        function renderAdvisorPage() {
+            if (isPro) {
+                document.getElementById('freeVersionUI').style.display = 'none';
+                document.getElementById('proVersionUI').style.display = 'block';
+                resetProState();
+            } else {
+                document.getElementById('freeVersionUI').style.display = 'block';
+                document.getElementById('proVersionUI').style.display = 'none';
+                resetFreeState();
+            }
+        }
+
+        // --- ONBOARDING LOGIC ---
+        function showOnboarding(){document.getElementById('onboardingModal').classList.remove('opacity-0','pointer-events-none');document.querySelector('#onboardingModal > div').classList.remove('scale-95')}
+        function closeOnboarding(){document.getElementById('onboardingModal').classList.add('opacity-0','pointer-events-none');document.querySelector('#onboardingModal > div').classList.add('scale-95')}
+        function nextStep(){if(currentOnboardingStep<3){currentOnboardingStep++;document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById(`step${currentOnboardingStep}`).classList.add('active');updateOnboardingUI()}else{saveProfile();closeOnboarding();showToast("Your social profile is saved!")}}
+        function previousStep(){if(currentOnboardingStep>1){currentOnboardingStep--;document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById(`step${currentOnboardingStep}`).classList.add('active');updateOnboardingUI()}}
+        function updateOnboardingUI(){document.getElementById('currentStep').innerText=currentOnboardingStep;document.getElementById('progressFill').style.width=`${currentOnboardingStep/3*100}%`;document.getElementById('prevBtn').classList.toggle('hidden',currentOnboardingStep===1);document.getElementById('nextBtn').innerText=currentOnboardingStep===3?'Finish':'Next'}
+        function saveProfile(){
+            const selectedInterests = [];
+            document.querySelectorAll('#interests-checkboxes input:checked').forEach(cb => selectedInterests.push(cb.value));
+            userProfile={company:document.getElementById('company').value,location:document.getElementById('location').value,vibe:document.getElementById('vibe').value,occasion:document.getElementById('occasion').value,interests:selectedInterests};
+            localStorage.setItem('findtribeProfile',JSON.stringify(userProfile));
+        }
+        function loadProfile(){
+            const savedProfile = localStorage.getItem('findtribeProfile');
+            if(savedProfile){
+                userProfile=JSON.parse(savedProfile);
+                Object.keys(userProfile).forEach(key => {
+                    if (key === 'interests') {
+                        userProfile.interests.forEach(interest => {
+                            const checkbox = document.querySelector(`#interests-checkboxes input[value="${interest}"]`);
+                            if (checkbox) checkbox.checked = true;
+                        });
+                    } else {
+                        const el = document.getElementById(key);
+                        if(el) el.value = userProfile[key];
+                    }
+                });
+            } else {
+                setTimeout(showOnboarding, 1500);
+            }
+        }
+        function populateInterests(){
+            const container = document.getElementById('interests-checkboxes');
+            container.innerHTML = interests.map(i => `<div class="flex items-center"><input type="checkbox" id="interest-${i.replace(/\s/g, '')}" value="${i}" class="hidden interest-checkbox"><label for="interest-${i.replace(/\s/g, '')}" class="w-full text-center p-2 border-2 border-yellow-300 rounded-full cursor-pointer transition-colors">${i}</label></div>`).join('');
+        }
+        
+        // --- UI & CONTENT RENDERING ---
+        function showToast(e){const t=document.getElementById('toast');t.innerText=e;t.classList.remove('translate-x-[calc(100%+2rem)]');setTimeout(()=>{t.classList.add('translate-x-[calc(100%+2rem)]')},3e3)}
+        function loadBlogPosts() {
+            const container = document.getElementById('blogPosts');
+            container.innerHTML = sampleBlogPosts.map(post => `<div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform transform hover:-translate-y-1"><div class="h-40 hero-gradient flex items-center justify-center text-5xl">${post.image}</div><div class="p-6"><div class="text-sm text-pink-600 font-semibold">${post.tag} &bull; ${post.date}</div><h3 class="text-xl font-bold mt-2 mb-2 text-gray-800">${post.title}</h3><p class="text-gray-600">${post.excerpt}</p></div></div>`).join('');
+        }
+        function loadMessageBoard() {
+            const board = document.getElementById('messageBoard');
+            board.innerHTML = sampleThreads.map(t => `<div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg">${t.title}</h4><p class="text-sm text-slate-500 mb-2">by ${t.author} • ${t.time} • ${t.replies} replies</p><p class="text-slate-600">${t.content}</p></div>`).join('');
+        }
+        function postTopic() {
+            const title = document.getElementById('topicTitle').value;
+            const content = document.getElementById('topicContent').value;
+            if (!title || !content) return showToast('Please fill all fields');
+            sampleThreads.unshift({ title, author: 'You', content, replies: 0, time: 'Just now' });
+            loadMessageBoard();
+            document.getElementById('topicTitle').value = ''; document.getElementById('topicContent').value = '';
+            showToast('Posted to the Hub!');
+        }
+        
+        // --- FREE VERSION LOGIC ---
+        function setFreeState(state) { document.getElementById('promptGeneratedState').style.display = state === 'generated' ? 'block' : 'none'; }
+        function resetFreeState() { setFreeState('initial'); document.getElementById('searchInputFree').value = ''; }
+        function handleFreeSearch() {
+            const keyword = document.getElementById('searchInputFree').value;
+            if (!keyword) return showToast("Please enter an occasion or idea.");
+            if (Object.keys(userProfile).length < 4) { showOnboarding(); return showToast("Please complete your social profile first!"); }
+            const prompt = `I need help planning an activity related to "${keyword}". Please act as an AI social event planner. My profile is as follows:\n\n- Group: I am ${userProfile.company || 'flexible'}.\n- Vibe: I'm looking for a ${userProfile.vibe || 'casual'} experience.\n- Occasion: This is for a ${userProfile.occasion || 'fun weekend activity'}.\n- My Interests: ${userProfile.interests?.join(', ') || 'General activities'}.\n- Location: Please provide ideas for ${userProfile.location || 'my local area'}.\n\nPlease generate a detailed plan or several creative options. Include specific types of venues, a potential schedule, and why these ideas fit my profile.`;
+            document.getElementById('promptCueCard').textContent = prompt;
+            setFreeState('generated');
+        }
+        function copyPrompt() {
+            const promptText = document.getElementById('promptCueCard').textContent;
+            navigator.clipboard.writeText(promptText).then(() => showToast('Prompt copied to clipboard!'));
+        }
+
+        // --- PRO VERSION (GEMINI API) LOGIC ---
+        function setProState(e,t=""){['welcomeState','loadingState','curatedPromptState'].forEach(e=>{document.getElementById(e).style.display='none'});document.getElementById('chatHistory').style.display='none';switch(e){case'loading':document.getElementById('loadingState').style.display='block';document.getElementById('loadingMessage').innerText=t;break;case'prompt':case'chat':document.getElementById('curatedPromptState').style.display='block';document.getElementById('chatHistory').style.display='block';break;default:document.getElementById('welcomeState').style.display='block'}}
+        function resetProState(){chatHistory=[];renderChatHistory();setProState('welcome')}
+        async function callGeminiAPI(e,t,n=3,o=1e3){const i="AIzaSyDkBHWGERIoYNeK00O_n15Uj76KEzNvpAE";const l=`https://generativelanguage.googleapis.com/v1beta/models/${e}:generateContent?key=${i}`;try{const e=await fetch(l,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(t)});if(!e.ok){if(e.status===429&&n>0){await new Promise(e=>setTimeout(e,o));return callGeminiAPI(e,t,n-1,o*2)}throw new Error(`API Error: ${e.statusText}`)}return await e.json()}catch(e){console.error("API Call failed:",e);showToast("An API error occurred.");setProState('welcome');return null}}
+        async function handleProSearch() {
+            const keyword = document.getElementById('searchInputPro').value;
+            if (!keyword) return showToast("Please enter an occasion or idea.");
+            setProState('loading', 'Crafting a social prompt...');
+            const systemInstruction = `You are a prompt engineering expert for social planning. Based on the user's social profile and a keyword, create a detailed, fun, and effective prompt for an AI Wingman.`;
+            const userQuery = `User Profile: ${JSON.stringify(userProfile)}\nRequest: "${keyword}"\n\nGenerate the prompt.`;
+            const payload = { systemInstruction: { parts: [{ text: systemInstruction }] }, contents: [{ parts: [{ text: userQuery }] }] };
+            const result = await callGeminiAPI('gemini-2.5-flash-preview-05-20', payload);
+            if (result?.candidates?.[0]?.content?.parts?.[0]?.text) {
+                document.getElementById('curatedPromptTextarea').value = result.candidates[0].content.parts[0].text;
+                setProState('prompt');
+            } else { showToast("Could not create a prompt."); setProState('welcome'); }
+        }
+        async function getAdvice() {
+            const userPrompt = document.getElementById('curatedPromptTextarea').value;
+            chatHistory.push({ role: 'user', parts: [{ text: userPrompt }] });
+            renderChatHistory();
+            setProState('loading', 'AI Wingman is planning...');
+            const systemInstruction = "You are FindTribe.ai, the ultimate AI Wingman. Your tone is energetic, fun, and encouraging. You are an expert at planning social events and helping people connect. Provide specific, actionable, and exciting itineraries. Suggest real types of places (e.g., 'a rustic brewery with a patio,' 'a high-energy dance club,' 'a scenic hiking trail'). For any location-based questions, use Peoria, Illinois as your default city. You can even help draft a casual, friendly text message to invite friends.";
+            const payload = { systemInstruction: { parts: [{ text: systemInstruction }] }, contents: chatHistory };
+            const result = await callGeminiAPI('gemini-2.5-flash-preview-05-20', payload);
+            if (result?.candidates?.[0]?.content?.parts?.[0]?.text) {
+                const modelResponse = result.candidates[0].content.parts[0].text;
+                chatHistory.push({ role: 'model', parts: [{ text: modelResponse }] });
+                renderChatHistory();
+                setProState('chat');
+            } else { showToast("Sorry, my social calendar is full right now!"); chatHistory.pop(); renderChatHistory(); setProState('prompt'); }
+        }
+        function renderChatHistory() {
+            const container = document.getElementById('chatHistory');
+            container.innerHTML = chatHistory.map((turn, index) => {
+                const isUser = turn.role === 'user';
+                const avatar = isUser ? `<div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center font-bold text-white">You</div>` : `<div class="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center text-2xl">👥</div>`;
+                const contentBg = isUser ? 'bg-yellow-100' : 'bg-white';
+                const content = turn.parts[0].text.replace(/\n/g, '<br>');
+                const audioBtn = !isUser ? `<div class="mt-3"><button id="audioBtn_${index}" onclick="playAudio(this, ${index})" class="text-sm font-semibold text-pink-600 hover:text-pink-800 flex items-center gap-1">▶ Hear the Plan</button></div>` : '';
+                return `<div class="flex items-start gap-4 ${isUser ? 'justify-end' : ''}">${!isUser ? avatar : ''}<div class="${contentBg} p-4 rounded-xl max-w-xl shadow-md border border-slate-100"><div class="response-text">${content}</div>${audioBtn}</div>${isUser ? avatar : ''}</div>`;
+            }).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+        function base64ToArrayBuffer(b){const c=window.atob(b),d=c.length,e=new Uint8Array(d);for(let a=0;a<d;a++)e[a]=c.charCodeAt(a);return e.buffer}function pcmToWav(e,f){const g=new ArrayBuffer(44),a=new DataView(g);function h(a,b,c){for(let d=0;d<c.length;d++)a.setUint8(b+d,c.charCodeAt(d))}return h(a,0,"RIFF"),a.setUint32(4,36+2*e.length,!0),h(a,8,"WAVE"),h(a,12,"fmt "),a.setUint32(16,16,!0),a.setUint16(20,1,!0),a.setUint16(22,1,!0),a.setUint32(24,f,!0),a.setUint32(28,2*f,!0),a.setUint16(32,2,!0),a.setUint16(34,16,!0),h(a,36,"data"),a.setUint32(40,2*e.length,!0),b=new Int16Array(44+2*e.length),b.set(new Int16Array(g),0),b.set(e,22),new Blob([b],{type:"audio/wav"})}
+        async function playAudio(button, index) {
+            button.innerHTML = '...'; button.disabled = true;
+            const textToPlay = chatHistory[index].parts[0].text;
+            const payload = {contents: [{ parts: [{ text: `Say in a fun, friendly, and energetic voice: ${textToPlay}` }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Fenrir" } } } }, model: "gemini-2.5-flash-preview-tts"};
+            const result = await callGeminiAPI('gemini-2.5-flash-preview-tts', payload);
+            if (result?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data) {
+                const data = result.candidates[0].content.parts[0].inlineData, sampleRate = parseInt(data.mimeType.match(/rate=(\d+)/)[1], 10);
+                const pcm16 = new Int16Array(base64ToArrayBuffer(data.data)), wavBlob = pcmToWav(pcm16, sampleRate);
+                const audio = new Audio(URL.createObjectURL(wavBlob));
+                audio.play(); button.innerHTML = '❚❚ Playing...'; audio.onended = () => { button.innerHTML = '▶ Hear the Plan'; };
+            } else { showToast("Could not generate audio."); button.innerHTML = '▶ Hear the Plan'; }
+            button.disabled = false;
+        }
+        
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            isPro = localStorage.getItem('findtribePro') === 'true';
+            showPage('home');
+            populateInterests();
+            loadProfile(); loadBlogPosts(); loadMessageBoard();
+        });
+    </script>
+</body>
+</html>
+

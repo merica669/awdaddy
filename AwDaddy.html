@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AwDaddy.ai - AI Parenting Advisor</title>
+    <meta name="description" content="Get instant AI-powered parenting advice. Use our free prompt generator or upgrade to Pro for a full AI chat experience with audio playback.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #10b981;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+        }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .step.active { display: block; }
+        .step { display: none; }
+        .response-text p { margin-bottom: 1rem; }
+        .response-text ul { list-style-position: inside; list-style-type: disc; margin-left: 1rem; margin-bottom: 1rem; }
+        .response-text li { margin-bottom: 0.5rem; }
+        .loader-dots div { animation: bounce 1.4s infinite ease-in-out both; }
+        .loader-dots .dot1 { animation-delay: -0.32s; }
+        .loader-dots .dot2 { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+        .nav-link.active {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .prompt-cue-card {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-lg border-b border-slate-200 fixed top-0 left-0 right-0 z-40">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+            <a href="#" onclick="showPage('home')" class="text-2xl font-extrabold gradient-text flex items-center gap-2">
+                <span class="text-3xl">👨‍👧‍👦</span> AwDaddy.ai
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" id="nav-home" class="nav-link text-slate-600 hover:text-blue-600 transition-colors" onclick="showPage('home')">Home</a>
+                <a href="#" id="nav-advisor" class="nav-link text-slate-600 hover:text-blue-600 transition-colors" onclick="showPage('advisor')">AI Advisor</a>
+                <a href="#" id="nav-blog" class="nav-link text-slate-600 hover:text-blue-600 transition-colors" onclick="showPage('blog')">Blog</a>
+                <a href="#" id="nav-club" class="nav-link text-slate-600 hover:text-blue-600 transition-colors" onclick="showPage('club')">Dad's Club</a>
+            </div>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105" onclick="showOnboarding()">
+                My Profile
+            </button>
+        </nav>
+    </header>
+
+    <main class="pt-20">
+
+        <!-- Home Page -->
+        <div id="homePage" class="page-content">
+            <section class="hero-gradient text-white">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+                    <h1 class="text-4xl md:text-6xl font-extrabold mb-4">AI-Powered Parenting Wisdom</h1>
+                    <p class="text-lg md:text-xl text-indigo-200 mb-8 max-w-2xl mx-auto">Get instant, personalized advice for every challenge. From sleepless nights to teenage troubles, AwDaddy has your back.</p>
+                    <button onclick="showPage('advisor')" class="bg-white text-blue-600 font-bold py-3 px-8 rounded-lg shadow-xl transition-transform transform hover:scale-105">Talk to the AI Advisor</button>
+                </div>
+            </section>
+
+             <section id="features" class="py-20 bg-slate-100">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                         <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">Why Dads Choose AwDaddy.ai</h2>
+                         <p class="text-lg text-slate-600 mt-4 max-w-2xl mx-auto">Everything you need to be the dad you want to be.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center"><div class="text-4xl mb-4">🎯</div><h3 class="text-xl font-bold mb-2">Personalized Advice</h3><p class="text-slate-600">Our AI learns your family dynamics to provide tailored solutions for your specific situation.</p></div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center"><div class="text-4xl mb-4">⚡</div><h3 class="text-xl font-bold mb-2">Instant Responses</h3><p class="text-slate-600">Get help in seconds, not hours. Perfect for those urgent parenting moments.</p></div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center"><div class="text-4xl mb-4">🧠</div><h3 class="text-xl font-bold mb-2">Evidence-Based</h3><p class="text-slate-600">All advice is grounded in child development research and best practices.</p></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- AI Advisor Page (Free & Pro) -->
+        <div id="advisorPage" class="page-content">
+             <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="max-w-4xl mx-auto">
+                    
+                    <!-- Free Version UI -->
+                    <div id="freeVersionUI">
+                        <div class="text-center pt-12 pb-8">
+                            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">AI Parenting Prompt Generator</h1>
+                            <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">What challenge are you facing? Enter a keyword to generate a personalized prompt based on your family's profile.</p>
+                            <div class="max-w-xl mx-auto">
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input type="text" id="searchInputFree" class="w-full px-4 py-3 rounded-lg border-2 border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="e.g., 'toddler tantrums', 'teenager screen time'">
+                                    <button onclick="handleFreeSearch()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md flex-shrink-0">Generate Prompt</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="promptGeneratedState" class="hidden bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200 my-8">
+                            <div class="mb-6 p-4 bg-gradient-to-r from-blue-50 to-emerald-50 rounded-lg border-l-4 border-blue-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+                               <div>
+                                   <h3 class="font-bold text-blue-800">Upgrade to AwDaddy.ai Pro!</h3>
+                                   <p class="text-sm text-blue-700">Get instant AI answers, personalized chat, and audio playback directly on this page.</p>
+                               </div>
+                               <button onclick="switchToPro()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md flex-shrink-0">Get Pro</button>
+                            </div>
+                            <h2 class="text-2xl font-bold text-slate-900 mb-2">Your Personalized Prompt is Ready!</h2>
+                            <p class="text-slate-600 mb-4">Copy the text below and paste it into your favorite AI chat tool (like Gemini, ChatGPT, etc.) to get high-quality parenting advice.</p>
+                            <div class="prompt-cue-card bg-slate-50 p-4 rounded-lg border-2 border-slate-200 text-slate-700" id="promptCueCard"></div>
+                            <div class="mt-6 flex flex-col sm:flex-row justify-end gap-3">
+                                <button onclick="resetFreeState()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-lg transition">Create Another</button>
+                                <button onclick="copyPrompt()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-6 rounded-lg shadow-md flex items-center gap-2">Copy to Clipboard</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pro Version UI -->
+                    <div id="proVersionUI" class="hidden">
+                        <div id="welcomeState" class="text-center py-12">
+                            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">Welcome to <span class="gradient-text">AwDaddy.ai Pro</span></h1>
+                            <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">Your personal AI co-pilot is ready. What's on your mind? Enter a topic to begin.</p>
+                             <div class="max-w-xl mx-auto">
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input type="text" id="searchInputPro" class="w-full px-4 py-3 rounded-lg border-2 border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="e.g., 'Bedtime routine', 'Sibling rivalry'">
+                                    <button onclick="handleProSearch()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md">Get Curated Prompt</button>
+                                </div>
+                            </div>
+                        </div>
+                         <div id="loadingState" class="hidden text-center py-20">
+                             <div class="flex justify-center items-center space-x-2">
+                                <div class="loader-dots"><div class="dot1 w-4 h-4 bg-blue-500 rounded-full"></div><div class="dot2 w-4 h-4 bg-blue-500 rounded-full"></div><div class="dot3 w-4 h-4 bg-blue-500 rounded-full"></div></div>
+                                <p class="text-lg text-slate-600" id="loadingMessage">Thinking...</p>
+                            </div>
+                        </div>
+                        <div id="curatedPromptState" class="hidden bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200 my-8">
+                            <h2 class="text-2xl font-bold text-slate-900 mb-2">Your Curated Prompt</h2>
+                            <p class="text-slate-600 mb-4">We've crafted this prompt based on your profile. Feel free to edit it for a more tailored response.</p>
+                            <textarea id="curatedPromptTextarea" class="w-full h-48 p-4 rounded-lg border-2 border-slate-200 bg-slate-50 focus:ring-2 focus:ring-blue-500 outline-none transition"></textarea>
+                            <div class="mt-4 flex flex-col sm:flex-row justify-end gap-3">
+                                <button onclick="resetProState()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-lg transition">Start Over</button>
+                                <button onclick="getAdvice()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-6 rounded-lg shadow-md">Get Advice</button>
+                            </div>
+                        </div>
+                        <div id="chatHistory" class="space-y-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Page -->
+        <div id="blogPage" class="page-content">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center mb-12"><h1 class="text-4xl md:text-5xl font-extrabold text-slate-900">Dad Stories & Testimonials</h1><p class="text-lg text-slate-600 mt-4 max-w-2xl mx-auto">Real experiences from real dads using AwDaddy.ai</p></div>
+                <div class="max-w-3xl mx-auto">
+                    <div class="bg-white p-8 rounded-lg shadow-md mb-8">
+                        <h3 class="text-2xl font-bold mb-4">Share Your Story</h3>
+                        <div class="space-y-4">
+                            <input type="text" id="storyName" placeholder="Your Name" class="w-full p-2 border border-slate-300 rounded-md">
+                            <input type="text" id="storyTitle" placeholder="Title of your story" class="w-full p-2 border border-slate-300 rounded-md">
+                            <textarea id="storyContent" rows="5" placeholder="Tell us how AwDaddy helped you..." class="w-full p-2 border border-slate-300 rounded-md"></textarea>
+                            <button onclick="submitStory()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">Submit Story</button>
+                        </div>
+                    </div>
+                    <div id="testimonialsList" class="space-y-6"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Club Page -->
+        <div id="clubPage" class="page-content">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                 <div class="text-center mb-12"><h1 class="text-4xl md:text-5xl font-extrabold text-slate-900">Dad's Club Message Board</h1><p class="text-lg text-slate-600 mt-4 max-w-2xl mx-auto">Connect, share, and learn from other fathers.</p></div>
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-white p-8 rounded-lg shadow-md mb-8">
+                        <h3 class="text-2xl font-bold mb-4">Start a Discussion</h3>
+                         <div class="space-y-4">
+                            <input type="text" id="topicTitle" placeholder="Topic title..." class="w-full p-2 border border-slate-300 rounded-md">
+                            <textarea id="topicContent" rows="4" placeholder="What's on your mind?" class="w-full p-2 border border-slate-300 rounded-md"></textarea>
+                            <button onclick="postTopic()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">Post Topic</button>
+                        </div>
+                    </div>
+                    <div id="messageBoard" class="space-y-6"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Onboarding Modal -->
+     <div id="onboardingModal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto transform scale-95 transition-all duration-300">
+             <div class="p-6 sm:p-8 relative">
+                <button onclick="closeOnboarding()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-3xl">&times;</button>
+                <div class="text-center mb-6"><h2 class="text-2xl font-bold text-slate-900">Welcome to AwDaddy.ai!</h2><p class="text-slate-600">Let's personalize your experience in 3 quick steps.</p></div>
+                <div class="h-2 w-full bg-slate-200 rounded-full mb-6"><div id="progressFill" class="h-2 bg-blue-600 rounded-full transition-all duration-300" style="width: 33.3%;"></div></div>
+                <div id="onboardingSteps">
+                    <div id="step1" class="step active">
+                        <h3 class="text-xl font-semibold text-center mb-4">Tell us about yourself</h3>
+                        <div class="space-y-4">
+                            <input type="text" id="userName" placeholder="Your Name" class="w-full p-2 border border-slate-300 rounded-md">
+                            <select id="numChildren" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option value="">Number of Children...</option><option value="1">1 child</option><option value="2">2 children</option><option value="3">3 children</option><option value="4+">4+ children</option></select>
+                            <input type="text" id="childrenAges" placeholder="Children's Ages (e.g., 3, 7, 12)" class="w-full p-2 border border-slate-300 rounded-md">
+                            <select id="parentingStyle" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option value="">Your Parenting Style...</option><option value="gentle">Gentle Parenting</option><option value="structured">Structured</option><option value="balanced">Balanced Approach</option><option value="positive">Positive Discipline</option></select>
+                        </div>
+                    </div>
+                    <div id="step2" class="step">
+                        <h3 class="text-xl font-semibold text-center mb-4">Current Challenges</h3><p class="text-slate-500 text-center mb-4">Select all that apply.</p>
+                        <div id="challenges-checkboxes" class="grid grid-cols-2 gap-2"></div>
+                        <textarea id="biggestChallenge" rows="3" placeholder="What's your biggest challenge right now?" class="mt-4 w-full p-2 border border-slate-300 rounded-md"></textarea>
+                    </div>
+                    <div id="step3" class="step">
+                        <h3 class="text-xl font-semibold text-center mb-4">Your Goals</h3>
+                        <div class="space-y-4">
+                            <select id="primaryGoal" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option value="">Primary Parenting Goal...</option><option value="confidence">Raise confident children</option><option value="independence">Foster independence</option><option value="connection">Stronger family bonds</option></select>
+                            <select id="communicationStyle" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option value="">Preferred AI Advice Style...</option><option value="direct">Direct and concise</option><option value="detailed">Detailed with examples</option><option value="scientific">Research-backed</option><option value="casual">Casual and friendly</option></select>
+                            <input type="text" id="specialConsiderations" placeholder="Any special considerations? (e.g., ADHD)" class="w-full p-2 border border-slate-300 rounded-md">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 bg-slate-50 rounded-b-2xl flex justify-between items-center">
+                <div class="text-sm font-medium text-slate-500">Step <span id="currentStep">1</span> of 3</div>
+                <div><button id="prevBtn" onclick="previousStep()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-lg transition mr-2 hidden">Back</button><button id="nextBtn" onclick="nextStep()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">Next</button></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white py-2 px-5 rounded-lg shadow-xl translate-x-[calc(100%+2rem)] transition-transform duration-300"><p id="toastMessage"></p></div>
+
+    <script>
+        // --- GLOBAL STATE ---
+        let userProfile = {}; let chatHistory = []; let currentOnboardingStep = 1; let currentPage = 'home'; let isPro = false;
+        
+        // --- SAMPLE DATA ---
+        const sampleTestimonials = [{name:'Mike S.',title:'Finally Sleeping Through the Night!',content:'After months of sleep battles with our 2-year-old, AwDaddy gave us a personalized plan that worked within a week. Game changer!',date:'Yesterday'},{name:'James R.',title:'Homework Without the Tears',content:"My 8-year-old used to have meltdowns over homework every night. The strategies from AwDaddy turned it into quality bonding time.",date:'3 days ago'}];
+        const sampleThreads = [{title:'Tips for Morning Routines with Multiple Kids',author:'DadOfThree',content:'How do you guys manage getting everyone ready for school without chaos?',replies:12,time:'2 hours ago'},{title:'Best Apps for Educational Screen Time',author:'TechDad',content:'Looking for recommendations on apps that are actually educational and engaging.',replies:8,time:'5 hours ago'}];
+        const challenges = ['Sleep Issues','Tantrums','Picky Eating','Homework Battles','Screen Time','Discipline','Sibling Rivalry','Child Anxiety'];
+
+        // --- PAGE & TIER MANAGEMENT ---
+        function showPage(page) {
+            currentPage = page;
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.getElementById(`${page}Page`).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+            document.getElementById(`nav-${page}`).classList.add('active');
+            window.scrollTo(0, 0);
+            if(page === 'advisor') renderAdvisorPage();
+        }
+        function switchToPro() {
+            isPro = true; localStorage.setItem('awdaddyPro', 'true'); renderAdvisorPage(); showToast("Pro Version Activated!");
+        }
+        function renderAdvisorPage() {
+            if (isPro) {
+                document.getElementById('freeVersionUI').style.display = 'none';
+                document.getElementById('proVersionUI').style.display = 'block';
+                resetProState();
+            } else {
+                document.getElementById('freeVersionUI').style.display = 'block';
+                document.getElementById('proVersionUI').style.display = 'none';
+                resetFreeState();
+            }
+        }
+
+        // --- ONBOARDING LOGIC ---
+        function showOnboarding(){document.getElementById('onboardingModal').classList.remove('opacity-0','pointer-events-none');document.querySelector('#onboardingModal > div').classList.remove('scale-95')}
+        function closeOnboarding(){document.getElementById('onboardingModal').classList.add('opacity-0','pointer-events-none');document.querySelector('#onboardingModal > div').classList.add('scale-95')}
+        function nextStep(){if(currentOnboardingStep<3){currentOnboardingStep++;document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById(`step${currentOnboardingStep}`).classList.add('active');updateOnboardingUI()}else{saveProfile();closeOnboarding();showToast("Profile saved successfully!")}}
+        function previousStep(){if(currentOnboardingStep>1){currentOnboardingStep--;document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById(`step${currentOnboardingStep}`).classList.add('active');updateOnboardingUI()}}
+        function updateOnboardingUI(){document.getElementById('currentStep').innerText=currentOnboardingStep;document.getElementById('progressFill').style.width=`${currentOnboardingStep/3*100}%`;document.getElementById('prevBtn').classList.toggle('hidden',currentOnboardingStep===1);document.getElementById('nextBtn').innerText=currentOnboardingStep===3?'Finish':'Next'}
+        function saveProfile(){const e=[];document.querySelectorAll('#challenges-checkboxes input:checked').forEach(t=>{e.push(t.value)});userProfile={name:document.getElementById('userName').value,numChildren:document.getElementById('numChildren').value,childrenAges:document.getElementById('childrenAges').value,parentingStyle:document.getElementById('parentingStyle').value,challenges:e,biggestChallenge:document.getElementById('biggestChallenge').value,primaryGoal:document.getElementById('primaryGoal').value,communicationStyle:document.getElementById('communicationStyle').value,specialConsiderations:document.getElementById('specialConsiderations').value,};localStorage.setItem('awdaddyProfile',JSON.stringify(userProfile))}
+        function loadProfile(){const e=localStorage.getItem('awdaddyProfile');if(e){userProfile=JSON.parse(e);Object.keys(userProfile).forEach(e=>{const t=document.getElementById(e);if(t)t.value=userProfile[e]});if(userProfile.challenges)userProfile.challenges.forEach(e=>{const t=document.querySelector(`#challenges-checkboxes input[value="${e}"]`);if(t)t.checked=true})}else setTimeout(showOnboarding,1500)}
+        function populateChallenges(){const e=document.getElementById('challenges-checkboxes');e.innerHTML=challenges.map(e=>`<label class="flex items-center space-x-2 p-2 rounded-md hover:bg-slate-100 cursor-pointer"><input type="checkbox" value="${e}" class="rounded text-blue-600 focus:ring-blue-500"><span>${e}</span></label>`).join('')}
+
+        // --- UI & CONTENT RENDERING ---
+        function showToast(e){const t=document.getElementById('toast');t.innerText=e;t.classList.remove('translate-x-[calc(100%+2rem)]');setTimeout(()=>{t.classList.add('translate-x-[calc(100%+2rem)]')},3e3)}
+        function loadTestimonials(){const e=document.getElementById('testimonialsList');if(!e)return;e.innerHTML=sampleTestimonials.map(e=>`<div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg">${e.title}</h4><p class="text-sm text-slate-500 mb-2">by ${e.name} • ${e.date}</p><p class="text-slate-600">${e.content}</p></div>`).join('')}
+        function loadMessageBoard(){const e=document.getElementById('messageBoard');if(!e)return;e.innerHTML=sampleThreads.map(e=>`<div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg">${e.title}</h4><p class="text-sm text-slate-500 mb-2">by ${e.author} • ${e.time} • ${e.replies} replies</p><p class="text-slate-600">${e.content}</p></div>`).join('')}
+        function submitStory(){const e=document.getElementById('storyName').value,t=document.getElementById('storyTitle').value,n=document.getElementById('storyContent').value;if(!e||!t||!n)return showToast('Please fill all fields');sampleTestimonials.unshift({name:e,title:t,content:n,date:'Just now'});loadTestimonials();document.getElementById('storyName').value='';document.getElementById('storyTitle').value='';document.getElementById('storyContent').value='';showToast('Story submitted successfully!')}
+        function postTopic(){const e=document.getElementById('topicTitle').value,t=document.getElementById('topicContent').value;if(!e||!t)return showToast('Please fill all fields');sampleThreads.unshift({title:e,author:userProfile.name||'Anonymous',content:t,replies:0,time:'Just now'});loadMessageBoard();document.getElementById('topicTitle').value='';document.getElementById('topicContent').value='';showToast('Topic posted successfully!')}
+
+        // --- FREE VERSION LOGIC ---
+        function setFreeState(e){document.getElementById('promptGeneratedState').style.display=e==='generated'?'block':'none'}
+        function resetFreeState(){setFreeState('initial');document.getElementById('searchInputFree').value=''}
+        function handleFreeSearch(){const e=document.getElementById('searchInputFree').value;if(!e)return showToast("Please enter a parenting topic.");if(Object.keys(userProfile).length===0){showOnboarding();return showToast("Please complete your profile first!")}const t=`I am a father seeking expert parenting advice regarding "${e}". Please provide a comprehensive and actionable strategy tailored to my specific situation.\n\nHere is my profile for context:\n${userProfile.childrenAges?`- Children's Ages: ${userProfile.childrenAges}\n`:''}${userProfile.parentingStyle?`- My Parenting Style: ${userProfile.parentingStyle}\n`:''}${userProfile.primaryGoal?`- Primary Goal: To ${userProfile.primaryGoal}\n`:''}${userProfile.biggestChallenge?`- Biggest Challenge: ${userProfile.biggestChallenge}\n`:''}${userProfile.specialConsiderations?`- Special Considerations: ${userProfile.specialConsiderations}\n`:''}\nPlease provide a clear, step-by-step plan. Include what to say, what to avoid, and a sample script if applicable.`;document.getElementById('promptCueCard').textContent=t;setFreeState('generated')}
+        function copyPrompt(){const e=document.getElementById('promptCueCard').textContent;navigator.clipboard.writeText(e).then(()=>showToast('Prompt copied to clipboard!'))}
+
+        // --- PRO VERSION (GEMINI API) LOGIC ---
+        function setProState(e,t=""){['welcomeState','loadingState','curatedPromptState'].forEach(e=>{document.getElementById(e).style.display='none'});document.getElementById('chatHistory').style.display='none';switch(e){case'loading':document.getElementById('loadingState').style.display='block';document.getElementById('loadingMessage').innerText=t;break;case'prompt':case'chat':document.getElementById('curatedPromptState').style.display='block';document.getElementById('chatHistory').style.display='block';break;default:document.getElementById('welcomeState').style.display='block'}}
+        function resetProState(){chatHistory=[];renderChatHistory();setProState('welcome')}
+        async function callGeminiAPI(e,t,n=3,o=1e3){const i="AIzaSyDkBHWGERIoYNeK00O_n15Uj76KEzNvpAE";const l=`https://generativelanguage.googleapis.com/v1beta/models/${e}:generateContent?key=${i}`;try{const e=await fetch(l,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(t)});if(!e.ok){if(e.status===429&&n>0){await new Promise(e=>setTimeout(e,o));return callGeminiAPI(e,t,n-1,o*2)}throw new Error(`API Error: ${e.statusText}`)}return await e.json()}catch(e){console.error("API Call failed:",e);showToast("An API error occurred.");setProState('welcome');return null}}
+        async function handleProSearch(){const e=document.getElementById('searchInputPro').value;if(!e)return showToast("Please enter a topic.");setProState('loading','Crafting a personalized prompt...');const t="You are a prompt engineering expert for parenting advice. Based on the user's profile and a keyword, create a detailed prompt for an AI parenting assistant. Include placeholders in brackets for customization.",n=`User Profile: ${JSON.stringify(userProfile)}\nKeyword: "${e}"\n\nGenerate the prompt.`,o={systemInstruction:{parts:[{text:t}]},contents:[{parts:[{text:n}]}]};const i=await callGeminiAPI('gemini-2.5-flash-preview-05-20',o);if(i&&i.candidates?.[0]?.content?.parts?.[0]?.text){document.getElementById('curatedPromptTextarea').value=i.candidates[0].content.parts[0].text;setProState('prompt')}else{showToast("Could not generate a prompt.");setProState('welcome')}}
+        async function getAdvice(){const e=document.getElementById('curatedPromptTextarea').value;chatHistory.push({role:'user',parts:[{text:e}]});renderChatHistory();setProState('loading','AwDaddy AI is thinking...');const t="You are AwDaddy AI, a supportive, empathetic, and expert parenting assistant. Your advice should be practical, evidence-based, and tailored to the user's situation. Use a warm, encouraging tone.",n={systemInstruction:{parts:[{text:t}]},contents:chatHistory};const o=await callGeminiAPI('gemini-2.5-flash-preview-05-20',n);if(o&&o.candidates?.[0]?.content?.parts?.[0]?.text){const e=o.candidates[0].content.parts[0].text;chatHistory.push({role:'model',parts:[{text:e}]});renderChatHistory();setProState('chat')}else{showToast("Sorry, I couldn't generate a response.");chatHistory.pop();renderChatHistory();setProState('prompt')}}
+        function renderChatHistory(){const e=document.getElementById('chatHistory');e.innerHTML=chatHistory.map((e,t)=>{const n=e.role==='user',o=n?'<div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white">You</div>':'<div class="w-10 h-10 rounded-full gradient-text bg-slate-200 flex items-center justify-center text-2xl">👨‍👧‍👦</div>',i=n?'bg-blue-100':'bg-white',l=e.parts[0].text.replace(/\n/g,'<br>'),s=!n?`<div class="mt-3"><button id="audioBtn_${t}" onclick="playAudio(this, ${t})" class="text-sm font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">▶ Play Audio</button></div>`:'';return`<div class="flex items-start gap-4 ${n?'justify-end':''}">${!n?o:''}<div class="${i} p-4 rounded-xl max-w-xl shadow-md border border-slate-200"><div class="response-text">${l}</div>${s}</div>${n?o:''}</div>`}).join('');e.scrollTop=e.scrollHeight}
+        function base64ToArrayBuffer(e){const t=window.atob(e),n=t.length,o=new Uint8Array(n);for(let e=0;e<n;e++)o[e]=t.charCodeAt(e);return o.buffer}function pcmToWav(e,t){const n=new ArrayBuffer(44),o=new DataView(n);function i(e,t,n){for(let o=0;o<n.length;o++)e.setUint8(t+o,n.charCodeAt(o))}return i(o,0,"RIFF"),o.setUint32(4,36+2*e.length,!0),i(o,8,"WAVE"),i(o,12,"fmt "),o.setUint32(16,16,!0),o.setUint16(20,1,!0),o.setUint16(22,1,!0),o.setUint32(24,t,!0),o.setUint32(28,2*t,!0),o.setUint16(32,2,!0),o.setUint16(34,16,!0),i(o,36,"data"),o.setUint32(40,2*e.length,!0),a=new Int16Array(44+2*e.length),a.set(new Int16Array(n),0),a.set(e,22),new Blob([a],{type:"audio/wav"})}
+        async function playAudio(e,t){e.innerHTML='... Loading Audio';e.disabled=true;const n=chatHistory[t].parts[0].text,o={contents:[{parts:[{text:n}]}],generationConfig:{responseModalities:["AUDIO"],speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:"Kore"}}}},model:"gemini-2.5-flash-preview-tts"};const i=await callGeminiAPI('gemini-2.5-flash-preview-tts',o);if(i?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data){const t=i.candidates[0].content.parts[0].inlineData,n=parseInt(t.mimeType.match(/rate=(\d+)/)[1],10);const o=new Int16Array(base64ToArrayBuffer(t.data)),l=pcmToWav(o,n);const s=new Audio(URL.createObjectURL(l));s.play();e.innerHTML='❚❚ Playing...';s.onended=()=>{e.innerHTML='▶ Play Audio'}}else{showToast("Could not generate audio.");e.innerHTML='▶ Play Audio'}e.disabled=false}
+        
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            isPro = localStorage.getItem('awdaddyPro') === 'true';
+            showPage('home'); populateChallenges(); loadProfile(); loadTestimonials(); loadMessageBoard();
+        });
+    </script>
+</body>
+</html>

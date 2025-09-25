@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project New Copenhagen - Join the Revolution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+        
+        /* Animated Background */
+        .bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a0f1f 50%, #0f1a1a 100%);
+        }
+        
+        .floating-orbs {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: float 20s infinite ease-in-out;
+            opacity: 0.3;
+        }
+        
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #00ffaa 0%, transparent 70%);
+            top: 10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+        
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #4a00ff 0%, transparent 70%);
+            bottom: 20%;
+            right: -5%;
+            animation-delay: 5s;
+        }
+        
+        .orb3 {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, #ff00aa 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        
+        /* Gothic Decay Particles */
+        .decay-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #666;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        nav.scrolled {
+            padding: 15px 50px;
+            background: rgba(10, 10, 10, 0.95);
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00ffaa, #4a00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 170, 0.5);
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+            cursor: pointer;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00ffaa, #4a00ff);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0 50px;
+        }
+        
+        .hero-content {
+            text-align: center;
+            max-width: 1000px;
+            animation: fadeInUp 1s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .glitch-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 20px;
+            position: relative;
+            text-shadow: 0 0 20px rgba(0, 255, 170, 0.5);
+            animation: glitch 3s infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 90%, 100% {
+                text-shadow: 0 0 20px rgba(0, 255, 170, 0.5);
+            }
+            92% {
+                text-shadow: -2px 0 #ff00aa, 2px 0 #00ffaa;
+            }
+            94% {
+                text-shadow: 2px 0 #ff00aa, -2px 0 #00ffaa;
+            }
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #666, #aaa, #666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00ffaa, #4a00ff);
+            color: #000;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.3);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 255, 170, 0.4);
+        }
+        
+        /* Section Styles */
+        .section {
+            padding: 100px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 50px;
+            text-align: center;
+            background: linear-gradient(135deg, #00ffaa, #4a00ff, #ff00aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Tech Stack Grid */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .tech-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(0, 255, 170, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .tech-card:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .tech-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ffaa;
+            box-shadow: 0 20px 40px rgba(0, 255, 170, 0.2);
+        }
+        
+        .tech-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .tech-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #00ffaa;
+        }
+        
+        .tech-description {
+            color: #aaa;
+            line-height: 1.6;
+        }
+        
+        /* AI Strategy Section */
+        .ai-strategy {
+            margin-top: 50px;
+        }
+        
+        .ai-model {
+            background: linear-gradient(135deg, rgba(0, 255, 170, 0.05), rgba(74, 0, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-model::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 170, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .model-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .model-badge {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #00ffaa, #4a00ff);
+            border-radius: 20px;
+            font-weight: bold;
+            color: #000;
+            font-size: 0.9rem;
+        }
+        
+        /* Challenge Cards */
+        .challenges {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .challenge-card {
+            background: rgba(255, 0, 170, 0.03);
+            border: 2px solid rgba(255, 0, 170, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .challenge-card:hover {
+            border-color: #ff00aa;
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(255, 0, 170, 0.3);
+        }
+        
+        .challenge-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            font-weight: 900;
+            opacity: 0.1;
+            color: #ff00aa;
+        }
+        
+        .challenge-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ff00aa;
+        }
+        
+        /* Interactive Demo */
+        .demo-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .demo-canvas {
+            width: 100%;
+            height: 400px;
+            background: radial-gradient(ellipse at center, rgba(0, 255, 170, 0.05) 0%, transparent 70%);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .ar-element {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #00ffaa, #4a00ff);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            cursor: grab;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        /* Footer */
+        footer {
+            padding: 50px;
+            text-align: center;
+            background: rgba(10, 10, 10, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .social-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .social-links a:hover {
+            color: #00ffaa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-content {
+                padding: 0 20px;
+            }
+            
+            .section {
+                padding: 50px 20px;
+            }
+            
+            .tech-grid, .challenges {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-canvas"></div>
+    <div class="floating-orbs">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+    </div>
+    <div class="decay-particles" id="particles"></div>
+    
+    <nav id="navbar">
+        <div class="nav-content">
+            <div class="logo">NEW COPENHAGEN</div>
+            <ul class="nav-links">
+                <li><a href="#vision">Vision</a></li>
+                <li><a href="#tech">Technology</a></li>
+                <li><a href="#challenges">Challenges</a></li>
+                <li><a href="#join">Join Us</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="glitch-title">RECLAIM REALITY</h1>
+            <p class="subtitle">Build the AR Platform That Merges Gothic Decay with Lunarpunk Renaissance</p>
+            <a href="#join" class="cta-button">JOIN THE REVOLUTION</a>
+        </div>
+    </section>
+    
+    <section id="vision" class="section">
+        <h2 class="section-title">The Vision: Where Decay Meets Magic</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 50px;">
+            <div style="padding: 30px; background: rgba(100, 100, 100, 0.05); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h3 style="color: #666; font-size: 1.8rem; margin-bottom: 20px;">🌾 Midwestern Gothic</h3>
+                <p style="color: #aaa; line-height: 1.8;">The persistent AR canvas - a world of beautiful desolation, abandoned beauty, and profound solitude. This is the melancholic foundation players explore, discovering Echoes of forgotten stories and Seeds of possibility.</p>
+            </div>
+            <div style="padding: 30px; background: linear-gradient(135deg, rgba(0, 255, 170, 0.05), rgba(74, 0, 255, 0.05)); border-radius: 20px; border: 1px solid rgba(0, 255, 170, 0.2);">
+                <h3 style="color: #00ffaa; font-size: 1.8rem; margin-bottom: 20px;">🌙 Lunarpunk Renaissance</h3>
+                <p style="color: #aaa; line-height: 1.8;">The creative toolkit - bioluminescent magic, sustainable technology, and community art. Players use these tools to transform decay into beauty, creating persistent AR worlds that defy the darkness.</p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 60px; text-align: center;">
+            <h3 style="font-size: 2rem; margin-bottom: 30px; color: #ff00aa;">The Core Loop</h3>
+            <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">👻</div>
+                    <h4 style="color: #00ffaa; margin-bottom: 10px;">EXPLORE</h4>
+                    <p style="color: #666;">Discover the haunting</p>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">✨</div>
+                    <h4 style="color: #4a00ff; margin-bottom: 10px;">CREATE</h4>
+                    <p style="color: #666;">Re-enchant the world</p>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">🌍</div>
+                    <h4 style="color: #ff00aa; margin-bottom: 10px;">SHARE</h4>
+                    <p style="color: #666;">Build the folklore</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="tech" class="section">
+        <h2 class="section-title">Cutting-Edge Technical Stack</h2>
+        
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="tech-icon">⚡</div>
+                <h3 class="tech-title">Unity 2021 LTS+</h3>
+                <p class="tech-description">AR Foundation framework providing unified API for ARKit/ARCore. Component-based architecture with event-driven communication.</p>
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">🔥</div>
+                <h3 class="tech-title">Cloud Firestore</h3>
+                <p class="tech-description">NoSQL flexibility with real-time sync and robust offline persistence. Critical for AR experiences in varied network conditions.</p>
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">🎯</div>
+                <h3 class="tech-title">Addressable Assets</h3>
+                <p class="tech-description">Dynamic content delivery system. Add new AR assets without app updates, reducing initial install size.</p>
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">🛡️</div>
+                <h3 class="tech-title">Firebase AI Logic</h3>
+                <p class="tech-description">Secure proxy for Gemini API access. App Check validates legitimate requests, preventing API abuse.</p>
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">🌡️</div>
+                <h3 class="tech-title">Adaptive Performance</h3>
+                <p class="tech-description">Proactive thermal management using Android Dynamic Performance Framework. Scale complexity before throttling occurs.</p>
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">⚙️</div>
+                <h3 class="tech-title">Async Architecture</h3>
+                <p class="tech-description">Unity Awaitable patterns for AI inference. Prevent AR tracking disruption with background processing.</p>
+            </div>
+        </div>
+        
+        <div class="ai-strategy">
+            <h3 style="font-size: 2.5rem; text-align: center; margin-bottom: 40px; color: #ff00aa;">Hybrid AI Strategy</h3>
+            
+            <div class="ai-model">
+                <div class="model-header">
+                    <h4 style="font-size: 2rem;">Gemini 2.0 Flash</h4>
+                    <span class="model-badge">CLOUD AI</span>
+                </div>
+                <p style="color: #aaa; line-height: 1.8; margin-bottom: 20px;">
+                    Powers complex multimodal analysis through Firebase AI Logic SDK. Handles dynamic lore generation, 
+                    environmental context analysis, and intelligent AR placement suggestions.
+                </p>
+                <div style="padding: 20px; background: rgba(0, 0, 0, 0.3); border-radius: 10px;">
+                    <code style="color: #00ffaa;">async/await patterns → Prevent UI freezing → Smooth 30 FPS target</code>
+                </div>
+            </div>
+            
+            <div class="ai-model">
+                <div class="model-header">
+                    <h4 style="font-size: 2rem;">Gemini Nano</h4>
+                    <span class="model-badge">ON-DEVICE AI</span>
+                </div>
+                <p style="color: #aaa; line-height: 1.8; margin-bottom: 20px;">
+                    Real-time, low-latency, offline processing. Instantaneous feedback and object identification 
+                    through custom native Android plugin with C# JNI Bridge.
+                </p>
+                <div style="padding: 20px; background: rgba(255, 0, 0, 0.1); border-radius: 10px;">
+                    <code style="color: #ff6666;">⚠️ PRIMARY TECHNICAL RISK: Unity ↔ Native Java/Kotlin Bridge</code>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="challenges" class="section">
+        <h2 class="section-title">Engineering Challenges We're Solving</h2>
+        
+        <div class="challenges">
+            <div class="challenge-card">
+                <span class="challenge-number">01</span>
+                <h3 class="challenge-title">Real-Time Performance</h3>
+                <p style="color: #aaa; line-height: 1.8;">
+                    Achieving stable 30 FPS while balancing AR tracking with intensive AI processing. 
+                    Implementing proactive thermal management and sophisticated memory pooling strategies.
+                </p>
+            </div>
+            
+            <div class="challenge-card">
+                <span class="challenge-number">02</span>
+                <h3 class="challenge-title">Creator Mode UGC</h3>
+                <p style="color: #aaa; line-height: 1.8;">
+                    Building "The Loom" - a visual scripting interface where users define Trigger→Action 
+                    relationships by drawing glowing threads between AR objects.
+                </p>
+            </div>
+            
+            <div class="challenge-card">
+                <span class="challenge-number">03</span>
+                <h3 class="challenge-title">Multimodal AI Integration</h3>
+                <p style="color: #aaa; line-height: 1.8;">
+                    Efficiently combining camera feed with text prompts for contextual analysis. 
+                    Secure implementation through Firebase AI Logic proxy.
+                </p>
+            </div>
+            
+            <div class="challenge-card">
+                <span class="challenge-number">04</span>
+                <h3 class="challenge-title">World Persistence</h3>
+                <p style="color: #aaa; line-height: 1.8;">
+                    Serializing user creations into robust JSON format. Managing transform hierarchies 
+                    and component properties for network transmission and storage.
+                </p>
+            </div>
+            
+            <div class="challenge-card">
+                <span class="challenge-number">05</span>
+                <h3 class="challenge-title">Native Bridge Development</h3>
+                <p style="color: #aaa; line-height: 1.8;">
+                    Creating custom Android AAR plugin using ML Kit GenAI APIs. Building C# JNI Bridge 
+                    for seamless Unity integration with on-device AI.
+                </p>
+            </div>
+            
+            <div class="challenge-card">
+                <span class="challenge-number">06</span>
+                <h3 class="challenge-title">Memory Management</h3>
+                <p style="color: #aaa; line-height: 1.8;">
+                    Object pooling for UI elements. Zero allocation in Update() loops. 
+                    Preventing garbage collection spikes that disrupt AR tracking.
+                </p>
+            </div>
+        </div>
+        
+        <div class="demo-container">
+            <h3 style="font-size: 2rem; margin-bottom: 20px; color: #00ffaa;">Interactive AR Simulation</h3>
+            <p style="color: #aaa; margin-bottom: 30px;">Click and drag to experience the creator tools</p>
+            <div class="demo-canvas" id="demoCanvas">
+                <div class="ar-element" id="arElement1" style="top: 50px; left: 100px;"></div>
+                <div class="ar-element" id="arElement2" style="top: 150px; left: 300px; background: linear-gradient(135deg, #ff00aa, #4a00ff);"></div>
+                <div class="ar-element" id="arElement3" style="top: 250px; left: 200px; background: linear-gradient(135deg, #00ffaa, #ff00aa);"></div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="join" class="section">
+        <h2 class="section-title">Join the Revolution</h2>
+        <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <p style="font-size: 1.3rem; line-height: 1.8; color: #aaa; margin-bottom: 40px;">
+                We're assembling a team of visionary developers to build the future of AR. 
+                If you're passionate about pushing the boundaries of mobile AI, creating immersive 
+                experiences, and merging art with technology, we want to hear from you.
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin: 50px 0;">
+                <div style="padding: 30px; background: rgba(0, 255, 170, 0.05); border-radius: 20px; border: 1px solid rgba(0, 255, 170, 0.2);">
+                    <h3 style="color: #00ffaa; margin-bottom: 15px;">Unity Engineers</h3>
+                    <p style="color: #aaa;">AR Foundation experts with performance optimization skills</p>
+                </div>
+                <div style="padding: 30px; background: rgba(74, 0, 255, 0.05); border-radius: 20px; border: 1px solid rgba(74, 0, 255, 0.2);">
+                    <h3 style="color: #4a00ff; margin-bottom: 15px;">AI/ML Engineers</h3>
+                    <p style="color: #aaa;">Gemini API integration and on-device ML expertise</p>
+                </div>
+                <div style="padding: 30px; background: rgba(255, 0, 170, 0.05); border-radius: 20px; border: 1px solid rgba(255, 0, 170, 0.2);">
+                    <h3 style="color: #ff00aa; margin-bottom: 15px;">Android Developers</h3>
+                    <p style="color: #aaa;">Native plugin development and JNI bridge experience</p>
+                </div>
+            </div>
+            
+            <a href="mailto:careers@newcopenhagen.dev" class="cta-button" style="font-size: 1.3rem; padding: 20px 50px;">
+                APPLY NOW
+            </a>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <p style="color: #666; margin-bottom: 20px;">© 2025 Project New Copenhagen. Building the future of AR.</p>
+            <div class="social-links">
+                <a href="#">GitHub</a>
+                <a href="#">Discord</a>
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Particle system
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+        
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Interactive AR demo
+        const arElements = document.querySelectorAll('.ar-element');
+        let isDragging = false;
+        let currentElement = null;
+        let offset = { x: 0, y: 0 };
+        
+        arElements.forEach(element => {
+            element.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                currentElement = element;
+                element.style.cursor = 'grabbing';
+                const rect = element.getBoundingClientRect();
+                offset.x = e.clientX - rect.left;
+                offset.y = e.clientY - rect.top;
+                element.style.zIndex = '1000';
+            });
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging && currentElement) {
+                const canvas = document.getElementById('demoCanvas');
+                const canvasRect = canvas.getBoundingClientRect();
+                let newX = e.clientX - canvasRect.left - offset.x;
+                let newY = e.clientY - canvasRect.top - offset.y;
+                
+                // Constrain to canvas
+                newX = Math.max(0, Math.min(newX, canvasRect.width - 60));
+                newY = Math.max(0, Math.min(newY, canvasRect.height - 60));
+                
+                currentElement.style.left = newX + 'px';
+                currentElement.style.top = newY + 'px';
+                
+                // Create trail effect
+                const trail = document.createElement('div');
+                trail.style.position = 'absolute';
+                trail.style.width = '20px';
+                trail.style.height = '20px';
+                trail.style.borderRadius = '50%';
+                trail.style.background = currentElement.style.background || 'linear-gradient(135deg, #00ffaa, #4a00ff)';
+                trail.style.left = (newX + 20) + 'px';
+                trail.style.top = (newY + 20) + 'px';
+                trail.style.opacity = '0.3';
+                trail.style.pointerEvents = 'none';
+                trail.style.transition = 'opacity 1s';
+                canvas.appendChild(trail);
+                
+                setTimeout(() => {
+                    trail.style.opacity = '0';
+                    setTimeout(() => trail.remove(), 1000);
+                }, 10);
+            }
+        });
+        
+        document.addEventListener('mouseup', () => {
+            if (currentElement) {
+                currentElement.style.cursor = 'grab';
+                currentElement.style.zIndex = '';
+            }
+            isDragging = false;
+            currentElement = null;
+        });
+        
+        // Dynamic cursor effect
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            document.querySelectorAll('.tech-card, .challenge-card').forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const cardX = rect.left + rect.width / 2;
+                const cardY = rect.top + rect.height / 2;
+                const distance = Math.sqrt(Math.pow(x - cardX, 2) + Math.pow(y - cardY, 2));
+                
+                if (distance < 200) {
+                    const intensity = 1 - (distance / 200);
+                    card.style.boxShadow = `0 ${20 * intensity}px ${40 * intensity}px rgba(0, 255, 170, ${0.3 * intensity})`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
